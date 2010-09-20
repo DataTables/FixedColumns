@@ -214,7 +214,7 @@ FixedColumns.prototype = {
 		
 		
 		/* Header */
-		if ( this.dom.clone.header != null )
+		if ( this.dom.clone.header !== null )
 		{
 			this.dom.clone.header.parentNode.removeChild( this.dom.clone.header );
 		}
@@ -237,7 +237,7 @@ FixedColumns.prototype = {
 		
 		
 		/* Body */
-		if ( this.dom.clone.body != null )
+		if ( this.dom.clone.body !== null )
 		{
 			this.dom.clone.body.parentNode.removeChild( this.dom.clone.body );
 		}
@@ -270,7 +270,7 @@ FixedColumns.prototype = {
 		/* Footer */
 		if ( this.s.dt.nTFoot !== null )
 		{
-			if ( this.dom.clone.footer != null )
+			if ( this.dom.clone.footer !== null )
 			{
 				this.dom.clone.footer.parentNode.removeChild( this.dom.clone.footer );
 			}
