@@ -163,7 +163,7 @@ FixedColumns.prototype = {
 		this.dom.scroller.style.position = "relative";
 		
 		this.dom.header = this.s.dt.nTHead.parentNode;
-		this.dom.header.parentNode.style.position = "relative";
+		this.dom.header.parentNode.parentNode.style.position = "relative";
 		
 		if ( this.s.dt.nTFoot )
 		{
@@ -209,6 +209,7 @@ FixedColumns.prototype = {
 		{
 			jq = $('thead th:eq('+i+')', this.dom.header);
 			iTableWidth += jq.outerWidth();
+			//console.log( jq.outerWidth(), jq.width(), jq[0].offsetWidth );
 			aiCellWidth.push( jq.width() );
 		}
 		
@@ -243,13 +244,19 @@ FixedColumns.prototype = {
 		}
 		this.dom.clone.body = $(this.dom.body).clone(true)[0];
 		this.dom.clone.body.className += " FixedColumns_Cloned";
+		if ( this.dom.clone.body.getAttribute('id') != null )
+		{
+			this.dom.clone.body.removeAttribute('id');
+		}
 		
 		$('thead tr', this.dom.clone.body).each( function () {
 			$('th:gt('+(that.s.columns-1)+')', this).remove();
 		} );
 		
-		$('tbody tr', this.dom.clone.body).each( function () {
+		$('tbody tr', this.dom.clone.body).each( function (k) {
 			$('td:gt('+(that.s.columns-1)+')', this).remove();
+			//$(this)[0].style.height = $('tbody tr:eq('+k+')', that.dom.body).height()+"px";
+			//$(this).height( $('tbody tr:eq('+k+')', that.dom.body).height() );
 		} );
 		
 		$('tfoot tr', this.dom.clone.body).each( function () {
