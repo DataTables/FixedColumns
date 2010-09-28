@@ -168,7 +168,7 @@ FixedColumns.prototype = {
 		if ( this.s.dt.nTFoot )
 		{
 			this.dom.footer = this.s.dt.nTFoot.parentNode;
-			this.dom.footer.parentNode.style.position = "relative";
+			this.dom.footer.parentNode.parentNode.style.position = "relative";
 		}
 		
 		/* Event handlers */
