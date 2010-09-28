@@ -222,9 +222,12 @@ FixedColumns.prototype = {
 		this.dom.clone.header = $(this.dom.header).clone(true)[0];
 		this.dom.clone.header.className += " FixedColumns_Cloned";
 		
-		$('thead tr', this.dom.clone.header).each( function () {
+		$('thead tr:eq(0)', this.dom.clone.header).each( function () {
 			$('th:gt('+(that.s.columns-1)+')', this).remove();
+			$(this).height( $(that.dom.header).height() );
 		} );
+		
+		$('thead tr:gt(0)', this.dom.clone.header).remove();
 		
 		$('thead th', this.dom.clone.header).each( function (i) {
 			this.style.width = aiCellWidth[i]+"px";
@@ -249,9 +252,11 @@ FixedColumns.prototype = {
 			this.dom.clone.body.removeAttribute('id');
 		}
 		
-		$('thead tr', this.dom.clone.body).each( function () {
+		$('thead tr:eq(0)', this.dom.clone.body).each( function () {
 			$('th:gt('+(that.s.columns-1)+')', this).remove();
 		} );
+		
+		$('thead tr:gt(0)', this.dom.clone.body).remove();
 		
 		$('tbody tr', this.dom.clone.body).each( function (k) {
 			$('td:gt('+(that.s.columns-1)+')', this).remove();
@@ -259,9 +264,11 @@ FixedColumns.prototype = {
 			//$(this).height( $('tbody tr:eq('+k+')', that.dom.body).height() );
 		} );
 		
-		$('tfoot tr', this.dom.clone.body).each( function () {
+		$('tfoot tr:eq(0)', this.dom.clone.body).each( function () {
 			$('th:gt('+(that.s.columns-1)+')', this).remove();
 		} );
+		
+		$('tfoot tr:gt(0)', this.dom.clone.body).remove();
 		
 		$('thead th', this.dom.clone.body).each( function (i) {
 			this.style.width = aiCellWidth[i]+"px";
@@ -284,9 +291,12 @@ FixedColumns.prototype = {
 			this.dom.clone.footer = $(this.dom.footer).clone(true)[0];
 			this.dom.clone.footer.className += " FixedColumns_Cloned";
 			
-			$('tfoot tr', this.dom.clone.footer).each( function () {
+			$('tfoot tr:eq(0)', this.dom.clone.footer).each( function () {
 				$('th:gt('+(that.s.columns-1)+')', this).remove();
+				$(this).height( $(that.dom.footer).height() );
 			} );
+			
+			$('tfoot tr:gt(0)', this.dom.clone.footer).remove();
 			
 			$('tfoot th', this.dom.clone.footer).each( function (i) {
 				this.style.width = aiCellWidth[i]+"px";
