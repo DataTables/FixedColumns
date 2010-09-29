@@ -202,14 +202,14 @@ FixedColumns.prototype = {
 			that = this,
 			iTableWidth = 0,
 			aiCellWidth = [],
-			i, iLen, jq;
+			i, iLen, jq,
+			bRubbishOldIE = ($.browser.msie && ($.browser.version == "6.0" || $.browser.version == "7.0"));
 		
 		/* Grab the widths that we are going to need */
 		for ( i=0, iLen=this.s.columns ; i<iLen ; i++ )
 		{
 			jq = $('thead th:eq('+i+')', this.dom.header);
 			iTableWidth += jq.outerWidth();
-			//console.log( jq.outerWidth(), jq.width(), jq[0].offsetWidth );
 			aiCellWidth.push( jq.width() );
 		}
 		
@@ -224,7 +224,7 @@ FixedColumns.prototype = {
 		
 		$('thead tr:eq(0)', this.dom.clone.header).each( function () {
 			$('th:gt('+(that.s.columns-1)+')', this).remove();
-			$(this).height( $(that.dom.header).height() );
+			$('th', this).height( $('th:eq(0)', that.dom.header).height() );
 		} );
 		
 		$('thead tr:gt(0)', this.dom.clone.header).remove();
@@ -241,13 +241,16 @@ FixedColumns.prototype = {
 		
 		
 		/* Body */
+		/* Remove any heights which have been applied already and let the browser figure it out */
+		$('tbody tr', that.dom.body).css('height', 'auto');
+		
 		if ( this.dom.clone.body !== null )
 		{
 			this.dom.clone.body.parentNode.removeChild( this.dom.clone.body );
 		}
 		this.dom.clone.body = $(this.dom.body).clone(true)[0];
 		this.dom.clone.body.className += " FixedColumns_Cloned";
-		if ( this.dom.clone.body.getAttribute('id') != null )
+		if ( this.dom.clone.body.getAttribute('id') !== null )
 		{
 			this.dom.clone.body.removeAttribute('id');
 		}
@@ -258,10 +261,36 @@ FixedColumns.prototype = {
 		
 		$('thead tr:gt(0)', this.dom.clone.body).remove();
 		
+		var iTopPadding = $('tbody tr:eq(0) td:eq(0)', that.dom.body).css('paddingTop');
+		iTopPadding = parseInt( iTopPadding.replace('px', ''), 10 );
+		
+		var iBottomPadding = $('tbody tr:eq(0) td:eq(0)', that.dom.body).css('paddingBottom');
+		iBottomPadding = parseInt( iBottomPadding.replace('px', ''), 10 );
+		
+		/* Remove cells which are not needed and copy the height from the original table */
 		$('tbody tr', this.dom.clone.body).each( function (k) {
 			$('td:gt('+(that.s.columns-1)+')', this).remove();
-			//$(this)[0].style.height = $('tbody tr:eq('+k+')', that.dom.body).height()+"px";
-			//$(this).height( $('tbody tr:eq('+k+')', that.dom.body).height() );
+			
+			/* xxx - can we use some kind of object detection here?! This is very nasty - damn browsers */
+			if ( $.browser.mozilla || $.browser.opera )
+			{
+				$('td', this).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() );
+			}
+			else
+			{
+				$('td', this).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() -
+				 	iTopPadding - iBottomPadding );
+			}
+			
+			/* It's only really IE8 and Firefox which need this, but to simplify, lets apply to all.
+			 * The reason it is needed at all is sub-pixel rounded, which is done differently in every
+			 * browser... Except of course IE6 and IE7 - applying the height to them causes the cell
+			 * size to grow, but they don't mess around with sub-pixels so we can do nothing.
+			 */
+			if ( !bRubbishOldIE )
+			{
+				$('tbody tr:eq('+k+')', that.dom.body).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() );		
+			}
 		} );
 		
 		$('tfoot tr:eq(0)', this.dom.clone.body).each( function () {
@@ -270,9 +299,6 @@ FixedColumns.prototype = {
 		
 		$('tfoot tr:gt(0)', this.dom.clone.body).remove();
 		
-		$('thead th', this.dom.clone.body).each( function (i) {
-			this.style.width = aiCellWidth[i]+"px";
-		} );
 		
 		this.dom.clone.body.style.position = "absolute";
 		this.dom.clone.body.style.top = "0px";
