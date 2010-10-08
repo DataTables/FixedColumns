@@ -1,6 +1,6 @@
 /*
  * File:        FixedColumns.js
- * Version:     1.0.0
+ * Version:     1.0.1.dev
  * Description: "Fix" columns on the left of a scrolling DataTable
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Created:     Sat Sep 18 09:28:54 BST 2010
@@ -215,6 +215,8 @@ FixedColumns.prototype = {
 		
 		
 		/* Header */
+		$(this.dom.header).css( 'height', 'auto' ); /* Remove heights for Firefox bug */
+		
 		if ( this.dom.clone.header !== null )
 		{
 			this.dom.clone.header.parentNode.removeChild( this.dom.clone.header );
@@ -224,8 +226,9 @@ FixedColumns.prototype = {
 		
 		$('thead tr:eq(0)', this.dom.clone.header).each( function () {
 			$('th:gt('+(that.s.columns-1)+')', this).remove();
-			$('th', this).height( $('th:eq(0)', that.dom.header).height() );
 		} );
+		$(this.dom.header).height( $(that.dom.header).height() ); /* Needed for a Firefox bug */
+		$(this.dom.clone.header).height( $(that.dom.header).height() );
 		
 		$('thead tr:gt(0)', this.dom.clone.header).remove();
 		
@@ -267,19 +270,26 @@ FixedColumns.prototype = {
 		var iBottomPadding = $('tbody tr:eq(0) td:eq(0)', that.dom.body).css('paddingBottom');
 		iBottomPadding = parseInt( iBottomPadding.replace('px', ''), 10 );
 		
+		var iTopBorder = $('tbody tr:eq(0) td:eq(0)', that.dom.body).css('borderTopWidth');
+		iTopBorder = parseInt( iTopBorder.replace('px', ''), 10 );
+		
+		var iBottomBorder = $('tbody tr:eq(0) td:eq(0)', that.dom.body).css('borderBottomWidth');
+		iBottomBorder = parseInt( iBottomBorder.replace('px', ''), 10 );
+		
+		var iBoxHack = iTopPadding + iBottomPadding + iTopBorder + iBottomBorder;
+		
 		/* Remove cells which are not needed and copy the height from the original table */
 		$('tbody tr', this.dom.clone.body).each( function (k) {
 			$('td:gt('+(that.s.columns-1)+')', this).remove();
 			
-			/* xxx - can we use some kind of object detection here?! This is very nasty - damn browsers */
+			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
 			if ( $.browser.mozilla || $.browser.opera )
 			{
 				$('td', this).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() );
 			}
 			else
 			{
-				$('td', this).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() -
-				 	iTopPadding - iBottomPadding );
+				$('td', this).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() - iBoxHack );
 			}
 			
 			/* It's only really IE8 and Firefox which need this, but to simplify, lets apply to all.
@@ -310,6 +320,8 @@ FixedColumns.prototype = {
 		/* Footer */
 		if ( this.s.dt.nTFoot !== null )
 		{
+			$(this.dom.footer).css( 'height', 'auto' ); /* Remove heights for Firefox bug */
+			
 			if ( this.dom.clone.footer !== null )
 			{
 				this.dom.clone.footer.parentNode.removeChild( this.dom.clone.footer );
@@ -321,6 +333,8 @@ FixedColumns.prototype = {
 				$('th:gt('+(that.s.columns-1)+')', this).remove();
 				$(this).height( $(that.dom.footer).height() );
 			} );
+			$(this.dom.footer).height( $(that.dom.footer).height() );
+			$(this.dom.clone.footer).height( $(that.dom.footer).height() );
 			
 			$('tfoot tr:gt(0)', this.dom.clone.footer).remove();
 			
