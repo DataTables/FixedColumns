@@ -213,10 +213,7 @@ FixedColumns.prototype = {
 			aiCellWidth.push( jq.width() );
 		}
 		
-		
 		/* Header */
-		$(this.dom.header).css( 'height', 'auto' ); /* Remove heights for Firefox bug */
-		
 		if ( this.dom.clone.header !== null )
 		{
 			this.dom.clone.header.parentNode.removeChild( this.dom.clone.header );
@@ -227,8 +224,7 @@ FixedColumns.prototype = {
 		$('thead tr:eq(0)', this.dom.clone.header).each( function () {
 			$('th:gt('+(that.s.columns-1)+')', this).remove();
 		} );
-		$(this.dom.header).height( $(that.dom.header).height() ); /* Needed for a Firefox bug */
-		$(this.dom.clone.header).height( $(that.dom.header).height() );
+		$('tr', this.dom.clone.header).height( $(that.dom.header).height() );
 		
 		$('thead tr:gt(0)', this.dom.clone.header).remove();
 		
@@ -241,7 +237,6 @@ FixedColumns.prototype = {
 		this.dom.clone.header.style.left = "0px";
 		this.dom.clone.header.style.width = iTableWidth+"px";
 		this.dom.header.parentNode.appendChild( this.dom.clone.header );
-		
 		
 		/* Body */
 		/* Remove any heights which have been applied already and let the browser figure it out */
@@ -264,19 +259,8 @@ FixedColumns.prototype = {
 		
 		$('thead tr:gt(0)', this.dom.clone.body).remove();
 		
-		var iTopPadding = $('tbody tr:eq(0) td:eq(0)', that.dom.body).css('paddingTop');
-		iTopPadding = parseInt( iTopPadding.replace('px', ''), 10 );
-		
-		var iBottomPadding = $('tbody tr:eq(0) td:eq(0)', that.dom.body).css('paddingBottom');
-		iBottomPadding = parseInt( iBottomPadding.replace('px', ''), 10 );
-		
-		var iTopBorder = $('tbody tr:eq(0) td:eq(0)', that.dom.body).css('borderTopWidth');
-		iTopBorder = parseInt( iTopBorder.replace('px', ''), 10 );
-		
-		var iBottomBorder = $('tbody tr:eq(0) td:eq(0)', that.dom.body).css('borderBottomWidth');
-		iBottomBorder = parseInt( iBottomBorder.replace('px', ''), 10 );
-		
-		var iBoxHack = iTopPadding + iBottomPadding + iTopBorder + iBottomBorder;
+		var jqBoxHack = $('tbody tr:eq(0) td:eq(0)', that.dom.body);
+		var iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height();
 		
 		/* Remove cells which are not needed and copy the height from the original table */
 		$('tbody tr', this.dom.clone.body).each( function (k) {
@@ -320,8 +304,6 @@ FixedColumns.prototype = {
 		/* Footer */
 		if ( this.s.dt.nTFoot !== null )
 		{
-			$(this.dom.footer).css( 'height', 'auto' ); /* Remove heights for Firefox bug */
-			
 			if ( this.dom.clone.footer !== null )
 			{
 				this.dom.clone.footer.parentNode.removeChild( this.dom.clone.footer );
@@ -333,8 +315,7 @@ FixedColumns.prototype = {
 				$('th:gt('+(that.s.columns-1)+')', this).remove();
 				$(this).height( $(that.dom.footer).height() );
 			} );
-			$(this.dom.footer).height( $(that.dom.footer).height() );
-			$(this.dom.clone.footer).height( $(that.dom.footer).height() );
+			$('tr', this.dom.clone.footer).height( $(that.dom.footer).height() );
 			
 			$('tfoot tr:gt(0)', this.dom.clone.footer).remove();
 			
