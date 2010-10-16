@@ -245,61 +245,65 @@ FixedColumns.prototype = {
 		if ( this.dom.clone.body !== null )
 		{
 			this.dom.clone.body.parentNode.removeChild( this.dom.clone.body );
+			this.dom.clone.body = null;
 		}
-		this.dom.clone.body = $(this.dom.body).clone(true)[0];
-		this.dom.clone.body.className += " FixedColumns_Cloned";
-		if ( this.dom.clone.body.getAttribute('id') !== null )
+		
+		if ( this.s.dt.aiDisplay.length > 0 )
 		{
-			this.dom.clone.body.removeAttribute('id');
+			this.dom.clone.body = $(this.dom.body).clone(true)[0];
+			this.dom.clone.body.className += " FixedColumns_Cloned";
+			if ( this.dom.clone.body.getAttribute('id') !== null )
+			{
+				this.dom.clone.body.removeAttribute('id');
+			}
+			
+			$('thead tr:eq(0)', this.dom.clone.body).each( function () {
+				$('th:gt('+(that.s.columns-1)+')', this).remove();
+			} );
+			
+			$('thead tr:gt(0)', this.dom.clone.body).remove();
+			
+			var jqBoxHack = $('tbody tr:eq(0) td:eq(0)', that.dom.body);
+			var iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height();
+			
+			/* Remove cells which are not needed and copy the height from the original table */
+			$('tbody tr', this.dom.clone.body).each( function (k) {
+				$('td:gt('+(that.s.columns-1)+')', this).remove();
+				
+				/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
+				if ( $.browser.mozilla || $.browser.opera )
+				{
+					$('td', this).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() );
+				}
+				else
+				{
+					$('td', this).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() - iBoxHack );
+				}
+				
+				/* It's only really IE8 and Firefox which need this, but to simplify, lets apply to all.
+				 * The reason it is needed at all is sub-pixel rounded, which is done differently in every
+				 * browser... Except of course IE6 and IE7 - applying the height to them causes the cell
+				 * size to grow, but they don't mess around with sub-pixels so we can do nothing.
+				 */
+				if ( !bRubbishOldIE )
+				{
+					$('tbody tr:eq('+k+')', that.dom.body).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() );		
+				}
+			} );
+			
+			$('tfoot tr:eq(0)', this.dom.clone.body).each( function () {
+				$('th:gt('+(that.s.columns-1)+')', this).remove();
+			} );
+			
+			$('tfoot tr:gt(0)', this.dom.clone.body).remove();
+			
+			
+			this.dom.clone.body.style.position = "absolute";
+			this.dom.clone.body.style.top = "0px";
+			this.dom.clone.body.style.left = "0px";
+			this.dom.clone.body.style.width = iTableWidth+"px";
+			this.dom.body.parentNode.appendChild( this.dom.clone.body );
 		}
-		
-		$('thead tr:eq(0)', this.dom.clone.body).each( function () {
-			$('th:gt('+(that.s.columns-1)+')', this).remove();
-		} );
-		
-		$('thead tr:gt(0)', this.dom.clone.body).remove();
-		
-		var jqBoxHack = $('tbody tr:eq(0) td:eq(0)', that.dom.body);
-		var iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height();
-		
-		/* Remove cells which are not needed and copy the height from the original table */
-		$('tbody tr', this.dom.clone.body).each( function (k) {
-			$('td:gt('+(that.s.columns-1)+')', this).remove();
-			
-			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
-			if ( $.browser.mozilla || $.browser.opera )
-			{
-				$('td', this).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() );
-			}
-			else
-			{
-				$('td', this).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() - iBoxHack );
-			}
-			
-			/* It's only really IE8 and Firefox which need this, but to simplify, lets apply to all.
-			 * The reason it is needed at all is sub-pixel rounded, which is done differently in every
-			 * browser... Except of course IE6 and IE7 - applying the height to them causes the cell
-			 * size to grow, but they don't mess around with sub-pixels so we can do nothing.
-			 */
-			if ( !bRubbishOldIE )
-			{
-				$('tbody tr:eq('+k+')', that.dom.body).height( $('tbody tr:eq('+k+')', that.dom.body).outerHeight() );		
-			}
-		} );
-		
-		$('tfoot tr:eq(0)', this.dom.clone.body).each( function () {
-			$('th:gt('+(that.s.columns-1)+')', this).remove();
-		} );
-		
-		$('tfoot tr:gt(0)', this.dom.clone.body).remove();
-		
-		
-		this.dom.clone.body.style.position = "absolute";
-		this.dom.clone.body.style.top = "0px";
-		this.dom.clone.body.style.left = "0px";
-		this.dom.clone.body.style.width = iTableWidth+"px";
-		this.dom.body.parentNode.appendChild( this.dom.clone.body );
-		
 		
 		/* Footer */
 		if ( this.s.dt.nTFoot !== null )
@@ -343,7 +347,10 @@ FixedColumns.prototype = {
 		var iScrollLeft = $(this.dom.scroller).scrollLeft();
 		
 		this.dom.clone.header.style.left = iScrollLeft+"px";
-		this.dom.clone.body.style.left = iScrollLeft+"px";
+		if ( this.dom.clone.body !== null )
+		{
+			this.dom.clone.body.style.left = iScrollLeft+"px";
+		}
 		if ( this.dom.footer )
 		{
 			this.dom.clone.footer.style.left = iScrollLeft+"px";
