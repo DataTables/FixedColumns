@@ -338,27 +338,27 @@ FixedColumns.prototype = {
 	"fnEqualiseHeights": function ( parent, original, clone )
 	{
 		var that = this,
-			jqBoxHack = $('tbody tr:eq(0)', that.dom.body).children(':eq(0)'),
+			jqBoxHack = $(parent+' tr:eq(0)', original).children(':eq(0)'),
 			iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height(),
 			bRubbishOldIE = ($.browser.msie && ($.browser.version == "6.0" || $.browser.version == "7.0"));
 		
 		/* Remove cells which are not needed and copy the height from the original table */
-		$('tbody tr', clone).each( function (k) {
+		$(parent+' tr', clone).each( function (k) {
 			$(this).children(':gt('+(that.s.columns-1)+')', this).remove();
 			
 			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
 			if ( $.browser.mozilla || $.browser.opera )
 			{
-				$(this).children().height( $('tbody tr:eq('+k+')', original).outerHeight() );
+				$(this).children().height( $(parent+' tr:eq('+k+')', original).outerHeight() );
 			}
 			else
 			{
-				$(this).children().height( $('tbody tr:eq('+k+')', original).outerHeight() - iBoxHack );
+				$(this).children().height( $(parent+' tr:eq('+k+')', original).outerHeight() - iBoxHack );
 			}
 			
 			if ( !bRubbishOldIE )
 			{
-				$('tbody tr:eq('+k+')', original).height( $('tbody tr:eq('+k+')', original).outerHeight() );		
+				$(parent+' tr:eq('+k+')', original).height( $(parent+' tr:eq('+k+')', original).outerHeight() );		
 			}
 		} );
 	},
