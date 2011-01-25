@@ -9,6 +9,8 @@
 			@import "../../media/css/demo_page.css";
 			@import "../../media/css/demo_table.css";
 			.FixedColumns_Cloned th { background-color: white; }
+			.FixedColumns_Cloned tr.odd { background-color: #DDFFDD !important; }
+			.FixedColumns_Cloned tr.even { background-color: #EEFFEE !important; }
 		</style>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
@@ -20,7 +22,10 @@
 					"sScrollXInner": "150%",
 					"bScrollCollapse": true
 				} );
-				new FixedColumns( oTable );
+				new FixedColumns( oTable, {
+					"iColumns": 0,
+					"iRightColumns": 1
+				} );
 			} );
 		</script>
 	</head>
@@ -31,8 +36,7 @@
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>When displaying a table which scrolls along the x-axis, it can sometimes be useful to the end user for the left most column to be fixed in place, if it shows grouping (or similar) information. This is basically the same idea as 'freeze columns' in Excel. This can be achieved with the FixedColumns plug-in for DataTables, as shown below.</p>
-			<p>Note that FixedColumns is suitable only for use with the scrolling features in <a href="http://datatables.net">DataTables</a>. If you want to achieve a similar effect without scrolling enabled, please checkout <a href="http://datatables.net/plug-ins">FixedHeader</a>, also for DataTables.</p>
+			<p>FixedColumns has only one initialisation parameter at the moment, which is "columns". With this parameter you can instruct FixedColumns to freeze more than a single column in place if you wish. The example below shows two columns fixed.</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -451,6 +455,15 @@
 			<td class="center">U</td>
 		</tr>
 	</tbody>
+	<tfoot>
+		<tr>
+			<th>Rendering engine</th>
+			<th>Browser</th>
+			<th>Platform(s)</th>
+			<th>Engine version</th>
+			<th>CSS grade</th>
+		</tr>
+	</tfoot>
 </table>
 			</div>
 			<div class="spacer"></div>
@@ -458,13 +471,15 @@
 			
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
-	var oTable = $('#example').dataTable( {
-		"sScrollX": "100%",
-		"sScrollXInner": "150%",
-		"bScrollCollapse": true
-	} );
-	new FixedColumns( oTable );
-} );</pre>
+ 	var oTable = $('#example').dataTable( {
+ 		"sScrollX": "100%",
+ 		"sScrollXInner": "150%",
+ 		"bScrollCollapse": true
+ 	} );
+ 	new FixedColumns( oTable, {
+ 		"columns": 2
+ 	} );
+ } );</pre>
 
 			<h1>Examples</h1>
 			<ul>

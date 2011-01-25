@@ -21,7 +21,7 @@
 					"bScrollCollapse": true
 				} );
 				new FixedColumns( oTable, {
-					"columns": 2
+					"iColumns": 2
 				} );
 			} );
 		</script>
@@ -33,7 +33,7 @@
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>FixedColumns has only one initialisation parameter at the moment, which is "columns". With this parameter you can instruct FixedColumns to freeze more than a single column in place if you wish. The example below shows two columns fixed.</p>
+			<p>FixedColumns allows more than one column to be frozen into place using hte <i>iColumns</i> parameter. The example below shows two columns fixed.</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -474,7 +474,7 @@
  		"bScrollCollapse": true
  	} );
  	new FixedColumns( oTable, {
- 		"columns": 2
+ 		"iColumns": 2
  	} );
  } );</pre>
 
@@ -485,12 +485,14 @@
 				<li><a href="x_y_scrolling.html">Index column, but with Y scrolling and no pagination</a></li>
 				<li><a href="two_columns.html">Two columns fixed in place</a></li>
 				<li><a href="col_filter.html">Individual column filtering</a></li>
+				<li><a href="right_column.html">Fix the right column in place</a></li>
+				<li><a href="left_right_columns.html">Fix the left and right columns in place</a></li>
 			</ul>
 			
 			
 			<div id="footer" style="text-align:center;">
 				<span style="font-size:10px;">
-					FixedColumns and DataTables &copy; Allan Jardine 2010.<br>
+					FixedColumns and DataTables &copy; Allan Jardine 2011.<br>
 				</span>
 			</div>
 		</div>
