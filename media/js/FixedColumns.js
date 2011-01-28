@@ -66,6 +66,14 @@ var FixedColumns = function ( oDT, oInit ) {
 		 *  @default  null
 		 */
 		"scroller": null,
+		  	
+		/**
+		 * Scroll container that DataTables has added
+		 *  @property scrollContainer
+		 *  @type     node
+		 *  @default  null
+		 */
+		"scrollContainer": null,
 		
 		/**
 		 * DataTables header table
@@ -170,7 +178,7 @@ FixedColumns.prototype = {
 	{
 		this._fnCloneLeft( true );
 		this._fnCloneRight( true );
-		this._fnScroll();
+		this._fnPosition();
 	},
 	
 	
@@ -218,6 +226,9 @@ FixedColumns.prototype = {
 		}
 		
 		/* Set up the DOM as we need it and cache nodes */
+		this.dom.scrollContainer = $(this.s.dt.nTable).parents('div.dataTables_scroll')[0];
+		this.dom.scrollContainer.style.position = "relative";
+		
 		this.dom.body = this.s.dt.nTable;
 		this.dom.scroller = this.dom.body.parentNode;
 		this.dom.scroller.style.position = "relative";
@@ -231,16 +242,21 @@ FixedColumns.prototype = {
 			this.dom.footer.parentNode.parentNode.style.position = "relative";
 		}
 		
+		this.s.position = this.s.dt.oScroll.sY === "" ? 'absolute' : 'relative';
+		
 		/* Event handlers */
-		$(this.dom.scroller).scroll( function () {
-			that._fnScroll.call( that );
-		} );
+		if ( this.s.position != "absolute" )
+		{
+			$(this.dom.scroller).scroll( function () {
+				that._fnPosition.call( that );
+			} );
+		}
 		
 		this.s.dt.aoDrawCallback.push( {
 			"fn": function () {
 				that._fnCloneLeft.call( that, false );
 				that._fnCloneRight.call( that, false );
-				that._fnScroll.call( that );
+				that._fnPosition.call( that );
 			},
 			"sName": "FixedColumns"
 		} );
@@ -248,7 +264,7 @@ FixedColumns.prototype = {
 		/* Get things right to start with */
 		this._fnCloneLeft( true );
 		this._fnCloneRight( true );
-		this._fnScroll();
+		this._fnPosition();
 	},
 	
 	
@@ -337,7 +353,7 @@ FixedColumns.prototype = {
 	{
 		var
 			that = this,
-			i, iLen, jq;
+			i, iLen, jq, nTarget;
 		
 		/* Header */
 		if ( bAll )
@@ -353,7 +369,10 @@ FixedColumns.prototype = {
 			oClone.header.style.top = "0px";
 			oClone.header.style.left = "0px";
 			oClone.header.style.width = iTableWidth+"px";
-			this.dom.header.parentNode.appendChild( oClone.header );
+			
+			nTarget = this.s.position == "absolute" ? this.dom.scrollContainer :
+				this.dom.header.parentNode;
+			nTarget.appendChild( oClone.header );
 		
 			this.fnEqualiseHeights( 'thead', this.dom.header, oClone.header, 
 				sBoxHackSelector, sRemoveSelector );
@@ -403,7 +422,10 @@ FixedColumns.prototype = {
 			oClone.body.style.top = "0px";
 			oClone.body.style.left = "0px";
 			oClone.body.style.width = iTableWidth+"px";
-			this.dom.body.parentNode.appendChild( oClone.body );
+			
+			nTarget = this.s.position == "absolute" ? this.dom.scrollContainer :
+				this.dom.body.parentNode;
+			nTarget.appendChild( oClone.body );
 		}
 		
 		/* Footer */
@@ -422,7 +444,10 @@ FixedColumns.prototype = {
 				oClone.footer.style.top = "0px";
 				oClone.footer.style.left = "0px";
 				oClone.footer.style.width = iTableWidth+"px";
-				this.dom.footer.parentNode.appendChild( oClone.footer );
+				
+				nTarget = this.s.position == "absolute" ? this.dom.scrollContainer :
+					this.dom.footer.parentNode;
+				nTarget.appendChild( oClone.footer );
 			
 				this.fnEqualiseHeights( 'tfoot', this.dom.footer, oClone.footer, 
 					sBoxHackSelector, sRemoveSelector );
@@ -477,17 +502,26 @@ FixedColumns.prototype = {
 	
 	/**
 	 * Set the absolute position of the fixed column tables when scrolling the DataTable
-	 *  @method  _fnScroll
+	 *  @method  _fnPosition
 	 *  @returns void
 	 *  @private
 	 */
-	"_fnScroll": function ()
+	"_fnPosition": function ()
 	{
 		var
-			iScrollLeft = $(this.dom.scroller).scrollLeft(),
+			iScrollLeft = this.s.position == 'absolute' ? 0 : $(this.dom.scroller).scrollLeft(),
 			oCloneLeft = this.dom.clone.left,
 			oCloneRight = this.dom.clone.right,
 			iTableWidth = $(this.s.dt.nTable.parentNode).width();
+			
+		if ( this.s.position == 'absolute' )
+		{
+			var iBodyTop = $(this.dom.body.parentNode).position().top;
+			if ( this.dom.footer )
+			{
+				var iFooterTop = $(this.dom.footer.parentNode.parentNode).position().top;
+			}
+		}
 		
 		if ( this.s.leftColumns > 0 )
 		{
@@ -495,10 +529,18 @@ FixedColumns.prototype = {
 			if ( oCloneLeft.body !== null )
 			{
 				oCloneLeft.body.style.left = iScrollLeft+"px";
+				if (  this.s.position == 'absolute' )
+				{
+					oCloneLeft.body.style.top = iBodyTop+"px";
+				}
 			}
 			if ( this.dom.footer )
 			{
 				oCloneLeft.footer.style.left = iScrollLeft+"px";
+				if (  this.s.position == 'absolute' )
+				{
+					oCloneLeft.footer.style.top = iFooterTop+"px";
+				}
 			}
 		}
 		
@@ -510,10 +552,18 @@ FixedColumns.prototype = {
 			if ( oCloneRight.body !== null )
 			{
 				oCloneRight.body.style.left = iPoint+"px";
+				if (  this.s.position == 'absolute' )
+				{
+					oCloneRight.body.style.top = iBodyTop+"px";
+				}
 			}
 			if ( this.dom.footer )
 			{
 				oCloneRight.footer.style.left = iPoint+"px";
+				if (  this.s.position == 'absolute' )
+				{
+					oCloneRight.footer.style.top = iFooterTop+"px";
+				}
 			}
 		}
 	}
