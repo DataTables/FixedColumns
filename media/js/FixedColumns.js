@@ -475,8 +475,12 @@ FixedColumns.prototype = {
 	{
 		var that = this,
 			jqBoxHack = $(parent+' tr:eq(0)', original).children(boxHackSelector),
-			iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height(),
-			bRubbishOldIE = ($.browser.msie && ($.browser.version == "6.0" || $.browser.version == "7.0"));
+			iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height();
+		
+		if ( $(parent+' tr:eq(0) th', clone).attr('rowspan') > 1 )
+		{
+			$(parent+' tr:gt(0)', clone).remove();
+		}
 		
 		/* Remove cells which are not needed and copy the height from the original table */
 		$(parent+' tr', clone).each( function (k) {
@@ -485,16 +489,11 @@ FixedColumns.prototype = {
 			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
 			if ( $.browser.mozilla || $.browser.opera )
 			{
-				$(this).children().height( $(parent+' tr:eq('+k+')', original).outerHeight() );
+				$(this).children().height( $(parent+' tr:eq('+k+')', original).children(':first').outerHeight() );
 			}
 			else
 			{
-				$(this).children().height( $(parent+' tr:eq('+k+')', original).outerHeight() - iBoxHack );
-			}
-			
-			if ( !bRubbishOldIE )
-			{
-				$(parent+' tr:eq('+k+')', original).height( $(parent+' tr:eq('+k+')', original).outerHeight() );		
+				$(this).children().height( $(parent+' tr:eq('+k+')', original).children(':first').outerHeight() - iBoxHack );
 			}
 		} );
 	},
