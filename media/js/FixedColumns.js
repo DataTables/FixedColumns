@@ -51,7 +51,16 @@ var FixedColumns = function ( oDT, oInit ) {
      *  @type     int
      *  @default  0
 		 */
-		"rightColumns": 0
+		"rightColumns": 0,
+		
+		/** 
+		 * Store the heights of the rows for a draw. This can significantly speed up a draw where both
+		 * left and right columns are fixed
+     *  @property heights
+     *  @type     array int
+     *  @default  0
+		 */
+		"heights": []
 	};
 	
 	
@@ -176,9 +185,7 @@ FixedColumns.prototype = {
 	 */
 	"fnUpdate": function ()
 	{
-		this._fnCloneLeft( true );
-		this._fnCloneRight( true );
-		this._fnPosition();
+		this._fnDraw( true );
 	},
 	
 	
@@ -254,17 +261,30 @@ FixedColumns.prototype = {
 		
 		this.s.dt.aoDrawCallback.push( {
 			"fn": function () {
-				that._fnCloneLeft.call( that, false );
-				that._fnCloneRight.call( that, false );
-				that._fnPosition.call( that );
+				that._fnDraw.call( that, false );
 			},
 			"sName": "FixedColumns"
 		} );
 		
 		/* Get things right to start with */
-		this._fnCloneLeft( true );
-		this._fnCloneRight( true );
+		this._fnDraw( true );
+	},
+	
+	
+	/**
+	 * Clone and position the fixed columns
+	 *  @method  _fnDraw
+	 *  @returns void
+	 *  @param   {Boolean} bAll Indicate if the headre and footer should be updated as well (true)
+	 *  @private
+	 */
+	"_fnDraw": function ( bAll )
+	{
+		this._fnCloneLeft( bAll );
+		this._fnCloneRight( bAll );
 		this._fnPosition();
+		
+		this.s.heights.splice( 0, this.s.heights.length );
 	},
 	
 	
@@ -374,14 +394,17 @@ FixedColumns.prototype = {
 				this.dom.header.parentNode;
 			nTarget.appendChild( oClone.header );
 		
-			this.fnEqualiseHeights( 'thead', this.dom.header, oClone.header, 
+			this._fnEqualiseHeights( 'thead', this.dom.header, oClone.header, 
 				sBoxHackSelector, sRemoveSelector );
 		
 			$('thead tr:eq(0)', oClone.header).children().each( function (i) {
 				this.style.width = aiCellWidth[i]+"px";
 			} );
 		}
-		
+		else
+		{
+			this._fnCopyClasses(oClone.header, this.dom.header);
+		}
 		
 		/* Body */
 		/* Remove any heights which have been applied already and let the browser figure it out */
@@ -408,7 +431,7 @@ FixedColumns.prototype = {
 			
 			$('thead tr:gt(0)', oClone.body).remove();
 			
-			this.fnEqualiseHeights( 'tbody', that.dom.body, oClone.body, 
+			this._fnEqualiseHeights( 'tbody', that.dom.body, oClone.body, 
 				sBoxHackSelector, sRemoveSelector );
 			
 			$('tfoot tr:eq(0)', oClone.body).each( function () {
@@ -449,7 +472,7 @@ FixedColumns.prototype = {
 					this.dom.footer.parentNode;
 				nTarget.appendChild( oClone.footer );
 			
-				this.fnEqualiseHeights( 'tfoot', this.dom.footer, oClone.footer, 
+				this._fnEqualiseHeights( 'tfoot', this.dom.footer, oClone.footer, 
 					sBoxHackSelector, sRemoveSelector );
 				
 				$('tfoot tr:eq(0)', oClone.footer).children().each( function (i) {
@@ -461,8 +484,29 @@ FixedColumns.prototype = {
 	
 	
 	/**
+	 * Clone classes from one DOM node to another with (IMPORTANT) IDENTICAL structures
+	 *  @method  _fnCopyClasses
+	 *  @returns void
+	 *  @param   {element} clone Node to copy classes to
+	 *  @param   {element} original Original node to take the classes from
+	 *  @private
+	 */
+	"_fnCopyClasses": function ( clone, original )
+	{
+		clone.className = original.className;
+		for ( var i=0, iLen=clone.children.length ; i<iLen ; i++ )
+		{
+			if ( original.children[i].nodeType == 1 )
+			{
+				this._fnCopyClasses( clone.children[i], original.children[i] );
+			}
+		}
+	},
+	
+	
+	/**
 	 * Equalise the heights of the rows in a given table node in a cross browser way
-	 *  @method  fnEqualiseHeights
+	 *  @method  _fnEqualiseHeights
 	 *  @returns void
 	 *  @param   {string} parent Node type - thead, tbody or tfoot
 	 *  @param   {element} original Original node to take the heights from
@@ -471,11 +515,14 @@ FixedColumns.prototype = {
 	 *  @param   {string} removeSelector Which elements to remove
 	 *  @private
 	 */
-	"fnEqualiseHeights": function ( parent, original, clone, boxHackSelector, removeSelector )
+	"_fnEqualiseHeights": function ( parent, original, clone, boxHackSelector, removeSelector )
 	{
 		var that = this,
+			iHeight,
+			iCalculateHeights = (parent == "tbody" && this.s.heights.length > 0) ? false : true,
 			jqBoxHack = $(parent+' tr:eq(0)', original).children(boxHackSelector),
-			iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height();
+			iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height(),
+			bRubbishOldIE = ($.browser.msie && ($.browser.version == "6.0" || $.browser.version == "7.0"));
 		
 		if ( $(parent+' tr:eq(0) th', clone).attr('rowspan') > 1 )
 		{
@@ -486,14 +533,37 @@ FixedColumns.prototype = {
 		$(parent+' tr', clone).each( function (k) {
 			$(this).children(removeSelector, this).remove();
 			
-			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
-			if ( $.browser.mozilla || $.browser.opera )
+			/* We can store the heights of the rows calculated on the first pass of a draw, to be used
+			 * on the second pass (i.e. the right hand column). This significantly speeds up a draw 
+			 * where both the left and right columns are fixed since we don't need to get the height of
+			 * each row twice
+			 */
+			if ( iCalculateHeights )
 			{
-				$(this).children().height( $(parent+' tr:eq('+k+')', original).children(':first').outerHeight() );
+				iHeight = $(parent+' tr:eq('+k+')', original).children(':first').height();
+				if ( parent == 'tbody' )
+				{
+					that.s.heights.push( iHeight );
+				}
 			}
 			else
 			{
-				$(this).children().height( $(parent+' tr:eq('+k+')', original).children(':first').outerHeight() - iBoxHack );
+				iHeight = that.s.heights[k];
+			}
+			
+			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
+			if ( $.browser.mozilla || $.browser.opera )
+			{
+				$(this).children().height( iHeight+iBoxHack );
+				$(parent+' tr:eq('+k+')', original).height( iHeight+iBoxHack );	
+			}
+			else if ( $.browser.msie && !bRubbishOldIE )
+			{
+				$(this).children().height( iHeight-1 ); /* wtf... */
+			}
+			else
+			{
+				$(this).children().height( iHeight );
 			}
 		} );
 	},
