@@ -1,6 +1,6 @@
 /*
  * File:        FixedColumns.js
- * Version:     1.1.0.dev
+ * Version:     1.1.0
  * Description: "Fix" columns on the left of a scrolling DataTable
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Created:     Sat Sep 18 09:28:54 BST 2010
