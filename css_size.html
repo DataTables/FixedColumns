@@ -8,20 +8,23 @@
 		<style type="text/css" title="currentStyle">
 			@import "../../media/css/demo_page.css";
 			@import "../../media/css/demo_table.css";
+			tr { height: 50px; }
 		</style>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" charset="utf-8" src="media/js/FixedColumns.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
+				var iStart = new Date().getTime();
 				var oTable = $('#example').dataTable( {
+					"sScrollY": "300px",
 					"sScrollX": "100%",
-					"sScrollXInner": "140%",
-					"bScrollCollapse": true
+					"sScrollXInner": "150%",
+					"bScrollCollapse": true,
+					"bPaginate": false
 				} );
 				new FixedColumns( oTable, {
-					"iLeftColumns": 2,
-					"iLeftWidth": 350
+					"sHeightMatch": "none"
 				} );
 			} );
 		</script>
@@ -29,11 +32,19 @@
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				FixedColumns example - two columns fixed
+				FixedColumns example - CSS row sizing
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>FixedColumns allows more than one column to be frozen into place using the <i>iLeftColumns</i> parameter. The example below shows two columns fixed.</p>
+			<p>Because of the method FixedColumns uses to display the fixed columns, an important consideration is the alignment of the rows due to different heights in the individual rows of the table. There are two different algorithms in FixedColumns which can be used, or you can switch off automatic row sizing all together. This is controlled through the <i>sHeightMatch</i> parameter. If can take the following values:</p>
+
+			<ul>
+				<li>"none" - no automatic row height matching is performed. CSS can be used in this case and is useful when speed is of primary importance.</li>
+				<li>"semiauto" (default) - the height calculation will be performed once, and the result cached to be used again (fnRecalculateHeight can be used to force recalculation)</li>
+				<li>"auto" - height matching is performed on every draw (slowest but must accurate)</li>
+			</ul>
+			
+			<p>This example shows row height matching switched off but there is a CSS statement of tr { height: 50px } to force all rows to the same height.</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -47,6 +58,15 @@
 			<th>CSS grade</th>
 		</tr>
 	</thead>
+	<tfoot>
+		<tr>
+			<th>Rendering engine</th>
+			<th>Browser</th>
+			<th>Platform(s)</th>
+			<th>Engine version</th>
+			<th>CSS grade</th>
+		</tr>
+	</tfoot>
 	<tbody>
 		<tr class="gradeX">
 			<td>Trident</td>
@@ -103,7 +123,7 @@
 		</tr>
 		<tr class="gradeA">
 			<td>Gecko</td>
-			<td>Firefox 1.5</td>
+			<td>Firefox <br>1.5</td>
 			<td>Win 98+ / OSX.2+</td>
 			<td class="center">1.8</td>
 			<td class="center">A</td>
@@ -452,15 +472,6 @@
 			<td class="center">U</td>
 		</tr>
 	</tbody>
-	<tfoot>
-		<tr>
-			<th>Rendering engine</th>
-			<th>Browser</th>
-			<th>Platform(s)</th>
-			<th>Engine version</th>
-			<th>CSS grade</th>
-		</tr>
-	</tfoot>
 </table>
 			</div>
 			<div class="spacer"></div>
@@ -468,16 +479,13 @@
 			
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
- 	var oTable = $('#example').dataTable( {
- 		"sScrollX": "100%",
- 		"sScrollXInner": "150%",
- 		"bScrollCollapse": true
- 	} );
- 	new FixedColumns( oTable, {
- 		"iLeftColumns": 2,
-		"iLeftWidth": 350
- 	} );
- } );</pre>
+	var oTable = $('#example').dataTable( {
+		"sScrollX": "100%",
+		"sScrollXInner": "150%",
+		"bScrollCollapse": true
+	} );
+	new FixedColumns( oTable );
+} );</pre>
 
 
 			<h1>Documentation</h1>

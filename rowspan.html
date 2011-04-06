@@ -8,7 +8,6 @@
 		<style type="text/css" title="currentStyle">
 			@import "../../media/css/demo_page.css";
 			@import "../../media/css/demo_table.css";
-			.FixedColumns_Cloned th { background-color: white; }
 		</style>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
@@ -16,11 +15,21 @@
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				var oTable = $('#example').dataTable( {
+					"sScrollY": "300px",
+					"bPaginate": false,
 					"sScrollX": "100%",
 					"sScrollXInner": "150%",
 					"bScrollCollapse": true
 				} );
-				new FixedColumns( oTable );
+				new FixedColumns( oTable, {
+					"fnDrawCallback": function ( left, right ) {
+						var nThead = $('thead', this.dom.grid.left.head);
+						$('tr:gt(0)', nThead).remove();
+						$('th:eq(0)', nThead)[0].rowspan = 2;
+						this.fnSetRowHeight( $('tr:eq(0)', nThead)[0], 
+							$('div.dataTables_scrollHead', this.dom.dt).height() );
+					}
+				} );
 			} );
 		</script>
 	</head>
@@ -31,20 +40,21 @@
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>If you are using multiple rows in the table header, it can be useful to have a rowspanning cell on the column(s) you have fixed in place - equally at other times it can be useful to not and make use of the two or more cells per column. FixedColumns will automatically take into account rowspan elements - as shown in this example.</p>
+			<p>If you are using multiple rows in the table header, it can be useful to have a rowspanning cell on the column(s) you have fixed in place - equally at other times it can be useful to not and make use of the two or more cells per column. In order to achieve this it is nessacery to manipulate the DOM a little bit (this is due to the fact that DataTables does not currently support hidden columns on tables with rowspan/colspan). This example shows how this can be achieved - simply remove the 'spare' TR element in the fixed column, set the rowspan and then match the height of the header elements (using the <i>fnSetRowHeight</i> API function to overcome cross browser issues).</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>
 		<tr>
-			<th rowspan="2">Rendering engine</th>
+			<th>Rendering engine</th>
 			<th>Browser</th>
 			<th>Platform(s)</th>
 			<th>Engine version</th>
 			<th>CSS grade</th>
 		</tr>
 		<tr>
+			<th></th>
 			<th>Name and version</th>
 			<th>Operating systems</th>
 			<th>Rendering engine</th>
@@ -355,7 +365,7 @@
 			<td>Nintendo DS browser</td>
 			<td>Nintendo DS</td>
 			<td class="center">8.5</td>
-			<td class="center">C/A<sup>1</sup></td>
+			<td class="center">C/A</td>
 		</tr>
 		<tr class="gradeC">
 			<td>KHTML</td>
@@ -464,24 +474,50 @@
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
 	var oTable = $('#example').dataTable( {
+		"sScrollY": "300px",
+		"bPaginate": false,
 		"sScrollX": "100%",
 		"sScrollXInner": "150%",
 		"bScrollCollapse": true
 	} );
-	new FixedColumns( oTable );
+	new FixedColumns( oTable, {
+		"fnDrawCallback": function ( left, right ) {
+			var nThead = $('thead', this.dom.grid.left.head);
+			$('tr:gt(0)', nThead).remove();
+			$('th:eq(0)', nThead)[0].rowspan = 2;
+			this.fnSetRowHeight( $('tr:eq(0)', nThead)[0], 
+				$('div.dataTables_scrollHead', this.dom.dt).height() );
+		}
+	} );
 } );</pre>
 
-			<h1>Examples</h1>
+
+			<h1>Documentation</h1>
+			<ul>
+				<li><a href="http://datatables.net/extras/fixedcolumns">Usage</a></li>
+				<li><a href="http://datatables.net/docs/FixedColumns">API / parameters</a></li>
+			</ul>
+
+			<h1>Basic examples</h1>
 			<ul>
 				<li><a href="index.html">Basic demo of FixedColumns with zero initialisation</a></li>
+				<li><a href="left_right_columns.html">Fix the left and right columns in place</a></li>
 				<li><a href="index_column.html">Index column attached to side of the table</a></li>
 				<li><a href="x_y_scrolling.html">Index column, but with Y scrolling and no pagination</a></li>
 				<li><a href="two_columns.html">Two columns fixed in place</a></li>
-				<li><a href="col_filter.html">Individual column filtering</a></li>
-				<li><a href="rowspan.html">Rowspan on the fixed column</a></li>
 				<li><a href="right_column.html">Fix the right column in place</a></li>
-				<li><a href="left_right_columns.html">Fix the left and right columns in place</a></li>
+				<li><a href="css_size.html">Speeding up row height matching with CSS</a></li>
 			</ul>
+			
+			<h1>Advanced examples</h1>
+			<ul>
+				<li><a href="rowspan.html">Using ROWSPAN with FixedColumns</a></li>
+				<li><a href="col_filter.html">Individual column filtering</a></li>
+				<li><a href="scale_fixed.html">Setting the fixed column width and resizing the table</a></li>
+				<li><a href="scale_relative.html">Setting the fixed column width with relative sizing</a></li>
+				<li><a href="row_grouping_height.html">Row grouping by grouping like rows in the fixed column</a></li>
+				<li><a href="row_grouping.html">Row grouping by inserting a grouping row</a></li>
+			<ul>
 			
 			
 			<div id="footer" style="text-align:center;">

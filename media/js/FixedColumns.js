@@ -1,20 +1,57 @@
-/*
- * File:        FixedColumns.js
- * Version:     1.1.0
- * Description: "Fix" columns on the left of a scrolling DataTable
- * Author:      Allan Jardine (www.sprymedia.co.uk)
- * Created:     Sat Sep 18 09:28:54 BST 2010
- * Language:    Javascript
- * License:     GPL v2 or BSD 3 point style
- * Project:     Just a little bit of fun - enjoy :-)
- * Contact:     www.sprymedia.co.uk/contact
- * 
- * Copyright 2010-2011 Allan Jardine, all rights reserved.
+/**
+ * @summary     FixedColumns
+ * @description Freeze columns in place on a scrolling DataTable
+ * @file        FixedColumns.js
+ * @version     2.0.0
+ * @author      Allan Jardine (www.sprymedia.co.uk)
+ * @license     GPL v2 or BSD 3 point style
+ * @contact     www.sprymedia.co.uk/contact
+ *
+ * @copyright Copyright 2010-2011 Allan Jardine, all rights reserved.
+ *
+ * This source file is free software, under either the GPL v2 license or a
+ * BSD style license, available at:
+ *   http://datatables.net/license_gpl2
+ *   http://datatables.net/license_bsd
  */
 
-var FixedColumns = function ( oDT, oInit ) {
+
+/* Global scope for FixedColumns */
+var FixedColumns;
+
+(function($, window, document) {
+
+
+/** 
+ * When making use of DataTables' x-axis scrolling feature, you may wish to 
+ * fix the left most column in place. This plug-in for DataTables provides 
+ * exactly this option (note for non-scrolling tables, please use the  
+ * FixedHeader plug-in, which can fix headers, footers and columns). Key 
+ * features include:
+ *   <ul class="limit_length">
+ *     <li>Freezes the left or right most columns to the side of the table</li>
+ *     <li>Option to freeze two or more columns</li>
+ *     <li>Full integration with DataTables' scrolling options</li>
+ *     <li>Speed - FixedColumns is fast in its operation</li>
+ *   </ul>
+ *
+ *  @class
+ *  @constructor
+ *  @param {object} oDT DataTables instance
+ *  @param {object} [oInit={}] Configuration object for FixedColumns. Options are defined by {@link FixedColumns.defaults}
+ * 
+ *  @requires jQuery 1.3+
+ *  @requires DataTables 1.7.6+
+ * 
+ *  @example
+ *  	var oTable = $('#example').dataTable( {
+ *  		"sScrollX": "100%"
+ *  	} );
+ *  	new FixedColumns( oTable );
+ */
+FixedColumns = function ( oDT, oInit ) {
 	/* Sanity check - you just know it will happen */
-	if ( typeof this._fnConstruct != 'function' )
+	if ( ! this instanceof FixedColumns )
 	{
 		alert( "FixedColumns warning: FixedColumns must be initialised with the 'new' keyword." );
 		return;
@@ -26,67 +63,58 @@ var FixedColumns = function ( oDT, oInit ) {
 	}
 	
 	/**
-	 * @namespace Settings object which contains customisable information for FixedColumns instance
+	 * Settings object which contains customisable information for FixedColumns instance
+	 * @namespace
+	 * @extends FixedColumns.defaults
 	 */
 	this.s = {
 		/** 
 		 * DataTables settings objects
-     *  @property dt
-     *  @type     object
-     *  @default  null
+		 *  @type     object
+		 *  @default  Obtained from DataTables instance
 		 */
 		"dt": oDT.fnSettings(),
 		
 		/** 
-		 * Number of left hand columns to fix in position
-     *  @property leftColumns
-     *  @type     int
-     *  @default  1
+		 * Number of columns in the DataTable - stored for quick access
+		 *  @type     int
+		 *  @default  Obtained from DataTables instance
 		 */
-		"leftColumns": 1,
+		"iTableColumns": oDT.fnSettings().aoColumns.length,
 		
 		/** 
-		 * Number of right hand columns to fix in position
-     *  @property rightColumns
-     *  @type     int
-     *  @default  0
+		 * Original widths of the columns as rendered by DataTables
+		 *  @type     array.<int>
+		 *  @default  []
 		 */
-		"rightColumns": 0,
+		"aiWidths": [],
 		
 		/** 
-		 * Store the heights of the rows for a draw. This can significantly speed up a draw where both
-		 * left and right columns are fixed
-     *  @property heights
-     *  @type     array int
-     *  @default  0
+		 * Flag to indicate if we are dealing with IE6/7 as these browsers need a little hack
+		 * in the odd place
+		 *  @type     boolean
+		 *  @default  Automatically calculated
+		 *  @readonly
 		 */
-		"heights": []
+		"bOldIE": ($.browser.msie && ($.browser.version == "6.0" || $.browser.version == "7.0"))
 	};
 	
 	
 	/**
-	 * @namespace Common and useful DOM elements for the class instance
+	 * DOM elements used by the class instance
+	 * @namespace
+	 * 
 	 */
 	this.dom = {
 		/**
 		 * DataTables scrolling element
-		 *  @property scroller
 		 *  @type     node
 		 *  @default  null
 		 */
 		"scroller": null,
-		  	
-		/**
-		 * Scroll container that DataTables has added
-		 *  @property scrollContainer
-		 *  @type     node
-		 *  @default  null
-		 */
-		"scrollContainer": null,
 		
 		/**
 		 * DataTables header table
-		 *  @property header
 		 *  @type     node
 		 *  @default  null
 		 */
@@ -94,7 +122,6 @@ var FixedColumns = function ( oDT, oInit ) {
 		
 		/**
 		 * DataTables body table
-		 *  @property body
 		 *  @type     node
 		 *  @default  null
 		 */
@@ -102,23 +129,67 @@ var FixedColumns = function ( oDT, oInit ) {
 		
 		/**
 		 * DataTables footer table
-		 *  @property footer
 		 *  @type     node
 		 *  @default  null
 		 */
 		"footer": null,
+
+		/**
+		 * Display grid elements
+		 * @namespace
+		 */
+		"grid": {
+			/**
+			 * Grid wrapper. This is the container element for the 3x3 grid
+			 *  @type     node
+			 *  @default  null
+			 */
+			"wrapper": null,
+
+			/**
+			 * DataTables scrolling element. This element is the DataTables
+			 * component in the display grid (making up the main table - i.e.
+			 * not the fixed columns).
+			 *  @type     node
+			 *  @default  null
+			 */
+			"dt": null,
+
+			/**
+			 * Left fixed column grid components
+			 * @namespace
+			 */
+			"left": {
+				"wrapper": null,
+				"head": null,
+				"body": null,
+				"foot": null
+			},
+
+			/**
+			 * Right fixed column grid components
+			 * @namespace
+			 */
+			"right": {
+				"wrapper": null,
+				"head": null,
+				"body": null,
+				"foot": null
+			}
+		},
 		
 		/**
-		 * @namespace Cloned table nodes
+		 * Cloned table nodes
+		 * @namespace
 		 */
 		"clone": {
 			/**
-			 * @namespace Left column cloned table nodes
+			 * Left column cloned table nodes
+			 * @namespace
 			 */
 			"left": {
 				/**
 				 * Cloned header table
-				 *  @property header
 				 *  @type     node
 				 *  @default  null
 				 */
@@ -126,7 +197,6 @@ var FixedColumns = function ( oDT, oInit ) {
 		  	
 				/**
 				 * Cloned body table
-				 *  @property body
 				 *  @type     node
 				 *  @default  null
 				 */
@@ -134,7 +204,6 @@ var FixedColumns = function ( oDT, oInit ) {
 		  	
 				/**
 				 * Cloned footer table
-				 *  @property footer
 				 *  @type     node
 				 *  @default  null
 				 */
@@ -142,12 +211,12 @@ var FixedColumns = function ( oDT, oInit ) {
 			},
 			
 			/**
-			 * @namespace Right column cloned table nodes
+			 * Right column cloned table nodes
+			 * @namespace
 			 */
 			"right": {
 				/**
 				 * Cloned header table
-				 *  @property header
 				 *  @type     node
 				 *  @default  null
 				 */
@@ -155,7 +224,6 @@ var FixedColumns = function ( oDT, oInit ) {
 		  	
 				/**
 				 * Cloned body table
-				 *  @property body
 				 *  @type     node
 				 *  @default  null
 				 */
@@ -163,7 +231,6 @@ var FixedColumns = function ( oDT, oInit ) {
 		  	
 				/**
 				 * Cloned footer table
-				 *  @property footer
 				 *  @type     node
 				 *  @default  null
 				 */
@@ -177,11 +244,24 @@ var FixedColumns = function ( oDT, oInit ) {
 };
 
 
+
 FixedColumns.prototype = {
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * Public methods
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	
 	/**
-	 * Update the fixed columns - including headers and footers
-	 *  @method  fnUpdate
-	 *  @returns void
+	 * Update the fixed columns - including headers and footers. Note that FixedColumns will
+	 * automatically update the display whenever the host DataTable redraws.
+	 *  @returns {void}
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	var oFC = new FixedColumns( oTable );
+	 *  	
+	 *  	// at some later point when the table has been manipulated....
+	 *  	oFC.fnUpdate();
 	 */
 	"fnUpdate": function ()
 	{
@@ -190,20 +270,82 @@ FixedColumns.prototype = {
 	
 	
 	/**
+	 * Mark a row such that it's height should be recalculated when using 'semiauto' row
+	 * height matching. This function will have no effect when 'none' or 'auto' row height
+	 * matching is used.
+	 *  @param   {Node} nTr TR element that should have it's height recalculated
+	 *  @returns {void}
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	var oFC = new FixedColumns( oTable );
+	 *  	
+	 *  	// manipulate the table - mark the row as needing an update then update the table
+	 *  	// this allows the redraw performed by DataTables fnUpdate to recalculate the row
+	 *  	// height
+	 *  	oFC.fnRecalculateHeight();
+	 *  	oTable.fnUpdate( $('#example tbody tr:eq(0)')[0], ["insert date", 1, 2, 3 ... ]);
+	 */
+	"fnRecalculateHeight": function ( nTr )
+	{
+		nTr._DTTC_iHeight = null;
+		nTr.style.height = 'auto';
+	},
+	
+	
+	/**
+	 * Set the height of a given row - provides cross browser compatibility
+	 *  @param   {Node} nTarget TR element that should have it's height recalculated
+	 *  @param   {int} iHeight Height in pixels to set
+	 *  @returns {void}
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	var oFC = new FixedColumns( oTable );
+	 *  	
+	 *  	// You may want to do this after manipulating a row in the fixed column
+	 *  	oFC.fnSetRowHeight( $('#example tbody tr:eq(0)')[0], 50 );
+	 */
+	"fnSetRowHeight": function ( nTarget, iHeight )
+	{
+		var jqBoxHack = $(nTarget).children(':first');
+		var iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height();
+
+		/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
+		if ( $.browser.mozilla || $.browser.opera )
+		{
+			nTarget.style.height = iHeight+"px";
+		}
+		else
+		{
+			$(nTarget).children().height( iHeight-iBoxHack );
+		}
+	},
+	
+	
+	
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * Private methods (they are of course public in JS, but recommended as private)
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	
+	/**
 	 * Initialisation for FixedColumns
-	 *  @method  _fnConstruct
 	 *  @param   {Object} oInit User settings for initialisation
-	 *  @returns void
+	 *  @returns {void}
+	 *  @private
 	 */
 	"_fnConstruct": function ( oInit )
 	{
-		var that = this;
+		var i, iLen, iWidth,
+			that = this;
 		
 		/* Sanity checking */
 		if ( typeof this.s.dt.oInstance.fnVersionCheck != 'function' ||
-		     this.s.dt.oInstance.fnVersionCheck( '1.7.0' ) !== true )
+		     this.s.dt.oInstance.fnVersionCheck( '1.7.6' ) !== true )
 		{
-			alert( "FixedColumns 2 required DataTables 1.7.0 or later. "+
+			alert( "FixedColumns 2 required DataTables 1.7.6 or later. "+
 				"Please upgrade your DataTables installation" );
 			return;
 		}
@@ -216,166 +358,316 @@ FixedColumns.prototype = {
 			return;
 		}
 		
-		if ( typeof oInit.columns != 'undefined' )
-		{
-			/* Support for FixedColumns 1.0.x initialisation parameter */
-			this.s.leftColumns = oInit.columns;
-		}
-		
-		if ( typeof oInit.iColumns != 'undefined' )
-		{
-			this.s.leftColumns = oInit.iColumns;
-		}
-		
-		if ( typeof oInit.iRightColumns != 'undefined' )
-		{
-			this.s.rightColumns = oInit.iRightColumns;
-		}
-		
+		/* Apply the settings from the user / defaults */
+		this.s = $.extend( true, this.s, FixedColumns.defaults, oInit );
+
 		/* Set up the DOM as we need it and cache nodes */
-		this.dom.scrollContainer = $(this.s.dt.nTable).parents('div.dataTables_scroll')[0];
-		this.dom.scrollContainer.style.position = "relative";
+		this.dom.grid.dt = $(this.s.dt.nTable).parents('div.dataTables_scroll')[0];
+		this.dom.scroller = $('div.dataTables_scrollBody', this.dom.grid.dt )[0];
+
+		var iScrollWidth = $(this.dom.grid.dt).width();
+		var iLeftWidth = 0;
+		var iRightWidth = 0;
+		$('tbody>tr:eq(0)>td').each( function (i) {
+			iWidth = $(this).outerWidth();
+			that.s.aiWidths.push( iWidth );
+			if ( i < that.s.iLeftColumns )
+			{
+				iLeftWidth += iWidth;
+			}
+			if ( that.s.iTableColumns-that.s.iRightColumns <= i )
+			{
+				iRightWidth += iWidth;
+			}
+		} );
+
+		if ( this.s.iLeftWidth === null )
+		{
+			this.s.iLeftWidth = this.s.sLeftWidth == 'fixed' ?
+				iLeftWidth : (iLeftWidth/iScrollWidth) * 100; 
+		}
 		
+		if ( this.s.iRightWidth === null )
+		{
+			this.s.iRightWidth = this.s.sRightWidth == 'fixed' ?
+				iRightWidth : (iRightWidth/iScrollWidth) * 100;
+		}
+		
+		/* Set up the DOM that we want for the fixed column layout grid */
+		this._fnGridSetup();
+
+		/* Use the DataTables API method fnSetColumnVis to hide the columns we are going to fix */
+		for ( i=0 ; i<this.s.iLeftColumns ; i++ )
+		{
+			this.s.dt.oInstance.fnSetColumnVis( i, false );
+		}
+		for ( i=this.s.iTableColumns - this.s.iRightColumns ; i<this.s.iTableColumns ; i++ )
+		{
+			this.s.dt.oInstance.fnSetColumnVis( i, false );
+		}
+
+		/* Event handlers */
+		$(this.dom.scroller).scroll( function () {
+			that.dom.grid.left.body.scrollTop = that.dom.scroller.scrollTop;
+			if ( that.s.iRightColumns > 0 )
+			{
+				that.dom.grid.right.body.scrollTop = that.dom.scroller.scrollTop;
+			}
+		} );
+
+		$(window).resize( function () {
+			that._fnGridLayout.call( that );
+		} );
+		
+		var bFirstDraw = true;
+		this.s.dt.aoDrawCallback = [ {
+			"fn": function () {
+				that._fnDraw.call( that, bFirstDraw );
+				that._fnGridHeight( that );
+				bFirstDraw = false;
+			},
+			"sName": "FixedColumns"
+		} ].concat( this.s.dt.aoDrawCallback );
+		
+		/* Get things right to start with - note that due to adjusting the columns, there must be
+		 * another redraw of the main table. It doesn't need to be a full redraw however.
+		 */
+		this._fnGridLayout();
+		this._fnGridHeight();
+		this.s.dt.oInstance.fnDraw(false);
+	},
+	
+	
+	/**
+	 * Set up the DOM for the fixed column. The way the layout works is to create a 1x3 grid
+	 * for the left column, the DataTable (for which we just reuse the scrolling element DataTable
+	 * puts into the DOM) and the right column. In each of he two fixed column elements there is a
+	 * grouping wrapper element and then a head, body and footer wrapper. In each of these we then
+	 * place the cloned header, body or footer tables. This effectively gives as 3x3 grid structure.
+	 *  @returns {void}
+	 *  @private
+	 */
+	"_fnGridSetup": function ()
+	{
+		var that = this;
+
 		this.dom.body = this.s.dt.nTable;
-		this.dom.scroller = this.dom.body.parentNode;
-		this.dom.scroller.style.position = "relative";
-		
 		this.dom.header = this.s.dt.nTHead.parentNode;
 		this.dom.header.parentNode.parentNode.style.position = "relative";
+		
+		var nSWrapper = 
+			$('<div class="DTFC_ScrollWrapper" style="position:relative; clear:both;">'+
+				'<div class="DTFC_LeftWrapper" style="position:absolute; top:0; left:0;">'+
+					'<div class="DTFC_LeftHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+					'<div class="DTFC_LeftBodyWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+					'<div class="DTFC_LeftFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+			  	'</div>'+
+				'<div class="DTFC_RightWrapper" style="position:absolute; top:0; left:0;">'+
+					'<div class="DTFC_RightHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+					'<div class="DTFC_RightBodyWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+					'<div class="DTFC_RightFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+			  	'</div>'+
+			  '</div>')[0];
+		nLeft = nSWrapper.childNodes[0];
+		nRight = nSWrapper.childNodes[1];
+
+		this.dom.grid.wrapper = nSWrapper;
+		this.dom.grid.left.wrapper = nLeft;
+		this.dom.grid.left.head = nLeft.childNodes[0];
+		this.dom.grid.left.body = nLeft.childNodes[1];
+
+		if ( this.s.iRightColumns > 0 )
+		{
+			this.dom.grid.right.wrapper = nRight;
+			this.dom.grid.right.head = nRight.childNodes[0];
+			this.dom.grid.right.body = nRight.childNodes[1];
+		}
 		
 		if ( this.s.dt.nTFoot )
 		{
 			this.dom.footer = this.s.dt.nTFoot.parentNode;
-			this.dom.footer.parentNode.parentNode.style.position = "relative";
+			this.dom.grid.left.foot = nLeft.childNodes[2];
+			if ( this.s.iRightColumns > 0 )
+			{
+				this.dom.grid.right.foot = nRight.childNodes[2];
+			}
 		}
-		
-		this.s.position = this.s.dt.oScroll.sY === "" ? 'absolute' : 'relative';
-		
-		/* Event handlers */
-		if ( this.s.position != "absolute" )
+
+		nSWrapper.appendChild( nLeft );
+		this.dom.grid.dt.parentNode.insertBefore( nSWrapper, this.dom.grid.dt );
+		nSWrapper.appendChild( this.dom.grid.dt );
+
+		this.dom.grid.dt.style.position = "absolute";
+		this.dom.grid.dt.style.top = "0px";
+		this.dom.grid.dt.style.left = this.s.iLeftWidth+"px";
+		this.dom.grid.dt.style.width = ($(this.dom.grid.dt).width()-this.s.iLeftWidth-this.s.iRightWidth)+"px";
+	},
+	
+	
+	/**
+	 * Style and position the grid used for the FixedColumns layout based on the instance settings.
+	 * Specifically sLeftWidth ('fixed' or 'absolute'), iLeftWidth (px if fixed, % if absolute) and
+	 * there 'right' counterparts.
+	 *  @returns {void}
+	 *  @private
+	 */
+	"_fnGridLayout": function ()
+	{
+		var oGrid = this.dom.grid;
+		var iTotal = $(oGrid.wrapper).width();
+		var iLeft = 0, iRight = 0, iRemainder = 0;
+
+		if ( this.s.sLeftWidth == 'fixed' )
 		{
-			$(this.dom.scroller).scroll( function () {
-				that._fnPosition.call( that );
-			} );
+			iLeft = this.s.iLeftWidth;
 		}
+		else
+		{
+			iLeft = ( this.s.iLeftWidth / 100 ) * iTotal;
+		}
+
+		if ( this.s.sRightWidth == 'fixed' )
+		{
+			iRight = this.s.iRightWidth;
+		}
+		else
+		{
+			iRight = ( this.s.iRightWidth / 100 ) * iTotal;
+		}
+
+		iRemainder = iTotal - iLeft - iRight;
+
+		oGrid.left.wrapper.style.width = iLeft+"px";
+		oGrid.dt.style.width = iRemainder+"px";
+		oGrid.dt.style.left = iLeft+"px";
+
+		if ( this.s.iRightColumns > 0 )
+		{
+			oGrid.right.wrapper.style.width = iRight+"px";
+			oGrid.right.wrapper.style.left = (iTotal-iRight)+"px";
+		}
+	},
+	
+	
+	/**
+	 * Recalculate and set the height of the grid components used for positioning of the 
+	 * FixedColumn display grid.
+	 *  @returns {void}
+	 *  @private
+	 */
+	"_fnGridHeight": function ()
+	{
+		var oGrid = this.dom.grid;
+		var iHeight = $(this.dom.grid.dt).height();
+
+		oGrid.wrapper.style.height = iHeight+"px";
+		oGrid.left.body.style.height = $(this.dom.scroller).height()+"px";
+		oGrid.left.wrapper.style.height = iHeight+"px";
 		
-		this.s.dt.aoDrawCallback.push( {
-			"fn": function () {
-				that._fnDraw.call( that, false );
-			},
-			"sName": "FixedColumns"
-		} );
-		
-		/* Get things right to start with */
-		this._fnDraw( true );
+		if ( this.s.iRightColumns > 0 )
+		{
+			oGrid.right.wrapper.style.height = iHeight+"px";
+			oGrid.right.body.style.height = $(this.dom.scroller).height()+"px";
+		}
 	},
 	
 	
 	/**
 	 * Clone and position the fixed columns
-	 *  @method  _fnDraw
-	 *  @returns void
-	 *  @param   {Boolean} bAll Indicate if the headre and footer should be updated as well (true)
+	 *  @returns {void}
+	 *  @param   {Boolean} bAll Indicate if the header and footer should be updated as well (true)
 	 *  @private
 	 */
 	"_fnDraw": function ( bAll )
 	{
 		this._fnCloneLeft( bAll );
 		this._fnCloneRight( bAll );
-		this._fnPosition();
-		
-		this.s.heights.splice( 0, this.s.heights.length );
+
+		/* Draw callback function */
+		if ( this.s.fnDrawCallback !== null )
+		{
+			this.s.fnDrawCallback.call( this, this.dom.clone.left, this.dom.clone.right );
+		}
+
+		/* Event triggering */
+		$(this).trigger( 'draw', { 
+			"leftClone": this.dom.clone.left,
+			"rightClone": this.dom.clone.right
+		} );
 	},
 	
 	
 	/**
 	 * Clone the right columns
-	 *  @method  _fnCloneRight
-	 *  @returns void
-	 *  @param   {Boolean} bAll Indicate if the headre and footer should be updated as well (true)
+	 *  @returns {void}
+	 *  @param   {Boolean} bAll Indicate if the header and footer should be updated as well (true)
 	 *  @private
 	 */
 	"_fnCloneRight": function ( bAll )
 	{
-		if ( this.s.rightColumns <= 0 )
+		if ( this.s.iRightColumns <= 0 )
 		{
 			return;
 		}
 		
-		var
-			that = this,
-			iTableWidth = 0,
-			aiCellWidth = [],
+		var that = this,
 			i, jq,
-			iColumns = $('thead tr:eq(0)', this.dom.header).children().length;
-		
-		/* Grab the widths that we are going to need */
-		for ( i=this.s.rightColumns-1 ; i>=0 ; i-- )
+			aiColumns = [];
+
+		for ( i=this.s.iTableColumns-this.s.iRightColumns ; i<this.s.iTableColumns ; i++ )
 		{
-			jq = $('thead tr:eq(0)', this.dom.header).children(':eq('+(iColumns-i-1)+')');
-			iTableWidth += jq.outerWidth();
-			aiCellWidth.push( jq.width() );
+			aiColumns.push( i );
 		}
-		aiCellWidth.reverse();
-		
-		this._fnClone( this.dom.clone.right, bAll, aiCellWidth, iTableWidth, 
-			':last', ':lt('+(iColumns-this.s.rightColumns)+')' );
+
+		this._fnClone( this.dom.clone.right, this.dom.grid.right, aiColumns, bAll );
 	},
 	
 	
 	/**
 	 * Clone the left columns
-	 *  @method  _fnCloneLeft
-	 *  @returns void
-	 *  @param   {Boolean} bAll Indicate if the headre and footer should be updated as well (true)
+	 *  @returns {void}
+	 *  @param   {Boolean} bAll Indicate if the header and footer should be updated as well (true)
 	 *  @private
 	 */
 	"_fnCloneLeft": function ( bAll )
 	{
-		if ( this.s.leftColumns <= 0 )
+		if ( this.s.iLeftColumns <= 0 )
 		{
 			return;
 		}
 		
-		var
-			that = this,
-			iTableWidth = 0,
-			aiCellWidth = [],
-			i, jq;
+		var that = this,
+			i, jq,
+			aiColumns = [];
 		
-		/* Grab the widths that we are going to need */
-		for ( i=0, iLen=this.s.leftColumns ; i<iLen ; i++ )
+		for ( i=0 ; i<this.s.iLeftColumns ; i++ )
 		{
-			jq = $('thead tr:eq(0)', this.dom.header).children(':eq('+i+')');
-			iTableWidth += jq.outerWidth();
-			aiCellWidth.push( jq.width() );
+			aiColumns.push( i );
 		}
-		
-		this._fnClone( this.dom.clone.left, bAll, aiCellWidth, iTableWidth, 
-			':first', ':gt('+(this.s.leftColumns-1)+')' );
+
+		this._fnClone( this.dom.clone.left, this.dom.grid.left, aiColumns, bAll );
 	},
 		
 	
 	
 	/**
 	 * Clone the DataTable nodes and place them in the DOM (sized correctly)
-	 *  @method  _fnClone
-	 *  @returns void
+	 *  @returns {void}
 	 *  @param   {Object} oClone Object containing the header, footer and body cloned DOM elements
-	 *  @param   {Boolean} bAll Indicate if the headre and footer should be updated as well (true)
-	 *  @param   {array} aiCellWidth Array of integers with the width's to use for the cloned columns
-	 *  @param   {int} iTableWidth Calculated table width
-	 *  @param   {string} sBoxHackSelector Selector to pick which TD element to copy styles from
-	 *  @param   {string} sRemoveSelector Which elements to remove
+	 *  @param   {Object} oGrid Grid object containing the display grid elements for the cloned 
+	 *                    column (left or right)
+	 *  @param   {Array} aiColumns Column indexes which should be operated on from the DataTable
+	 *  @param   {Boolean} bAll Indicate if the header and footer should be updated as well (true)
 	 *  @private
 	 */
-	"_fnClone": function ( oClone, bAll, aiCellWidth, iTableWidth, sBoxHackSelector, sRemoveSelector )
+	"_fnClone": function ( oClone, oGrid, aiColumns, bAll )
 	{
-		var
-			that = this,
-			i, iLen, jq, nTarget;
-		
-		/* Header */
+		var that = this,
+			i, iLen, jq, nTarget, iColumn, nClone, iIndex;
+
+		/* 
+		 * Header
+		 */
 		if ( bAll )
 		{
 			if ( oClone.header !== null )
@@ -383,32 +675,44 @@ FixedColumns.prototype = {
 				oClone.header.parentNode.removeChild( oClone.header );
 			}
 			oClone.header = $(this.dom.header).clone(true)[0];
-			oClone.header.className += " FixedColumns_Cloned";
-			
-			oClone.header.style.position = "absolute";
-			oClone.header.style.top = "0px";
-			oClone.header.style.left = "0px";
-			oClone.header.style.width = iTableWidth+"px";
-			
-			nTarget = this.s.position == "absolute" ? this.dom.scrollContainer :
-				this.dom.header.parentNode;
-			nTarget.appendChild( oClone.header );
+			oClone.header.className += " DTFC_Cloned";
+			oClone.header.style.width = "100%";
+			oGrid.head.appendChild( oClone.header );
 		
-			this._fnEqualiseHeights( 'thead', this.dom.header, oClone.header, 
-				sBoxHackSelector, sRemoveSelector );
-		
-			$('thead tr:eq(0)', oClone.header).children().each( function (i) {
-				this.style.width = aiCellWidth[i]+"px";
+			$('>thead', oClone.header).empty();
+			var nThead = $('thead', oClone.header)[0];
+			$('>thead>tr', that.dom.header).each( function (i) {
+				var n = this.cloneNode(false);
+				for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
+				{
+					iColumn = aiColumns[iIndex];
+					nClone = (i === 0) ?
+						$(that.s.dt.aoColumns[iColumn].nTh).clone(true)[0] :
+						$(that.s.dt.aoColumns[iColumn].anThExtra[i-1]).clone(true)[0];
+					//nClone.style.width = that.s.aiWidths[iColumn]+"px";
+					n.appendChild( nClone );
+				}
+				nThead.appendChild( n );
 			} );
 		}
 		else
 		{
-			this._fnCopyClasses(oClone.header, this.dom.header);
+			for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
+			{
+				$('>thead th:eq('+iIndex+')', oClone.header)[0].className =
+					this.s.dt.aoColumns[ aiColumns[iIndex] ].nTh.className;
+			}
 		}
+		this._fnEqualiseHeights( 'thead', this.dom.header, oClone.header );
 		
-		/* Body */
-		/* Remove any heights which have been applied already and let the browser figure it out */
-		$('tbody tr', that.dom.body).css('height', 'auto');
+		/* 
+		 * Body
+		 */
+		if ( this.s.sHeightMatch == 'auto' )
+		{
+			/* Remove any heights which have been applied already and let the browser figure it out */
+			$('>tbody>tr', that.dom.body).css('height', 'auto');
+		}
 		
 		if ( oClone.body !== null )
 		{
@@ -416,42 +720,56 @@ FixedColumns.prototype = {
 			oClone.body = null;
 		}
 		
-		if ( this.s.dt.aiDisplay.length > 0 )
+		oClone.body = $(this.dom.body).clone(true)[0];
+		oClone.body.className += " DTFC_Cloned";
+		oClone.body.style.paddingBottom = this.s.dt.oScroll.iBarWidth+"px";
+		oClone.body.style.marginBottom = (this.s.dt.oScroll.iBarWidth*2)+"px"; /* For IE */
+		if ( oClone.body.getAttribute('id') !== null )
 		{
-			oClone.body = $(this.dom.body).clone(true)[0];
-			oClone.body.className += " FixedColumns_Cloned";
-			if ( oClone.body.getAttribute('id') !== null )
-			{
-				oClone.body.removeAttribute('id');
-			}
-			
-			$('thead tr:eq(0)', oClone.body).each( function () {
-				$('th'+sRemoveSelector, this).remove();
-			} );
-			
-			$('thead tr:gt(0)', oClone.body).remove();
-			
-			this._fnEqualiseHeights( 'tbody', that.dom.body, oClone.body, 
-				sBoxHackSelector, sRemoveSelector );
-			
-			$('tfoot tr:eq(0)', oClone.body).each( function () {
-				$('th'+sRemoveSelector, this).remove();
-			} );
-			
-			$('tfoot tr:gt(0)', oClone.body).remove();
-			
-			
-			oClone.body.style.position = "absolute";
-			oClone.body.style.top = "0px";
-			oClone.body.style.left = "0px";
-			oClone.body.style.width = iTableWidth+"px";
-			
-			nTarget = this.s.position == "absolute" ? this.dom.scrollContainer :
-				this.dom.body.parentNode;
-			nTarget.appendChild( oClone.body );
+			oClone.body.removeAttribute('id');
 		}
 		
-		/* Footer */
+		$('>thead>tr', oClone.body).empty();
+		$('>tfoot', oClone.body).empty();
+		
+		var nBody = $('tbody', oClone.body)[0];
+		$(nBody).empty();
+		if ( this.s.dt.aiDisplay.length > 0 )
+		{
+			$('>tbody>tr', that.dom.body).each( function (z) {
+				var n = this.cloneNode(false);
+				var i = that.s.dt.aiDisplay[ that.s.dt._iDisplayStart+z ];
+				for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
+				{
+					iColumn = aiColumns[iIndex];
+					if ( typeof that.s.dt.aoData[i]._anHidden[iColumn] != 'undefined' )
+					{
+						nClone = $(that.s.dt.aoData[i]._anHidden[iColumn]).clone(true)[0];
+						//nClone.style.width = that.s.aiWidths[iColumn]+"px";
+						n.appendChild( nClone );
+					}
+				}
+				nBody.appendChild( n );
+			} );
+		}
+		else
+		{
+			$('>tbody>tr', that.dom.body).each( function (z) {
+				nClone = this.cloneNode(true);
+				nClone.className += ' DTFC_NoData';
+				$('td', nClone).html('');
+				nBody.appendChild( nClone );
+			} );
+		}
+		
+		oClone.body.style.width = "100%";
+		oGrid.body.appendChild( oClone.body );
+
+		this._fnEqualiseHeights( 'tbody', that.dom.body, oClone.body );
+		
+		/*
+		 * Footer
+		 */
 		if ( this.s.dt.nTFoot !== null )
 		{
 			if ( bAll )
@@ -461,179 +779,330 @@ FixedColumns.prototype = {
 					oClone.footer.parentNode.removeChild( oClone.footer );
 				}
 				oClone.footer = $(this.dom.footer).clone(true)[0];
-				oClone.footer.className += " FixedColumns_Cloned";
+				oClone.footer.className += " DTFC_Cloned";
+				oClone.footer.style.width = "100%";
+				oGrid.foot.appendChild( oClone.footer );
 				
-				oClone.footer.style.position = "absolute";
-				oClone.footer.style.top = "0px";
-				oClone.footer.style.left = "0px";
-				oClone.footer.style.width = iTableWidth+"px";
-				
-				nTarget = this.s.position == "absolute" ? this.dom.scrollContainer :
-					this.dom.footer.parentNode;
-				nTarget.appendChild( oClone.footer );
-			
-				this._fnEqualiseHeights( 'tfoot', this.dom.footer, oClone.footer, 
-					sBoxHackSelector, sRemoveSelector );
-				
-				$('tfoot tr:eq(0)', oClone.footer).children().each( function (i) {
-					this.style.width = aiCellWidth[i]+"px";
+				$('>tfoot', oClone.footer).empty();
+				var nTfoot = $('tfoot', oClone.footer)[0];
+				$('>tfoot>tr', that.dom.footer).each( function (i) {
+					var n = this.cloneNode(false);
+					for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
+					{
+						iColumn = aiColumns[iIndex];
+						nClone = (i === 0) ?
+							$(that.s.dt.aoColumns[iColumn].nTf).clone(true)[0] :
+							$(that.s.dt.aoColumns[iColumn].anTfExtra[i-1]).clone(true)[0];
+						
+						nClone.style.width = that.s.aiWidths[iColumn]+"px";
+						n.appendChild( nClone );
+					}
+					nTfoot.appendChild( n );
 				} );
 			}
-		}
-	},
-	
-	
-	/**
-	 * Clone classes from one DOM node to another with (IMPORTANT) IDENTICAL structures
-	 *  @method  _fnCopyClasses
-	 *  @returns void
-	 *  @param   {element} clone Node to copy classes to
-	 *  @param   {element} original Original node to take the classes from
-	 *  @private
-	 */
-	"_fnCopyClasses": function ( clone, original )
-	{
-		clone.className = original.className;
-		for ( var i=0, iLen=clone.children.length ; i<iLen ; i++ )
-		{
-			if ( original.children[i].nodeType == 1 )
+			else
 			{
-				this._fnCopyClasses( clone.children[i], original.children[i] );
-			}
-		}
-	},
-	
-	
-	/**
-	 * Equalise the heights of the rows in a given table node in a cross browser way
-	 *  @method  _fnEqualiseHeights
-	 *  @returns void
-	 *  @param   {string} parent Node type - thead, tbody or tfoot
-	 *  @param   {element} original Original node to take the heights from
-	 *  @param   {element} clone Copy the heights to
-	 *  @param   {string} boxHackSelector Selector to pick which TD element to copy styles from
-	 *  @param   {string} removeSelector Which elements to remove
-	 *  @private
-	 */
-	"_fnEqualiseHeights": function ( parent, original, clone, boxHackSelector, removeSelector )
-	{
-		var that = this,
-			iHeight,
-			iCalculateHeights = (parent == "tbody" && this.s.heights.length > 0) ? false : true,
-			jqBoxHack = $(parent+' tr:eq(0)', original).children(boxHackSelector),
-			iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height(),
-			bRubbishOldIE = ($.browser.msie && ($.browser.version == "6.0" || $.browser.version == "7.0"));
-		
-		if ( $(parent+' tr:eq(0) th', clone).attr('rowspan') > 1 )
-		{
-			$(parent+' tr:gt(0)', clone).remove();
-		}
-		
-		/* Remove cells which are not needed and copy the height from the original table */
-		$(parent+' tr', clone).each( function (k) {
-			$(this).children(removeSelector, this).remove();
-			
-			/* We can store the heights of the rows calculated on the first pass of a draw, to be used
-			 * on the second pass (i.e. the right hand column). This significantly speeds up a draw 
-			 * where both the left and right columns are fixed since we don't need to get the height of
-			 * each row twice
-			 */
-			if ( iCalculateHeights )
-			{
-				iHeight = $(parent+' tr:eq('+k+')', original).children(':first').height();
-				if ( parent == 'tbody' )
+				for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
 				{
-					that.s.heights.push( iHeight );
+					$('>tfoot th:eq('+iIndex+')', oClone.footer)[0].className =
+						this.s.dt.aoColumns[ aiColumns[iIndex] ].nTf.className;
 				}
 			}
-			else
+			this._fnEqualiseHeights( 'tfoot', this.dom.footer, oClone.footer );
+		}
+
+		/* Equalise the column widths between the header footer and body - body get's priority */
+		var jqBody = $('>tbody>tr:eq(0)', oClone.body);
+		var jqHead = $('>thead>tr:eq(0)', oClone.header);
+		if ( this.s.dt.nTFoot !== null )
+		{
+			var jqFoot = $('>tfoot>tr:eq(0)', oClone.footer);
+		}
+
+		jqBody.children().each( function (i) {
+			var iWidth = $(this).width();
+
+			jqHead.children(':eq('+i+')').width( iWidth );
+			if ( that.s.dt.nTFoot !== null )
 			{
-				iHeight = that.s.heights[k];
-			}
-			
-			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
-			if ( $.browser.mozilla || $.browser.opera )
-			{
-				$(this).children().height( iHeight+iBoxHack );
-				$(parent+' tr:eq('+k+')', original).height( iHeight+iBoxHack );	
-			}
-			else if ( $.browser.msie && !bRubbishOldIE )
-			{
-				$(this).children().height( iHeight-1 ); /* wtf... */
-			}
-			else
-			{
-				$(this).children().height( iHeight );
+				jqFoot.children(':eq('+i+')').width( iWidth );
 			}
 		} );
 	},
 	
 	
 	/**
-	 * Set the absolute position of the fixed column tables when scrolling the DataTable
-	 *  @method  _fnPosition
-	 *  @returns void
+	 * From a given table node (THEAD etc), get a list of TR direct child elements
+	 *  @param   {Node} nIn Table element to search for TR elements (THEAD, TBODY or TFOOT element)
+	 *  @returns {Array} List of TR elements found
 	 *  @private
 	 */
-	"_fnPosition": function ()
+	"_fnGetTrNodes": function ( nIn )
 	{
-		var
-			iScrollLeft = this.s.position == 'absolute' ? 0 : $(this.dom.scroller).scrollLeft(),
-			oCloneLeft = this.dom.clone.left,
-			oCloneRight = this.dom.clone.right,
-			iTableWidth = $(this.s.dt.nTable.parentNode).width();
-			
-		if ( this.s.position == 'absolute' )
+		var aOut = [];
+		for ( var i=0, iLen=nIn.childNodes.length ; i<iLen ; i++ )
 		{
-			var iBodyTop = $(this.dom.body.parentNode).position().top;
-			if ( this.dom.footer )
+			if ( nIn.childNodes[i].nodeName.toUpperCase() == "TR" )
 			{
-				var iFooterTop = $(this.dom.footer.parentNode.parentNode).position().top;
+				aOut.push( nIn.childNodes[i] );
 			}
 		}
-		
-		if ( this.s.leftColumns > 0 )
+		return aOut;
+	},
+
+	
+	/**
+	 * Equalise the heights of the rows in a given table node in a cross browser way
+	 *  @returns {void}
+	 *  @param   {String} nodeName Node type - thead, tbody or tfoot
+	 *  @param   {Node} original Original node to take the heights from
+	 *  @param   {Node} clone Copy the heights to
+	 *  @private
+	 */
+	"_fnEqualiseHeights": function ( nodeName, original, clone )
+	{
+		if ( this.s.sHeightMatch == 'none' )
 		{
-			oCloneLeft.header.style.left = iScrollLeft+"px";
-			if ( oCloneLeft.body !== null )
-			{
-				oCloneLeft.body.style.left = iScrollLeft+"px";
-				if (  this.s.position == 'absolute' )
-				{
-					oCloneLeft.body.style.top = iBodyTop+"px";
-				}
-			}
-			if ( this.dom.footer )
-			{
-				oCloneLeft.footer.style.left = iScrollLeft+"px";
-				if (  this.s.position == 'absolute' )
-				{
-					oCloneLeft.footer.style.top = iFooterTop+"px";
-				}
-			}
+			return;
 		}
 		
-		if ( this.s.rightColumns > 0 )
+		var that = this,
+			i, iLen, iHeight, iHeight2, iHeightOriginal, iHeightClone,
+			rootOriginal = original.getElementsByTagName(nodeName)[0],
+			rootClone    = clone.getElementsByTagName(nodeName)[0],
+			jqBoxHack    = $('>'+nodeName+'>tr:eq(0)', original).children(':first'),
+			iBoxHack     = jqBoxHack.outerHeight() - jqBoxHack.height(),
+			anOriginal   = this._fnGetTrNodes( rootOriginal ),
+		 	anClone      = this._fnGetTrNodes( rootClone );
+		
+		for ( i=0, iLen=anClone.length ; i<iLen ; i++ )
 		{
-			var iPoint = iTableWidth - $(oCloneRight.body).width() + iScrollLeft;
-			
-			oCloneRight.header.style.left = iPoint+"px";
-			if ( oCloneRight.body !== null )
+			if ( this.s.sHeightMatch == 'semiauto' && typeof anOriginal[i]._DTTC_iHeight != 'undefined' && 
+				anOriginal[i]._DTTC_iHeight !== null )
 			{
-				oCloneRight.body.style.left = iPoint+"px";
-				if (  this.s.position == 'absolute' )
+				/* Oddly enough, IE / Chrome seem not to copy the style height - Mozilla and Opera keep it */
+				if ( !$.browser.mozilla && !$.browser.opera )
 				{
-					oCloneRight.body.style.top = iBodyTop+"px";
+					$(anClone[i]).children().height( anOriginal[i]._DTTC_iHeight-iBoxHack );
 				}
+				continue;
 			}
-			if ( this.dom.footer )
+			
+			iHeightOriginal = anOriginal[i].offsetHeight;
+			iHeightClone = anClone[i].offsetHeight;
+			iHeight = iHeightClone > iHeightOriginal ? iHeightClone : iHeightOriginal;
+			
+			if ( this.s.sHeightMatch == 'semiauto' )
 			{
-				oCloneRight.footer.style.left = iPoint+"px";
-				if (  this.s.position == 'absolute' )
-				{
-					oCloneRight.footer.style.top = iFooterTop+"px";
-				}
+				anOriginal[i]._DTTC_iHeight = iHeight;
+			}
+			
+			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
+			if ( $.browser.mozilla || $.browser.opera )
+			{
+				anClone[i].style.height = iHeight+"px";
+				anOriginal[i].style.height = iHeight+"px";
+			}
+			else
+			{
+				$(anClone[i]).children().height( iHeight-iBoxHack );
+				$(anOriginal[i]).children().height( iHeight-iBoxHack );	
 			}
 		}
 	}
 };
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Statics
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+/**
+ * FixedColumns default settings for initialisation
+ *  @namespace
+ *  @static
+ */
+FixedColumns.defaults = {
+	/** 
+	 * Number of left hand columns to fix in position
+	 *  @type     int
+	 *  @default  1
+	 *  @static
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	new FixedColumns( oTable, {
+	 *  		"iLeftColumns": 2
+	 *  	} );
+	 */
+	"iLeftColumns": 1,
+	
+	/** 
+	 * Number of right hand columns to fix in position
+	 *  @type     int
+	 *  @default  0
+	 *  @static
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	new FixedColumns( oTable, {
+	 *  		"iRightColumns": 1
+	 *  	} );
+	 */
+	"iRightColumns": 0,
+	
+	/** 
+	 * Draw callback function which is called when FixedColumns has redrawn the fixed assets
+	 *  @type     function(object, object):void
+	 *  @default  null
+	 *  @static
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	new FixedColumns( oTable, {
+	 *  		"fnDrawCallback": function () {
+	 *				alert( "FixedColumns redraw" );
+	 *			}
+	 *  	} );
+	 */
+	"fnDrawCallback": null,
+	
+	/** 
+	 * Type of left column size calculation. Can take the values of "fixed", whereby the iLeftWidth
+	 * value will be treated as a pixel value, or "relative" for which case iLeftWidth will be
+	 * treated as a percentage value.
+	 *  @type     string
+	 *  @default  fixed
+	 *  @static
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	new FixedColumns( oTable, {
+	 *  		"sLeftWidth": "relative",
+	 *  		"iLeftWidth": 10 // percentage
+	 *  	} );
+	 */
+	"sLeftWidth": "fixed",
+	
+	/** 
+	 * Width to set for the width of the left fixed column(s) - note that the behaviour of this
+	 * property is directly effected by the sLeftWidth property. If not defined then this property
+	 * is calculated automatically from what has been assigned by DataTables.
+	 *  @type     int
+	 *  @default  null
+	 *  @static
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	new FixedColumns( oTable, {
+	 *  		"iLeftWidth": 100 // pixels
+	 *  	} );
+	 */
+	"iLeftWidth": null,
+	
+	/** 
+	 * Type of right column size calculation. Can take the values of "fixed", whereby the 
+	 * iRightWidth value will be treated as a pixel value, or "relative" for which case 
+	 * iRightWidth will be treated as a percentage value.
+	 *  @type     string
+	 *  @default  fixed
+	 *  @static
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	new FixedColumns( oTable, {
+	 *  		"sRightWidth": "relative",
+	 *  		"iRightWidth": 10 // percentage
+	 *  	} );
+	 */
+	"sRightWidth": "fixed",
+	
+	/**
+	 * Width to set for the width of the right fixed column(s) - note that the behaviour of this
+	 * property is directly effected by the sRightWidth property. If not defined then this property
+	 * is calculated automatically from what has been assigned by DataTables.
+	 *  @type     int
+	 *  @default  null
+	 *  @static
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	new FixedColumns( oTable, {
+	 *  		"iRightWidth": 200 // pixels
+	 *  	} );
+	 */
+	"iRightWidth": null,
+	
+	/** 
+	 * Height matching algorthim to use. This can be "none" which will result in no height
+	 * matching being applied by FixedColumns (height matching could be forced by CSS in this
+	 * case), "semiauto" whereby the height calculation will be performed once, and the result
+	 * cached to be used again (fnRecalculateHeight can be used to force recalculation), or
+	 * "auto" when height matching is performed on every draw (slowest but must accurate)
+	 *  @type     string
+	 *  @default  semiauto
+	 *  @static
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	new FixedColumns( oTable, {
+	 *  		"sHeightMatch": "auto"
+	 *  	} );
+	 */
+	"sHeightMatch": "semiauto"
+};
+
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Constants
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+/**
+ * Name of this class
+ *  @constant CLASS
+ *  @type     String
+ *  @default  FixedColumns
+ */
+FixedColumns.prototype.CLASS = "FixedColumns";
+
+
+/**
+ * FixedColumns version
+ *  @constant  FixedColumns.VERSION
+ *  @type      String
+ *  @default   See code
+ *  @static
+ */
+FixedColumns.VERSION = "2.0.0";
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Fired events (for documentation)
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+/**
+ * Event fired whenever FixedColumns redraws the fixed columns (i.e. clones the table elements from the main DataTable). This will occur whenever the DataTable that the FixedColumns instance is attached does its own draw.
+ * @name FixedColumns#draw
+ * @event
+ * @param {event} e jQuery event object
+ * @param {object} o Event parameters from FixedColumns
+ * @param {object} o.leftClone Instance's object dom.clone.left for easy reference. This object contains references to the left fixed clumn column's nodes
+ * @param {object} o.rightClone Instance's object dom.clone.right for easy reference. This object contains references to the right fixed clumn column's nodes
+ */
+
+})(jQuery, window, document);

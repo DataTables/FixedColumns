@@ -15,13 +15,43 @@
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				var oTable = $('#example').dataTable( {
+					"sScrollY": "300px",
 					"sScrollX": "100%",
-					"sScrollXInner": "140%",
-					"bScrollCollapse": true
+					"sScrollXInner": "150%",
+					"bScrollCollapse": true,
+					"bPaginate": false
 				} );
+
 				new FixedColumns( oTable, {
-					"iLeftColumns": 2,
-					"iLeftWidth": 350
+					"iLeftWidth": 150,
+					"fnDrawCallback": function ( left, right ) {
+						var that = this, groupVal = null, matches = 0, heights = [], index = -1;
+						
+						/* Get the heights of the cells and remove redundant ones */
+						$('tbody tr td', left.body).each( function ( i ) {
+							var currVal = this.innerHTML;
+							
+							/* Reset values on new cell data. */
+							if (currVal != groupVal) {
+								groupVal = currVal;
+								index++;
+								heights[index] = 0;
+								matches = 0;
+							} else  {
+								matches++;
+							}
+							
+							heights[ index ] += $(this.parentNode).height();
+							if ( currVal == groupVal && matches > 0 ) {
+								this.parentNode.parentNode.removeChild(this.parentNode);
+							}
+						} );
+
+						/* Now set the height of the cells which remain, from the summed heights */
+						$('tbody tr td', left.body).each( function ( i ) {
+							that.fnSetRowHeight( this.parentNode, heights[i] );
+						} );
+					}
 				} );
 			} );
 		</script>
@@ -29,11 +59,11 @@
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				FixedColumns example - two columns fixed
+				FixedColumns example - row grouping using the fixed column
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>FixedColumns allows more than one column to be frozen into place using the <i>iLeftColumns</i> parameter. The example below shows two columns fixed.</p>
+			<p>This example shows how it is possible to manipulate the DOM of the fixed column to create the effect of row grouping in the table (or more generally any manipulation you wish to make). When ordered by the first column it is possible to see the grouping in full effect - if you then change the ordering to one of the other columns the grouping is dynamically changed to combine like cells. It would be readily possible to extend this example to use two fixed columns and only 'group' rows in one of the columns, potentially achieving quite a powerful effect.</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -103,7 +133,7 @@
 		</tr>
 		<tr class="gradeA">
 			<td>Gecko</td>
-			<td>Firefox 1.5</td>
+			<td>Firefox <br>1.5</td>
 			<td>Win 98+ / OSX.2+</td>
 			<td class="center">1.8</td>
 			<td class="center">A</td>
@@ -452,15 +482,6 @@
 			<td class="center">U</td>
 		</tr>
 	</tbody>
-	<tfoot>
-		<tr>
-			<th>Rendering engine</th>
-			<th>Browser</th>
-			<th>Platform(s)</th>
-			<th>Engine version</th>
-			<th>CSS grade</th>
-		</tr>
-	</tfoot>
 </table>
 			</div>
 			<div class="spacer"></div>
@@ -468,16 +489,46 @@
 			
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
- 	var oTable = $('#example').dataTable( {
- 		"sScrollX": "100%",
- 		"sScrollXInner": "150%",
- 		"bScrollCollapse": true
- 	} );
- 	new FixedColumns( oTable, {
- 		"iLeftColumns": 2,
-		"iLeftWidth": 350
- 	} );
- } );</pre>
+	var oTable = $('#example').dataTable( {
+		"sScrollY": "300px",
+		"sScrollX": "100%",
+		"sScrollXInner": "150%",
+		"bScrollCollapse": true,
+		"bPaginate": false
+	} );
+
+	new FixedColumns( oTable, {
+		"iLeftWidth": 150,
+		"fnDrawCallback": function ( left, right ) {
+			var that = this, groupVal = null, matches = 0, heights = [], index = -1;
+			
+			/* Get the heights of the cells and remove redundant ones */
+			$('tbody tr td', left.body).each( function ( i ) {
+				var currVal = this.innerHTML;
+				
+				/* Reset values on new cell data. */
+				if (currVal != groupVal) {
+					groupVal = currVal;
+					index++;
+					heights[index] = 0;
+					matches = 0;
+				} else  {
+					matches++;
+				}
+				
+				heights[ index ] += $(this.parentNode).height();
+				if ( currVal == groupVal &amp;&amp; matches &gt; 0 ) {
+					this.parentNode.parentNode.removeChild(this.parentNode);
+				}
+			} );
+
+			/* Now set the height of the cells which remain, from the summed heights */
+			$('tbody tr td', left.body).each( function ( i ) {
+				that.fnSetRowHeight( this.parentNode, heights[ i ] );
+			} );
+		}
+	} );
+} );</pre>
 
 
 			<h1>Documentation</h1>

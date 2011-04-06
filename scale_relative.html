@@ -8,6 +8,7 @@
 		<style type="text/css" title="currentStyle">
 			@import "../../media/css/demo_page.css";
 			@import "../../media/css/demo_table.css";
+			table.DTFC_Cloned th { white-space: nowrap; }
 		</style>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
@@ -15,25 +16,27 @@
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				var oTable = $('#example').dataTable( {
+					"sScrollY": "300px",
 					"sScrollX": "100%",
-					"sScrollXInner": "140%",
-					"bScrollCollapse": true
+					"sScrollXInner": "1200px",
+					"bScrollCollapse": true,
+					"bPaginate": false
 				} );
 				new FixedColumns( oTable, {
-					"iLeftColumns": 2,
-					"iLeftWidth": 350
+					"sLeftWidth": 'relative',
+					"iLeftWidth": 20
 				} );
 			} );
 		</script>
 	</head>
 	<body id="dt_example">
-		<div id="container">
+		<div id="container" style="width:80%">
 			<div class="full_width big">
-				FixedColumns example - two columns fixed
+				FixedColumns example - relative width fixed columns
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>FixedColumns allows more than one column to be frozen into place using the <i>iLeftColumns</i> parameter. The example below shows two columns fixed.</p>
+			<p>This example shows how the fixed column can be given a relative width (relative to the DataTables viewport). By giving <i>sLeftWidth</i> as 'relative' (the default is 'fixed') and using <i>iLeftWidth</i> to indicate what percentage of the viewport you wish the fixed column to take, FixedColumns will automatically scale the DataTables display. Resizing the window will cause the DataTable scrolling area to resize dynamically, including the fixed column. Note that sScrollXInner is used to force the width of the DataTable - you probably won't want or need this. Note also that the scaling in this demo contrasts with the <a href="scale_fixed.html">fixed scaling</a> example where the fixed column width fixed to an abslute pixel value.</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -47,6 +50,15 @@
 			<th>CSS grade</th>
 		</tr>
 	</thead>
+	<tfoot>
+		<tr>
+			<th>Rendering engine</th>
+			<th>Browser</th>
+			<th>Platform(s)</th>
+			<th>Engine version</th>
+			<th>CSS grade</th>
+		</tr>
+	</tfoot>
 	<tbody>
 		<tr class="gradeX">
 			<td>Trident</td>
@@ -103,7 +115,7 @@
 		</tr>
 		<tr class="gradeA">
 			<td>Gecko</td>
-			<td>Firefox 1.5</td>
+			<td>Firefox <br>1.5</td>
 			<td>Win 98+ / OSX.2+</td>
 			<td class="center">1.8</td>
 			<td class="center">A</td>
@@ -452,15 +464,6 @@
 			<td class="center">U</td>
 		</tr>
 	</tbody>
-	<tfoot>
-		<tr>
-			<th>Rendering engine</th>
-			<th>Browser</th>
-			<th>Platform(s)</th>
-			<th>Engine version</th>
-			<th>CSS grade</th>
-		</tr>
-	</tfoot>
 </table>
 			</div>
 			<div class="spacer"></div>
@@ -468,16 +471,18 @@
 			
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
- 	var oTable = $('#example').dataTable( {
- 		"sScrollX": "100%",
- 		"sScrollXInner": "150%",
- 		"bScrollCollapse": true
- 	} );
- 	new FixedColumns( oTable, {
- 		"iLeftColumns": 2,
-		"iLeftWidth": 350
- 	} );
- } );</pre>
+	var oTable = $('#example').dataTable( {
+		"sScrollY": "300px",
+		"sScrollX": "100%",
+		"sScrollXInner": "1200px",
+		"bScrollCollapse": true,
+		"bPaginate": false
+	} );
+	new FixedColumns( oTable, {
+		"sLeftWidth": 'relative',
+		"iLeftWidth": 20
+	} );
+} );</pre>
 
 
 			<h1>Documentation</h1>
