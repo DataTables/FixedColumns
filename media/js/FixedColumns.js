@@ -368,7 +368,7 @@ FixedColumns.prototype = {
 		var iScrollWidth = $(this.dom.grid.dt).width();
 		var iLeftWidth = 0;
 		var iRightWidth = 0;
-		$('tbody>tr:eq(0)>td').each( function (i) {
+		$('tbody>tr:eq(0)>td', this.s.dt.nTable).each( function (i) {
 			iWidth = $(this).outerWidth();
 			that.s.aiWidths.push( iWidth );
 			if ( i < that.s.iLeftColumns )
