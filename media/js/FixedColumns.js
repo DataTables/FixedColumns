@@ -647,7 +647,60 @@ FixedColumns.prototype = {
 
 		this._fnClone( this.dom.clone.left, this.dom.grid.left, aiColumns, bAll );
 	},
-		
+	
+	
+	/**
+	 * Make a copy of the layout object for a header or footer element from DataTables. Note that
+	 * this method will clone the nodes in the layout object.
+	 *  @returns {Array} Copy of the layout array
+	 *  @param   {Object} aoOriginal Layout array from DataTables (aoHeader or aoFooter)
+	 *  @param   {Object} aiColumns Columns to copy
+	 *  @private
+	 */
+	"_fnCopyLayout": function ( aoOriginal, aiColumns )
+	{
+		var aReturn = [];
+		var aClones = [];
+		var aCloned = [];
+
+		for ( var i=0, iLen=aoOriginal.length ; i<iLen ; i++ )
+		{
+			var aRow = [];
+			aRow.nTr = $(aoOriginal[i].nTr).clone(true)[0];
+
+			for ( var j=0, jLen=this.s.iTableColumns ; j<jLen ; j++ )
+			{
+				if ( $.inArray( j, aiColumns ) === -1 )
+				{
+					break;
+				}
+
+				var iCloned = $.inArray( aoOriginal[i][j].cell, aCloned );
+				if ( iCloned === -1 )
+				{
+					var nClone = $(aoOriginal[i][j].cell).clone(true)[0];
+					aClones.push( nClone );
+					aCloned.push( aoOriginal[i][j].cell );
+
+					aRow.push( {
+						"cell": nClone,
+						"unique": aoOriginal[i][j].unique
+					} );
+				}
+				else
+				{
+					aRow.push( {
+						"cell": aClones[ iCloned ],
+						"unique": aoOriginal[i][j].unique
+					} );
+				}
+			}
+			
+			aReturn.push( aRow );
+		}
+
+		return aReturn;
+	},
 	
 	
 	/**
@@ -678,22 +731,22 @@ FixedColumns.prototype = {
 			oClone.header.className += " DTFC_Cloned";
 			oClone.header.style.width = "100%";
 			oGrid.head.appendChild( oClone.header );
-		
-			$('>thead', oClone.header).empty();
-			var nThead = $('thead', oClone.header)[0];
-			$('>thead>tr', that.dom.header).each( function (i) {
-				var n = this.cloneNode(false);
-				for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
-				{
-					iColumn = aiColumns[iIndex];
-					nClone = (i === 0) ?
-						$(that.s.dt.aoColumns[iColumn].nTh).clone(true)[0] :
-						$(that.s.dt.aoColumns[iColumn].anThExtra[i-1]).clone(true)[0];
-					//nClone.style.width = that.s.aiWidths[iColumn]+"px";
-					n.appendChild( nClone );
-				}
-				nThead.appendChild( n );
-			} );
+			
+			/* Copy the DataTables layout cache for the header for our floating column */
+			var aoCloneLayout = this._fnCopyLayout( this.s.dt.aoHeader, aiColumns );
+			var jqCloneThead = $('>thead', oClone.header);
+			jqCloneThead.empty();
+
+			/* Add the created cloned TR elements to the table */
+			for ( i=0, iLen=aoCloneLayout.length ; i<iLen ; i++ )
+			{
+				jqCloneThead[0].appendChild( aoCloneLayout[i].nTr );
+			}
+
+			/* Use the handy _fnDrawHead function in DataTables to do the rowspan/colspan
+			 * calculations for us
+			 */
+			this.s.dt.oApi._fnDrawHead( this.s.dt, aoCloneLayout, true );
 		}
 		else
 		{
@@ -782,23 +835,17 @@ FixedColumns.prototype = {
 				oClone.footer.className += " DTFC_Cloned";
 				oClone.footer.style.width = "100%";
 				oGrid.foot.appendChild( oClone.footer );
-				
-				$('>tfoot', oClone.footer).empty();
-				var nTfoot = $('tfoot', oClone.footer)[0];
-				$('>tfoot>tr', that.dom.footer).each( function (i) {
-					var n = this.cloneNode(false);
-					for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
-					{
-						iColumn = aiColumns[iIndex];
-						nClone = (i === 0) ?
-							$(that.s.dt.aoColumns[iColumn].nTf).clone(true)[0] :
-							$(that.s.dt.aoColumns[iColumn].anTfExtra[i-1]).clone(true)[0];
-						
-						nClone.style.width = that.s.aiWidths[iColumn]+"px";
-						n.appendChild( nClone );
-					}
-					nTfoot.appendChild( n );
-				} );
+
+				/* Copy the footer just like we do for the header */
+				var aoCloneLayout = this._fnCopyLayout( this.s.dt.aoFooter, aiColumns );
+				var jqCloneTfoot = $('>tfoot', oClone.footer);
+				jqCloneTfoot.empty();
+	
+				for ( i=0, iLen=aoCloneLayout.length ; i<iLen ; i++ )
+				{
+					jqCloneTfoot[0].appendChild( aoCloneLayout[i].nTr );
+				}
+				this.s.dt.oApi._fnDrawHead( this.s.dt, aoCloneLayout, true );
 			}
 			else
 			{
@@ -898,15 +945,15 @@ FixedColumns.prototype = {
 			}
 			
 			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
-			if ( $.browser.mozilla || $.browser.opera )
-			{
-				anClone[i].style.height = iHeight+"px";
-				anOriginal[i].style.height = iHeight+"px";
-			}
-			else
+			if ( $.browser.msie )
 			{
 				$(anClone[i]).children().height( iHeight-iBoxHack );
 				$(anOriginal[i]).children().height( iHeight-iBoxHack );	
+			}
+			else
+			{
+				anClone[i].style.height = iHeight+"px";
+				anOriginal[i].style.height = iHeight+"px";
 			}
 		}
 	}

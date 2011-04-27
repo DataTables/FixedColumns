@@ -21,15 +21,7 @@
 					"sScrollXInner": "150%",
 					"bScrollCollapse": true
 				} );
-				new FixedColumns( oTable, {
-					"fnDrawCallback": function ( left, right ) {
-						var nThead = $('thead', this.dom.grid.left.head);
-						$('tr:gt(0)', nThead).remove();
-						$('th:eq(0)', nThead)[0].rowspan = 2;
-						this.fnSetRowHeight( $('tr:eq(0)', nThead)[0], 
-							$('div.dataTables_scrollHead', this.dom.dt).height() );
-					}
-				} );
+				new FixedColumns( oTable );
 			} );
 		</script>
 	</head>
@@ -40,21 +32,20 @@
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>If you are using multiple rows in the table header, it can be useful to have a rowspanning cell on the column(s) you have fixed in place - equally at other times it can be useful to not and make use of the two or more cells per column. In order to achieve this it is nessacery to manipulate the DOM a little bit (this is due to the fact that DataTables does not currently support hidden columns on tables with rowspan/colspan). This example shows how this can be achieved - simply remove the 'spare' TR element in the fixed column, set the rowspan and then match the height of the header elements (using the <i>fnSetRowHeight</i> API function to overcome cross browser issues).</p>
+			<p>If you are using multiple rows in the table header, it can be useful to have a rowspanning cell on the column(s) you have fixed in place - equally at other times it can be useful to not and make use of the two or more cells per column. FixedColumns builds on the complex header support in DataTables to make this trivial to use in FixedColumns. Just initialise your FixedColumns instance as you normally would!</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>
 		<tr>
-			<th>Rendering engine</th>
+			<th rowspan="2">Rendering engine</th>
 			<th>Browser</th>
 			<th>Platform(s)</th>
 			<th>Engine version</th>
 			<th>CSS grade</th>
 		</tr>
 		<tr>
-			<th></th>
 			<th>Name and version</th>
 			<th>Operating systems</th>
 			<th>Rendering engine</th>
@@ -65,7 +56,7 @@
 		<tr class="gradeX">
 			<td>Trident</td>
 			<td>Internet
-				 Explorer 4.0</td>
+				 Explorer <br>4.0</td>
 			<td>Win 95+</td>
 			<td class="center">4</td>
 			<td class="center">X</td>
@@ -480,15 +471,7 @@
 		"sScrollXInner": "150%",
 		"bScrollCollapse": true
 	} );
-	new FixedColumns( oTable, {
-		"fnDrawCallback": function ( left, right ) {
-			var nThead = $('thead', this.dom.grid.left.head);
-			$('tr:gt(0)', nThead).remove();
-			$('th:eq(0)', nThead)[0].rowspan = 2;
-			this.fnSetRowHeight( $('tr:eq(0)', nThead)[0], 
-				$('div.dataTables_scrollHead', this.dom.dt).height() );
-		}
-	} );
+	new FixedColumns( oTable );
 } );</pre>
 
 
