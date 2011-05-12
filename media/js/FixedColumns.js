@@ -368,6 +368,7 @@ FixedColumns.prototype = {
 		var iScrollWidth = $(this.dom.grid.dt).width();
 		var iLeftWidth = 0;
 		var iRightWidth = 0;
+
 		$('tbody>tr:eq(0)>td', this.s.dt.nTable).each( function (i) {
 			iWidth = $(this).outerWidth();
 			that.s.aiWidths.push( iWidth );
@@ -672,7 +673,7 @@ FixedColumns.prototype = {
 			{
 				if ( $.inArray( j, aiColumns ) === -1 )
 				{
-					break;
+					continue;
 				}
 
 				var iCloned = $.inArray( aoOriginal[i][j].cell, aCloned );
@@ -798,7 +799,7 @@ FixedColumns.prototype = {
 					if ( typeof that.s.dt.aoData[i]._anHidden[iColumn] != 'undefined' )
 					{
 						nClone = $(that.s.dt.aoData[i]._anHidden[iColumn]).clone(true)[0];
-						//nClone.style.width = that.s.aiWidths[iColumn]+"px";
+						nClone.style.width = that.s.aiWidths[iColumn]+"px";
 						n.appendChild( nClone );
 					}
 				}
@@ -928,7 +929,7 @@ FixedColumns.prototype = {
 				anOriginal[i]._DTTC_iHeight !== null )
 			{
 				/* Oddly enough, IE / Chrome seem not to copy the style height - Mozilla and Opera keep it */
-				if ( !$.browser.mozilla && !$.browser.opera )
+				if ( $.browser.msie )
 				{
 					$(anClone[i]).children().height( anOriginal[i]._DTTC_iHeight-iBoxHack );
 				}
