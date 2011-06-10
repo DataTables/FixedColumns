@@ -240,7 +240,7 @@ FixedColumns = function ( oDT, oInit ) {
 	};
 
 	/* Attach the instance to the DataTables instance so it can be accessed easily */
-	this.s.dt.oInstance.oFixedColumns = this;
+	this.s.dt.oFixedColumns = this;
 	
 	/* Let's do it */
 	this._fnConstruct( oInit );
