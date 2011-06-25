@@ -238,6 +238,9 @@ FixedColumns = function ( oDT, oInit ) {
 			}
 		}
 	};
+
+	/* Attach the instance to the DataTables instance so it can be accessed easily */
+	this.s.dt.oFixedColumns = this;
 	
 	/* Let's do it */
 	this._fnConstruct( oInit );
@@ -266,6 +269,27 @@ FixedColumns.prototype = {
 	"fnUpdate": function ()
 	{
 		this._fnDraw( true );
+	},
+	
+	
+	/**
+	 * Recalculate the resizes of the 3x3 grid that FixedColumns uses for display of the table.
+	 * This is useful if you update the width of the table container. Note that FixedColumns will
+	 * perform this function automatically when the window.resize event is fired.
+	 *  @returns {void}
+	 *  @example
+	 *  	var oTable = $('#example').dataTable( {
+	 *  		"sScrollX": "100%"
+	 *  	} );
+	 *  	var oFC = new FixedColumns( oTable );
+	 *  	
+	 *  	// Resize the table container and then have FixedColumns adjust its layout....
+	 *      $('#content').width( 1200 );
+	 *  	oFC.fnRedrawLayout();
+	 */
+	"fnRedrawLayout": function ()
+	{
+		this.__fnGridLayout();
 	},
 	
 	
