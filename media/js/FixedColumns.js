@@ -796,7 +796,8 @@ FixedColumns.prototype = {
 		{
 			$('>tbody>tr', that.dom.body).each( function (z) {
 				var n = this.cloneNode(false);
-				var i = that.s.dt.aiDisplay[ that.s.dt._iDisplayStart+z ];
+				var i = that.s.dt.oFeatures.bServerSide===false ?
+					that.s.dt.aiDisplay[ that.s.dt._iDisplayStart+z ] : z;
 				for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
 				{
 					iColumn = aiColumns[iIndex];
