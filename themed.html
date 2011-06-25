@@ -7,7 +7,8 @@
 		<title>FixedColumns example</title>
 		<style type="text/css" title="currentStyle">
 			@import "../../media/css/demo_page.css";
-			@import "../../media/css/demo_table.css";
+			@import "../../media/css/demo_table_jui.css";
+			@import "../../examples/examples_support/themes/smoothness/jquery-ui-1.8.4.custom.css";
 		</style>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
@@ -15,11 +16,12 @@
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				var oTable = $('#example').dataTable( {
+					"bJQueryUI": true,
 					"sScrollY": "300px",
-					"bPaginate": false,
 					"sScrollX": "100%",
 					"sScrollXInner": "150%",
-					"bScrollCollapse": true
+					"bScrollCollapse": true,
+					"bPaginate": false
 				} );
 				new FixedColumns( oTable );
 			} );
@@ -28,35 +30,38 @@
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				FixedColumns example - rowspan in the header
+				FixedColumns example - jQuery UI themed table
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>If you are using multiple rows in the table header, it can be useful to have a rowspanning cell on the column(s) you have fixed in place - equally at other times it can be useful to not and make use of the two or more cells per column. FixedColumns builds on the complex header support in DataTables to make this trivial to use in FixedColumns. Just initialise your FixedColumns instance as you normally would!</p>
+			<p>This example is basically the same as the <a href="index.html">main example</a>, but in this case the table is themed with jQuery UI ThemeRoller.</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>
 		<tr>
-			<th rowspan="2">Rendering engine</th>
+			<th>Rendering engine</th>
 			<th>Browser</th>
 			<th>Platform(s)</th>
 			<th>Engine version</th>
 			<th>CSS grade</th>
 		</tr>
-		<tr>
-			<th>Name and version</th>
-			<th>Operating systems</th>
-			<th>Rendering engine</th>
-			<th>Support level</th>
-		</tr>
 	</thead>
+	<tfoot>
+		<tr>
+			<th>Rendering engine</th>
+			<th>Browser</th>
+			<th>Platform(s)</th>
+			<th>Engine version</th>
+			<th>CSS grade</th>
+		</tr>
+	</tfoot>
 	<tbody>
 		<tr class="gradeX">
 			<td>Trident</td>
 			<td>Internet
-				 Explorer <br>4.0</td>
+				 Explorer 4.0</td>
 			<td>Win 95+</td>
 			<td class="center">4</td>
 			<td class="center">X</td>
@@ -108,7 +113,7 @@
 		</tr>
 		<tr class="gradeA">
 			<td>Gecko</td>
-			<td>Firefox 1.5</td>
+			<td>Firefox <br>1.5</td>
 			<td>Win 98+ / OSX.2+</td>
 			<td class="center">1.8</td>
 			<td class="center">A</td>
@@ -465,11 +470,12 @@
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
 	var oTable = $('#example').dataTable( {
+		"bJQueryUI": true,
 		"sScrollY": "300px",
-		"bPaginate": false,
 		"sScrollX": "100%",
 		"sScrollXInner": "150%",
-		"bScrollCollapse": true
+		"bScrollCollapse": true,
+		"bPaginate": false
 	} );
 	new FixedColumns( oTable );
 } );</pre>
