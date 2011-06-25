@@ -755,6 +755,10 @@ FixedColumns.prototype = {
 			{
 				$('>thead th:eq('+iIndex+')', oClone.header)[0].className =
 					this.s.dt.aoColumns[ aiColumns[iIndex] ].nTh.className;
+				
+				$('>thead th:eq('+iIndex+') span.DataTables_sort_icon', oClone.header).each( function (i) {
+					this.className = $('span.DataTables_sort_icon', that.s.dt.aoColumns[ aiColumns[iIndex] ].nTh)[i].className;
+				} );
 			}
 		}
 		this._fnEqualiseHeights( 'thead', this.dom.header, oClone.header );
