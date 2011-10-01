@@ -975,7 +975,7 @@ FixedColumns.prototype = {
 			}
 			
 			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
-			if ( $.browser.msie && $.browser.version < 9 )
+			if ( $.browser.msie && $.browser.version < 8 )
 			{
 				$(anClone[i]).children().height( iHeight-iBoxHack );
 				$(anOriginal[i]).children().height( iHeight-iBoxHack );	
