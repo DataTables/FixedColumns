@@ -938,7 +938,7 @@ FixedColumns.prototype = {
 	 */
 	"_fnEqualiseHeights": function ( nodeName, original, clone )
 	{
-		if ( this.s.sHeightMatch == 'none' )
+		if ( this.s.sHeightMatch == 'none' && nodeName !== 'thead' && nodeName !== 'tfoot' )
 		{
 			return;
 		}
