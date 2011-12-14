@@ -289,7 +289,7 @@ FixedColumns.prototype = {
 	 */
 	"fnRedrawLayout": function ()
 	{
-		this.__fnGridLayout();
+		this._fnGridLayout();
 	},
 	
 	
