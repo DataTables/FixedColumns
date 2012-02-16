@@ -2,7 +2,7 @@
  * @summary     FixedColumns
  * @description Freeze columns in place on a scrolling DataTable
  * @file        FixedColumns.js
- * @version     2.0.2
+ * @version     2.0.3.dev
  * @author      Allan Jardine (www.sprymedia.co.uk)
  * @license     GPL v2 or BSD 3 point style
  * @contact     www.sprymedia.co.uk/contact
@@ -741,7 +741,7 @@ FixedColumns.prototype = {
 	"_fnClone": function ( oClone, oGrid, aiColumns, bAll )
 	{
 		var that = this,
-			i, iLen, jq, nTarget, iColumn, nClone, iIndex;
+			i, iLen, j, jLen, jq, nTarget, iColumn, nClone, iIndex;
 
 		/* 
 		 * Header
@@ -775,14 +775,27 @@ FixedColumns.prototype = {
 		}
 		else
 		{
-			for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
+			/* To ensure that we copy cell classes exactly, regardless of colspan, multiple rows
+			 * etc, we make a copy of the header from the DataTable again, but don't insert the 
+			 * cloned cells, just copy the classes across. To get the matching layout for the
+			 * fixed component, we use the DataTables _fnDetectHeader method, allowing 1:1 mapping
+			 */
+			var aoCloneLayout = this._fnCopyLayout( this.s.dt.aoHeader, aiColumns );
+			var aoCurrHeader=[];
+
+			this.s.dt.oApi._fnDetectHeader( aoCurrHeader, $('>thead', oClone.header)[0] );
+
+			for ( i=0, iLen=aoCloneLayout.length ; i<iLen ; i++ )
 			{
-				$('>thead th:eq('+iIndex+')', oClone.header)[0].className =
-					this.s.dt.aoColumns[ aiColumns[iIndex] ].nTh.className;
-				
-				$('>thead th:eq('+iIndex+') span.DataTables_sort_icon', oClone.header).each( function (i) {
-					this.className = $('span.DataTables_sort_icon', that.s.dt.aoColumns[ aiColumns[iIndex] ].nTh)[i].className;
-				} );
+				for ( j=0, jLen=aoCloneLayout[i].length ; j<jLen ; j++ )
+				{
+					aoCurrHeader[i][j].cell.className = aoCloneLayout[i][j].cell.className;
+
+					// If jQuery UI theming is used we need to copy those elements as well
+					$('span.DataTables_sort_icon', aoCurrHeader[i][j].cell).each( function () {
+						this.className = $('span.DataTables_sort_icon', aoCloneLayout[i][j].cell)[0].className;
+					} );
+				}
 			}
 		}
 		this._fnEqualiseHeights( 'thead', this.dom.header, oClone.header );
@@ -879,10 +892,17 @@ FixedColumns.prototype = {
 			}
 			else
 			{
-				for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
+				var aoCloneLayout = this._fnCopyLayout( this.s.dt.aoFooter, aiColumns );
+				var aoCurrFooter=[];
+
+				this.s.dt.oApi._fnDetectHeader( aoCurrFooter, $('>tfoot', oClone.footer)[0] );
+
+				for ( i=0, iLen=aoCloneLayout.length ; i<iLen ; i++ )
 				{
-					$('>tfoot th:eq('+iIndex+')', oClone.footer)[0].className =
-						this.s.dt.aoColumns[ aiColumns[iIndex] ].nTf.className;
+					for ( j=0, jLen=aoCloneLayout[i].length ; j<jLen ; j++ )
+					{
+						aoCurrFooter[i][j].cell.className = aoCloneLayout[i][j].cell.className;
+					}
 				}
 			}
 			this._fnEqualiseHeights( 'tfoot', this.dom.footer, oClone.footer );
@@ -1163,7 +1183,7 @@ FixedColumns.prototype.CLASS = "FixedColumns";
  *  @default   See code
  *  @static
  */
-FixedColumns.VERSION = "2.0.2";
+FixedColumns.VERSION = "2.0.3.dev";
 
 
 
