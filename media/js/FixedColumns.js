@@ -825,12 +825,36 @@ FixedColumns.prototype = {
 		}
 		
 		$('>thead>tr', oClone.body).empty();
-		$('>tfoot', oClone.body).empty();
+		$('>tfoot', oClone.body).remove();
 		
 		var nBody = $('tbody', oClone.body)[0];
 		$(nBody).empty();
 		if ( this.s.dt.aiDisplay.length > 0 )
 		{
+			/* Copy the DataTables' header elements to force the column width in exactly the
+			 * same way that DataTables does it - have the header element, apply the width and
+			 * colapse it down
+			 */
+			var nInnerThead = $('>thead>tr', oClone.body)[0];
+			for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
+			{
+				iColumn = aiColumns[iIndex];
+
+				nClone = this.s.dt.aoColumns[iColumn].nTh;
+				nClone.innerHTML = "";
+
+				oStyle = nClone.style;
+				oStyle.paddingTop = "0";
+				oStyle.paddingBottom = "0";
+				oStyle.borderTopWidth = "0";
+				oStyle.borderBottomWidth = "0";
+				oStyle.height = 0;
+				oStyle.width = that.s.aiWidths[iColumn]+"px";
+
+				nInnerThead.appendChild( nClone );
+			}
+
+			/* Add in the tbody elements, cloning form the master table */
 			$('>tbody>tr', that.dom.body).each( function (z) {
 				var n = this.cloneNode(false);
 				var i = that.s.dt.oFeatures.bServerSide===false ?
@@ -841,7 +865,6 @@ FixedColumns.prototype = {
 					if ( typeof that.s.dt.aoData[i]._anHidden[iColumn] != 'undefined' )
 					{
 						nClone = $(that.s.dt.aoData[i]._anHidden[iColumn]).clone(true)[0];
-						nClone.style.width = that.s.aiWidths[iColumn]+"px";
 						n.appendChild( nClone );
 					}
 				}
