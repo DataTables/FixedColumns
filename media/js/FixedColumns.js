@@ -940,7 +940,7 @@ FixedColumns.prototype = {
 		}
 
 		jqBody.children().each( function (i) {
-			var iWidth = $(this).width();
+			var iWidth = $(this).outerWidth();
 
 			jqHead.children(':eq('+i+')').width( iWidth );
 			if ( that.s.dt.nTFoot !== null )
