@@ -932,22 +932,20 @@ FixedColumns.prototype = {
 		}
 
 		/* Equalise the column widths between the header footer and body - body get's priority */
-		var jqBody = $('>tbody>tr:eq(0)', oClone.body);
-		var jqHead = $('>thead>tr:eq(0)', oClone.header);
-		if ( this.s.dt.nTFoot !== null )
-		{
-			var jqFoot = $('>tfoot>tr:eq(0)', oClone.footer);
-		}
-
-		jqBody.children().each( function (i) {
-			var iWidth = $(this).outerWidth();
-
-			jqHead.children(':eq('+i+')').width( iWidth );
-			if ( that.s.dt.nTFoot !== null )
-			{
-				jqFoot.children(':eq('+i+')').width( iWidth );
-			}
+		var anUnique = this.s.dt.oApi._fnGetUniqueThs( this.s.dt, $('>thead', oClone.header)[0] );
+		$(anUnique).each( function (i) {
+			iColumn = aiColumns[i];
+			this.style.width = that.s.aiWidths[iColumn]+"px";
 		} );
+
+		if ( that.s.dt.nTFoot !== null )
+		{
+			anUnique = this.s.dt.oApi._fnGetUniqueThs( this.s.dt, $('>tfoot', oClone.footer)[0] );
+			$(anUnique).each( function (i) {
+				iColumn = aiColumns[i];
+				this.style.width = that.s.aiWidths[iColumn]+"px";
+			} );
+		}
 	},
 	
 	
