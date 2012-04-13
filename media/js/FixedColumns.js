@@ -882,6 +882,15 @@ FixedColumns.prototype = {
 		}
 		
 		oClone.body.style.width = "100%";
+
+		if ( bAll )
+		{
+			if ( typeof this.s.dt.oScroller !== undefined )
+			{
+				oGrid.body.appendChild( this.s.dt.oScroller.dom.force.cloneNode(true) );
+			}
+		}
+
 		oGrid.body.appendChild( oClone.body );
 
 		this._fnEqualiseHeights( 'tbody', that.dom.body, oClone.body );
