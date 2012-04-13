@@ -409,7 +409,7 @@ FixedColumns.prototype = {
 		if ( this.s.iLeftWidth === null )
 		{
 			this.s.iLeftWidth = this.s.sLeftWidth == 'fixed' ?
-				iLeftWidth : (iLeftWidth/iScrollWidth) * 100; 
+				iLeftWidth / this.s.iTableColumns : (iLeftWidth/iScrollWidth) * 100; 
 		}
 		
 		if ( this.s.iRightWidth === null )
