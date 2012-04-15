@@ -2,7 +2,7 @@
  * @summary     FixedColumns
  * @description Freeze columns in place on a scrolling DataTable
  * @file        FixedColumns.js
- * @version     2.0.3.dev
+ * @version     2.0.3
  * @author      Allan Jardine (www.sprymedia.co.uk)
  * @license     GPL v2 or BSD 3 point style
  * @contact     www.sprymedia.co.uk/contact
@@ -41,7 +41,7 @@ var FixedColumns;
  *  @param {object} [oInit={}] Configuration object for FixedColumns. Options are defined by {@link FixedColumns.defaults}
  * 
  *  @requires jQuery 1.3+
- *  @requires DataTables 1.8.0.dev+
+ *  @requires DataTables 1.8.0+
  * 
  *  @example
  *  	var oTable = $('#example').dataTable( {
@@ -1204,7 +1204,7 @@ FixedColumns.prototype.CLASS = "FixedColumns";
  *  @default   See code
  *  @static
  */
-FixedColumns.VERSION = "2.0.3.dev";
+FixedColumns.VERSION = "2.0.3";
 
 
 
