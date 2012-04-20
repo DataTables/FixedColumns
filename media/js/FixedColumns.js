@@ -885,7 +885,7 @@ FixedColumns.prototype = {
 
 		if ( bAll )
 		{
-			if ( typeof this.s.dt.oScroller !== undefined )
+			if ( typeof this.s.dt.oScroller != 'undefined' )
 			{
 				oGrid.body.appendChild( this.s.dt.oScroller.dom.force.cloneNode(true) );
 			}
