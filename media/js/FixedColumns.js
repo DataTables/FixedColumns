@@ -2,7 +2,7 @@
  * @summary     FixedColumns
  * @description Freeze columns in place on a scrolling DataTable
  * @file        FixedColumns.js
- * @version     2.0.3
+ * @version     2.0.4.dev
  * @author      Allan Jardine (www.sprymedia.co.uk)
  * @license     GPL v2 or BSD 3 point style
  * @contact     www.sprymedia.co.uk/contact
@@ -781,18 +781,18 @@ FixedColumns.prototype = {
 			 * fixed component, we use the DataTables _fnDetectHeader method, allowing 1:1 mapping
 			 */
 			var aoCloneLayout = this._fnCopyLayout( this.s.dt.aoHeader, aiColumns );
-			var aoCurrHeader=[];
+			var aoFixedHeader=[];
 
-			this.s.dt.oApi._fnDetectHeader( aoCurrHeader, $('>thead', oClone.header)[0] );
+			this.s.dt.oApi._fnDetectHeader( aoFixedHeader, $('>thead', oClone.header)[0] );
 
 			for ( i=0, iLen=aoCloneLayout.length ; i<iLen ; i++ )
 			{
 				for ( j=0, jLen=aoCloneLayout[i].length ; j<jLen ; j++ )
 				{
-					aoCurrHeader[i][j].cell.className = aoCloneLayout[i][j].cell.className;
+					aoFixedHeader[i][j].cell.className = aoCloneLayout[i][j].cell.className;
 
 					// If jQuery UI theming is used we need to copy those elements as well
-					$('span.DataTables_sort_icon', aoCurrHeader[i][j].cell).each( function () {
+					$('span.DataTables_sort_icon', aoFixedHeader[i][j].cell).each( function () {
 						this.className = $('span.DataTables_sort_icon', aoCloneLayout[i][j].cell)[0].className;
 					} );
 				}
@@ -840,7 +840,7 @@ FixedColumns.prototype = {
 			{
 				iColumn = aiColumns[iIndex];
 
-				nClone = this.s.dt.aoColumns[iColumn].nTh;
+				nClone = $(this.s.dt.aoColumns[iColumn].nTh).clone(true)[0];
 				nClone.innerHTML = "";
 
 				oStyle = nClone.style;
@@ -1204,7 +1204,7 @@ FixedColumns.prototype.CLASS = "FixedColumns";
  *  @default   See code
  *  @static
  */
-FixedColumns.VERSION = "2.0.3";
+FixedColumns.VERSION = "2.0.4.dev";
 
 
 
