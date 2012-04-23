@@ -409,7 +409,7 @@ FixedColumns.prototype = {
 		if ( this.s.iLeftWidth === null )
 		{
 			this.s.iLeftWidth = this.s.sLeftWidth == 'fixed' ?
-				iLeftWidth : (iLeftWidth/iScrollWidth) * 100; 
+				iLeftWidth / this.s.iTableColumns : (iLeftWidth/iScrollWidth) * 100; 
 		}
 		
 		if ( this.s.iRightWidth === null )
@@ -882,6 +882,15 @@ FixedColumns.prototype = {
 		}
 		
 		oClone.body.style.width = "100%";
+
+		if ( bAll )
+		{
+			if ( typeof this.s.dt.oScroller != 'undefined' )
+			{
+				oGrid.body.appendChild( this.s.dt.oScroller.dom.force.cloneNode(true) );
+			}
+		}
+
 		oGrid.body.appendChild( oClone.body );
 
 		this._fnEqualiseHeights( 'tbody', that.dom.body, oClone.body );
