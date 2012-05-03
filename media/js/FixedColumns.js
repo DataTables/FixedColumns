@@ -83,11 +83,20 @@ FixedColumns = function ( oDT, oInit ) {
 		"iTableColumns": oDT.fnSettings().aoColumns.length,
 		
 		/** 
-		 * Original widths of the columns as rendered by DataTables
+		 * Original outer widths of the columns as rendered by DataTables - used to calculate
+		 * the FixedColumns grid bounding box
 		 *  @type     array.<int>
 		 *  @default  []
 		 */
-		"aiWidths": [],
+		"aiOuterWidths": [],
+		
+		/** 
+		 * Original inner widths of the columns as rendered by DataTables - used to apply widths
+		 * to the columns
+		 *  @type     array.<int>
+		 *  @default  []
+		 */
+		"aiInnerWidths": [],
 		
 		/** 
 		 * Flag to indicate if we are dealing with IE6/7 as these browsers need a little hack
@@ -394,8 +403,13 @@ FixedColumns.prototype = {
 		var iRightWidth = 0;
 
 		$('tbody>tr:eq(0)>td', this.s.dt.nTable).each( function (i) {
+			// Inner width is used to assign widths to cells
+			that.s.aiInnerWidths.push( $(this).width() );
+			
+			// Outer width is used to calculate the container
 			iWidth = $(this).outerWidth();
-			that.s.aiWidths.push( iWidth );
+			that.s.aiOuterWidths.push( iWidth );
+
 			if ( i < that.s.iLeftColumns )
 			{
 				iLeftWidth += iWidth;
@@ -849,7 +863,7 @@ FixedColumns.prototype = {
 				oStyle.borderTopWidth = "0";
 				oStyle.borderBottomWidth = "0";
 				oStyle.height = 0;
-				oStyle.width = that.s.aiWidths[iColumn]+"px";
+				oStyle.width = that.s.aiInnerWidths[iColumn]+"px";
 
 				nInnerThead.appendChild( nClone );
 			}
@@ -935,7 +949,7 @@ FixedColumns.prototype = {
 		var anUnique = this.s.dt.oApi._fnGetUniqueThs( this.s.dt, $('>thead', oClone.header)[0] );
 		$(anUnique).each( function (i) {
 			iColumn = aiColumns[i];
-			this.style.width = that.s.aiWidths[iColumn]+"px";
+			this.style.width = that.s.aiInnerWidths[iColumn]+"px";
 		} );
 
 		if ( that.s.dt.nTFoot !== null )
@@ -943,7 +957,7 @@ FixedColumns.prototype = {
 			anUnique = this.s.dt.oApi._fnGetUniqueThs( this.s.dt, $('>tfoot', oClone.footer)[0] );
 			$(anUnique).each( function (i) {
 				iColumn = aiColumns[i];
-				this.style.width = that.s.aiWidths[iColumn]+"px";
+				this.style.width = that.s.aiInnerWidths[iColumn]+"px";
 			} );
 		}
 	},
@@ -1224,3 +1238,4 @@ FixedColumns.VERSION = "2.0.4.dev";
  */
 
 })(jQuery, window, document);
+
