@@ -402,7 +402,7 @@ FixedColumns.prototype = {
 		var iLeftWidth = 0;
 		var iRightWidth = 0;
 
-		$('tbody>tr:eq(0)>td', this.s.dt.nTable).each( function (i) {
+		$('tbody>tr:eq(0)>td, tbody>tr:eq(0)>th', this.s.dt.nTable).each( function (i) {
 			// Inner width is used to assign widths to cells
 			that.s.aiInnerWidths.push( $(this).width() );
 			
@@ -425,7 +425,7 @@ FixedColumns.prototype = {
 			this.s.iLeftWidth = this.s.sLeftWidth == 'fixed' ?
 				iLeftWidth : (iLeftWidth/iScrollWidth) * 100; 
 		}
-		
+
 		if ( this.s.iRightWidth === null )
 		{
 			this.s.iRightWidth = this.s.sRightWidth == 'fixed' ?
