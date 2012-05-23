@@ -16,10 +16,10 @@
 			$(document).ready( function () {
 				var oTable = $('#example').dataTable( {
 					"sScrollX": "100%",
+					"sScrollY": 300,
 					"sScrollXInner": "150%",
 					"bScrollCollapse": true,
-					bPaginate: false,
-					sScrollY: 300
+					"bPaginate": false
 				} );
 				new FixedColumns( oTable, {
 					"iLeftColumns": 0,
