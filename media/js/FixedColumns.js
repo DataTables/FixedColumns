@@ -552,11 +552,20 @@ FixedColumns.prototype = {
 		nLeft = nSWrapper.childNodes[0];
 		nRight = nSWrapper.childNodes[1];
 
+		this.dom.grid.dt.parentNode.insertBefore( nSWrapper, this.dom.grid.dt );
+		nSWrapper.appendChild( this.dom.grid.dt );
+
 		this.dom.grid.wrapper = nSWrapper;
-		this.dom.grid.left.wrapper = nLeft;
-		this.dom.grid.left.head = nLeft.childNodes[0];
-		this.dom.grid.left.body = nLeft.childNodes[1];
-		this.dom.grid.left.liner = $('div.DTFC_LeftBodyLiner', nSWrapper)[0];
+
+		if ( this.s.iLeftColumns > 0 )
+		{
+			this.dom.grid.left.wrapper = nLeft;
+			this.dom.grid.left.head = nLeft.childNodes[0];
+			this.dom.grid.left.body = nLeft.childNodes[1];
+			this.dom.grid.left.liner = $('div.DTFC_LeftBodyLiner', nSWrapper)[0];
+			
+			nSWrapper.appendChild( nLeft );
+		}
 
 		if ( this.s.iRightColumns > 0 )
 		{
@@ -574,22 +583,22 @@ FixedColumns.prototype = {
 			block.style.width = oOverflow.bar+"px";
 			block.style.right = -oOverflow.bar+"px";
 			this.dom.grid.right.footBlock = block;
+	
+			nSWrapper.appendChild( nRight );
 		}
 		
 		if ( this.s.dt.nTFoot )
 		{
 			this.dom.footer = this.s.dt.nTFoot.parentNode;
-			this.dom.grid.left.foot = nLeft.childNodes[2];
+			if ( this.s.iLeftColumns > 0 )
+			{
+				this.dom.grid.left.foot = nLeft.childNodes[2];
+			}
 			if ( this.s.iRightColumns > 0 )
 			{
 				this.dom.grid.right.foot = nRight.childNodes[2];
 			}
 		}
-
-		this.dom.grid.dt.parentNode.insertBefore( nSWrapper, this.dom.grid.dt );
-		nSWrapper.appendChild( this.dom.grid.dt );
-		nSWrapper.appendChild( nLeft );
-		nSWrapper.appendChild( nRight );
 	},
 	
 	
@@ -634,15 +643,18 @@ FixedColumns.prototype = {
 		
 		oGrid.wrapper.style.height = iHeight+"px";
 
-		oGrid.left.wrapper.style.width = iLeftWidth+"px";
-		oGrid.left.wrapper.style.height = iHeight+"px";
-		oGrid.left.body.style.height = iHeight+"px";
-		if ( oGrid.left.foot ) {
-			oGrid.left.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px"; // shift footer for scrollbar
-		}
+		if ( this.s.iLeftColumns > 0 )
+		{
+			oGrid.left.wrapper.style.width = iLeftWidth+"px";
+			oGrid.left.wrapper.style.height = iHeight+"px";
+			oGrid.left.body.style.height = iHeight+"px";
+			if ( oGrid.left.foot ) {
+				oGrid.left.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px"; // shift footer for scrollbar
+			}
 
-		oGrid.left.liner.style.width = (iLeftWidth+oOverflow.bar)+"px";
-		oGrid.left.liner.style.height = iHeight+"px";
+			oGrid.left.liner.style.width = (iLeftWidth+oOverflow.bar)+"px";
+			oGrid.left.liner.style.height = iHeight+"px";
+		}
 
 		if ( this.s.iRightColumns > 0 )
 		{
