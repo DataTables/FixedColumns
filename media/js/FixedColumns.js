@@ -2,7 +2,7 @@
  * @summary     FixedColumns
  * @description Freeze columns in place on a scrolling DataTable
  * @file        FixedColumns.js
- * @version     2.0.4.dev
+ * @version     2.5.0.dev
  * @author      Allan Jardine (www.sprymedia.co.uk)
  * @license     GPL v2 or BSD 3 point style
  * @contact     www.sprymedia.co.uk/contact
@@ -435,24 +435,57 @@ FixedColumns.prototype = {
 		/* Set up the DOM that we want for the fixed column layout grid */
 		this._fnGridSetup();
 
-		/* Use the DataTables API method fnSetColumnVis to hide the columns we are going to fix */
-		for ( i=0 ; i<this.s.iLeftColumns ; i++ )
-		{
-			this.s.dt.oInstance.fnSetColumnVis( i, false );
-		}
-		for ( i=this.s.iTableColumns - this.s.iRightColumns ; i<this.s.iTableColumns ; i++ )
-		{
-			this.s.dt.oInstance.fnSetColumnVis( i, false );
-		}
-
 		/* Event handlers */
+
+		// When the body is scrolled - scroll the left and right columns
 		$(this.dom.scroller).scroll( function () {
-			that.dom.grid.left.body.scrollTop = that.dom.scroller.scrollTop;
+			if ( that.s.iLeftColumns > 0 )
+			{
+				that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
+			}
 			if ( that.s.iRightColumns > 0 )
 			{
-				that.dom.grid.right.body.scrollTop = that.dom.scroller.scrollTop;
+				that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
 			}
 		} );
+
+		if ( that.s.iLeftColumns > 0 )
+		{
+			// When scrolling the left column, scroll the body and right column
+			$(that.dom.grid.left.liner).scroll( function () {
+				that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
+				if ( that.s.iRightColumns > 0 )
+				{
+					that.dom.grid.right.liner.scrollTop = that.dom.grid.left.liner.scrollTop;
+				}
+			} );
+
+			// When x-scrolling in the fixed column(s) we need to pass that information on
+			// to the table's body, since otherwise we just swallow that information
+			// TODO - This is far from perfect - how can be be improved?
+			$(that.dom.grid.left.liner).bind( "mousewheel", function(e) {
+				var xDelta = e.originalEvent.wheelDeltaX / 3;
+				that.dom.scroller.scrollLeft -= xDelta;
+			} );
+		}
+
+		if ( that.s.iRightColumns > 0 )
+		{
+			// When scrolling the right column, scroll the body and the left column
+			$(that.dom.grid.right.liner).scroll( function () {
+				that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
+				if ( that.s.iLeftColumns > 0 )
+				{
+					that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
+				}
+			} );
+
+			// Adjust the body for x-scrolling
+			$(that.dom.grid.right.liner).bind( "mousewheel", function(e) {
+				var xDelta = e.originalEvent.wheelDeltaX / 3;
+				that.dom.scroller.scrollLeft -= xDelta;
+			} );
+		}
 
 		$(window).resize( function () {
 			that._fnGridLayout.call( that );
@@ -462,7 +495,7 @@ FixedColumns.prototype = {
 		this.s.dt.aoDrawCallback = [ {
 			"fn": function () {
 				that._fnDraw.call( that, bFirstDraw );
-				that._fnGridHeight( that );
+				that._fnGridLayout( that );
 				bFirstDraw = false;
 			},
 			"sName": "FixedColumns"
@@ -472,7 +505,6 @@ FixedColumns.prototype = {
 		 * another redraw of the main table. It doesn't need to be a full redraw however.
 		 */
 		this._fnGridLayout();
-		this._fnGridHeight();
 		this.s.dt.oInstance.fnDraw(false);
 	},
 	
@@ -489,6 +521,8 @@ FixedColumns.prototype = {
 	"_fnGridSetup": function ()
 	{
 		var that = this;
+		var oOverflow = this._fnDTOverflow();
+		var block;
 
 		this.dom.body = this.s.dt.nTable;
 		this.dom.header = this.s.dt.nTHead.parentNode;
@@ -498,13 +532,21 @@ FixedColumns.prototype = {
 			$('<div class="DTFC_ScrollWrapper" style="position:relative; clear:both;">'+
 				'<div class="DTFC_LeftWrapper" style="position:absolute; top:0; left:0;">'+
 					'<div class="DTFC_LeftHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
-					'<div class="DTFC_LeftBodyWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+					'<div class="DTFC_LeftBodyWrapper" style="position:relative; top:0; left:0; overflow:hidden;">'+
+						'<div class="DTFC_LeftBodyLiner" style="position:relative; top:0; left:0; overflow-y:scroll;"></div>'+
+					'</div>'+
 					'<div class="DTFC_LeftFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
 			  	'</div>'+
 				'<div class="DTFC_RightWrapper" style="position:absolute; top:0; left:0;">'+
-					'<div class="DTFC_RightHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
-					'<div class="DTFC_RightBodyWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
-					'<div class="DTFC_RightFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+					'<div class="DTFC_RightHeadWrapper" style="position:relative; top:0; left:0;">'+
+						'<div class="DTFC_RightHeadBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div>'+
+					'</div>'+
+					'<div class="DTFC_RightBodyWrapper" style="position:relative; top:0; left:0; overflow:hidden;">'+
+						'<div class="DTFC_RightBodyLiner" style="position:relative; top:0; left:0; overflow-y:scroll;"></div>'+
+					'</div>'+
+					'<div class="DTFC_RightFootWrapper" style="position:relative; top:0; left:0;">'+
+						'<div class="DTFC_RightFootBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div>'+
+					'</div>'+
 			  	'</div>'+
 			  '</div>')[0];
 		nLeft = nSWrapper.childNodes[0];
@@ -514,12 +556,24 @@ FixedColumns.prototype = {
 		this.dom.grid.left.wrapper = nLeft;
 		this.dom.grid.left.head = nLeft.childNodes[0];
 		this.dom.grid.left.body = nLeft.childNodes[1];
+		this.dom.grid.left.liner = $('div.DTFC_LeftBodyLiner', nSWrapper)[0];
 
 		if ( this.s.iRightColumns > 0 )
 		{
 			this.dom.grid.right.wrapper = nRight;
 			this.dom.grid.right.head = nRight.childNodes[0];
 			this.dom.grid.right.body = nRight.childNodes[1];
+			this.dom.grid.right.liner = $('div.DTFC_RightBodyLiner', nSWrapper)[0];
+
+			block = $('div.DTFC_RightHeadBlocker', nSWrapper)[0]
+			block.style.width = oOverflow.bar+"px";
+			block.style.right = -oOverflow.bar+"px";
+			this.dom.grid.right.headBlock = block;
+
+			block = $('div.DTFC_RightFootBlocker', nSWrapper)[0]
+			block.style.width = oOverflow.bar+"px";
+			block.style.right = -oOverflow.bar+"px";
+			this.dom.grid.right.footBlock = block;
 		}
 		
 		if ( this.s.dt.nTFoot )
@@ -532,14 +586,10 @@ FixedColumns.prototype = {
 			}
 		}
 
-		nSWrapper.appendChild( nLeft );
 		this.dom.grid.dt.parentNode.insertBefore( nSWrapper, this.dom.grid.dt );
 		nSWrapper.appendChild( this.dom.grid.dt );
-
-		this.dom.grid.dt.style.position = "absolute";
-		this.dom.grid.dt.style.top = "0px";
-		this.dom.grid.dt.style.left = this.s.iLeftWidth+"px";
-		this.dom.grid.dt.style.width = ($(this.dom.grid.dt).width()-this.s.iLeftWidth-this.s.iRightWidth)+"px";
+		nSWrapper.appendChild( nLeft );
+		nSWrapper.appendChild( nRight );
 	},
 	
 	
@@ -553,61 +603,100 @@ FixedColumns.prototype = {
 	"_fnGridLayout": function ()
 	{
 		var oGrid = this.dom.grid;
-		var iTotal = $(oGrid.wrapper).width();
-		var iLeft = 0, iRight = 0, iRemainder = 0;
+		var iWidth = $(oGrid.wrapper).width();
+		var iHeight = $(this.s.dt.nTable.parentNode).height();
+		var iLeftWidth, iRight, iRightWidth;
+		var oOverflow = this._fnDTOverflow();
 
 		if ( this.s.sLeftWidth == 'fixed' )
 		{
-			iLeft = this.s.iLeftWidth;
+			iLeftWidth = this.s.iLeftWidth;
 		}
 		else
 		{
-			iLeft = ( this.s.iLeftWidth / 100 ) * iTotal;
+			iLeftWidth = ( this.s.iLeftWidth / 100 ) * iWidth;
 		}
 
 		if ( this.s.sRightWidth == 'fixed' )
 		{
-			iRight = this.s.iRightWidth;
+			iRightWidth = this.s.iRightWidth;
 		}
 		else
 		{
-			iRight = ( this.s.iRightWidth / 100 ) * iTotal;
+			iRightWidth = ( this.s.iRightWidth / 100 ) * iWidth;
 		}
 
-		iRemainder = iTotal - iLeft - iRight;
+		// When x scrolling - don't paint the fixed columns over the x scrollbar
+		if ( oOverflow.x )
+		{
+			iHeight -= oOverflow.bar;
+		}
+		
+		oGrid.wrapper.style.height = iHeight+"px";
 
-		oGrid.left.wrapper.style.width = iLeft+"px";
-		oGrid.dt.style.width = iRemainder+"px";
-		oGrid.dt.style.left = iLeft+"px";
+		oGrid.left.wrapper.style.width = iLeftWidth+"px";
+		oGrid.left.wrapper.style.height = iHeight+"px";
+		oGrid.left.body.style.height = iHeight+"px";
+		if ( oGrid.left.foot ) {
+			oGrid.left.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px"; // shift footer for scrollbar
+		}
+
+		oGrid.left.liner.style.width = (iLeftWidth+oOverflow.bar)+"px";
+		oGrid.left.liner.style.height = iHeight+"px";
 
 		if ( this.s.iRightColumns > 0 )
 		{
-			oGrid.right.wrapper.style.width = iRight+"px";
-			oGrid.right.wrapper.style.left = (iTotal-iRight)+"px";
+			iRight = iWidth - iRightWidth;
+			if ( oOverflow.y )
+			{
+				iRight -= oOverflow.bar;
+			}
+
+			oGrid.right.wrapper.style.width = iRightWidth+"px";
+			oGrid.right.wrapper.style.left = iRight+"px";
+			oGrid.right.wrapper.style.height = iHeight+"px";
+			oGrid.right.body.style.height = iHeight+"px";
+			if ( oGrid.right.foot ) {
+				oGrid.right.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px";
+			}
+
+			oGrid.right.liner.style.width = (iRightWidth+oOverflow.bar)+"px";
+			oGrid.right.liner.style.height = iHeight+"px";
+
+			oGrid.right.headBlock.style.display = oOverflow.x ? 'block' : 'none';
+			oGrid.right.footBlock.style.display = oOverflow.x ? 'block' : 'none';
 		}
 	},
 	
 	
 	/**
-	 * Recalculate and set the height of the grid components used for positioning of the 
-	 * FixedColumn display grid.
-	 *  @returns {void}
+	 * Get information about the DataTable's scrolling state - specifically if the table is scrolling
+	 * on either the x or y axis, and also the scrollbar width.
+	 *  @returns {object} Information about the DataTables scrolling state with the properties:
+	 *    'x', 'y' and 'bar'
 	 *  @private
 	 */
-	"_fnGridHeight": function ()
+	"_fnDTOverflow": function ()
 	{
-		var oGrid = this.dom.grid;
-		var iHeight = $(this.dom.grid.dt).height();
+		var nTable = this.s.dt.nTable;
+		var nTableScrollBody = nTable.parentNode;
+		var out = {
+			"x": false,
+			"y": false,
+			"bar": this.s.dt.oScroll.iBarWidth
+		};
 
-		oGrid.wrapper.style.height = iHeight+"px";
-		oGrid.left.body.style.height = $(this.dom.scroller).height()+"px";
-		oGrid.left.wrapper.style.height = iHeight+"px";
-		
-		if ( this.s.iRightColumns > 0 )
+		if ( nTable.offsetWidth > nTableScrollBody.offsetWidth )
 		{
-			oGrid.right.wrapper.style.height = iHeight+"px";
-			oGrid.right.body.style.height = $(this.dom.scroller).height()+"px";
+			out.x = true;
 		}
+
+		if ( nTable.offsetHeight > nTableScrollBody.offsetHeight )
+		{
+			out.y = true;
+		}
+
+		return out;
 	},
 	
 	
@@ -875,10 +964,12 @@ FixedColumns.prototype = {
 					that.s.dt.aiDisplay[ that.s.dt._iDisplayStart+z ] : z;
 				for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
 				{
+					var aTds = that.s.dt.oApi._fnGetTdNodes( that.s.dt, i );
 					iColumn = aiColumns[iIndex];
-					if ( typeof that.s.dt.aoData[i]._anHidden[iColumn] != 'undefined' )
+
+					if ( aTds.length > 0 )
 					{
-						nClone = $(that.s.dt.aoData[i]._anHidden[iColumn]).clone(true)[0];
+						nClone = $( aTds[iColumn] ).clone(true)[0];
 						n.appendChild( nClone );
 					}
 				}
@@ -896,7 +987,9 @@ FixedColumns.prototype = {
 		}
 		
 		oClone.body.style.width = "100%";
-		oGrid.body.appendChild( oClone.body );
+		oClone.body.style.margin = "0";
+		oClone.body.style.padding = "0";
+		oGrid.liner.appendChild( oClone.body );
 
 		this._fnEqualiseHeights( 'tbody', that.dom.body, oClone.body );
 		
@@ -1218,7 +1311,7 @@ FixedColumns.prototype.CLASS = "FixedColumns";
  *  @default   See code
  *  @static
  */
-FixedColumns.VERSION = "2.0.4.dev";
+FixedColumns.VERSION = "2.5.0.dev";
 
 
 

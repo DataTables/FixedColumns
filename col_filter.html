@@ -5,12 +5,16 @@
 		<link rel="shortcut icon" type="image/ico" href="http://www.sprymedia.co.uk/media/images/favicon.ico">
 		
 		<title>ColReorder example</title>
-		<style type="text/css" title="currentStyle">
-			@import "../../media/css/demo_page.css";
-			@import "../../media/css/demo_table.css";
+
+		<link rel="stylesheet" type="text/css" href="../../media/css/demo_page.css">
+		<link rel="stylesheet" type="text/css" href="../../media/css/jquery.dataTables.css">
+		<link rel="stylesheet" type="text/css" href="media/css/FixedColumns.css">
+		
+		<style type="text/css">
 			thead input { width: 100% }
 			input.search_init { color: #999 }
 		</style>
+
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" charset="utf-8" src="media/js/FixedColumns.js"></script>
@@ -58,6 +62,7 @@
 					"sScrollX": "100%",
 					"sScrollXInner": "150%",
 					"bScrollCollapse": true,
+					"bSortCellsTop": true,
 					"sDom": 'C<"clear">lfrtip',
 					"aoColumnDefs": [
 						{ "bVisible": false, "aTargets": [ 2 ] }
