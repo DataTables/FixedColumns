@@ -613,7 +613,8 @@ FixedColumns.prototype = {
 	{
 		var oGrid = this.dom.grid;
 		var iWidth = $(oGrid.wrapper).width();
-		var iHeight = $(this.s.dt.nTable.parentNode).height();
+		var iBodyHeight = $(this.s.dt.nTable.parentNode).height();
+		var iFullHeight = $(this.s.dt.nTable.parentNode.parentNode).height();
 		var iLeftWidth, iRight, iRightWidth;
 		var oOverflow = this._fnDTOverflow();
 
@@ -638,22 +639,22 @@ FixedColumns.prototype = {
 		// When x scrolling - don't paint the fixed columns over the x scrollbar
 		if ( oOverflow.x )
 		{
-			iHeight -= oOverflow.bar;
+			iBodyHeight -= oOverflow.bar;
 		}
 		
-		oGrid.wrapper.style.height = iHeight+"px";
+		oGrid.wrapper.style.height = iFullHeight+"px";
 
 		if ( this.s.iLeftColumns > 0 )
 		{
 			oGrid.left.wrapper.style.width = iLeftWidth+"px";
-			oGrid.left.wrapper.style.height = iHeight+"px";
-			oGrid.left.body.style.height = iHeight+"px";
+			oGrid.left.wrapper.style.height = iFullHeight+"px";
+			oGrid.left.body.style.height = iBodyHeight+"px";
 			if ( oGrid.left.foot ) {
 				oGrid.left.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px"; // shift footer for scrollbar
 			}
 
 			oGrid.left.liner.style.width = (iLeftWidth+oOverflow.bar)+"px";
-			oGrid.left.liner.style.height = iHeight+"px";
+			oGrid.left.liner.style.height = iBodyHeight+"px";
 		}
 
 		if ( this.s.iRightColumns > 0 )
@@ -666,14 +667,14 @@ FixedColumns.prototype = {
 
 			oGrid.right.wrapper.style.width = iRightWidth+"px";
 			oGrid.right.wrapper.style.left = iRight+"px";
-			oGrid.right.wrapper.style.height = iHeight+"px";
-			oGrid.right.body.style.height = iHeight+"px";
+			oGrid.right.wrapper.style.height = iFullHeight+"px";
+			oGrid.right.body.style.height = iBodyHeight+"px";
 			if ( oGrid.right.foot ) {
 				oGrid.right.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px";
 			}
 
 			oGrid.right.liner.style.width = (iRightWidth+oOverflow.bar)+"px";
-			oGrid.right.liner.style.height = iHeight+"px";
+			oGrid.right.liner.style.height = iBodyHeight+"px";
 
 			oGrid.right.headBlock.style.display = oOverflow.x ? 'block' : 'none';
 			oGrid.right.footBlock.style.display = oOverflow.x ? 'block' : 'none';
