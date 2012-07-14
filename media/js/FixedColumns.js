@@ -1013,6 +1013,14 @@ FixedColumns.prototype = {
 		oClone.body.style.width = "100%";
 		oClone.body.style.margin = "0";
 		oClone.body.style.padding = "0";
+
+		if ( bAll )
+		{
+			if ( typeof this.s.dt.oScroller != 'undefined' )
+			{
+				oGrid.liner.appendChild( this.s.dt.oScroller.dom.force.cloneNode(true) );
+			}
+		}
 		oGrid.liner.appendChild( oClone.body );
 
 		this._fnEqualiseHeights( 'tbody', that.dom.body, oClone.body );
