@@ -20,11 +20,10 @@
 					"bServerSide": true,
 					"sAjaxSource": "../../examples/server_side/scripts/server_processing.php",
 					"sScrollX": "100%",
-					"sScrollXInner": "150%",
-					"fnInitComplete": function () {
-						new FixedColumns( oTable );
-					}
+					"sScrollXInner": "150%"
 				} );
+				
+				new FixedColumns( oTable );
 			} );
 		</script>
 	</head>
@@ -35,7 +34,7 @@
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>This example shows how FixedColumns can be used with server-side processing in DataTables to cope with very large tables. The only special thing to consider here is that the FixedColumns instance must be initialised once the table has completed its full initialisation - this is done using <i>fnInitComplete</i>.</p>
+			<p>This example shows how FixedColumns can be used with server-side processing in DataTables to cope with very large tables. No special considerations are required, just initialise FixedColumns as you normally would!</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -72,11 +71,10 @@
 		"bServerSide": true,
 		"sAjaxSource": "../../examples/server_side/scripts/server_processing.php",
 		"sScrollX": "100%",
-		"sScrollXInner": "150%",
-		"fnInitComplete": function () {
-	    new FixedColumns( oTable );
-	  }
+		"sScrollXInner": "150%"
 	} );
+
+    new FixedColumns( oTable );
 } );</pre>
 
 

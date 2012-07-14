@@ -50,6 +50,8 @@ var FixedColumns;
  *  	new FixedColumns( oTable );
  */
 FixedColumns = function ( oDT, oInit ) {
+	var that = this;
+
 	/* Sanity check - you just know it will happen */
 	if ( ! this instanceof FixedColumns )
 	{
@@ -252,7 +254,16 @@ FixedColumns = function ( oDT, oInit ) {
 	this.s.dt.oFixedColumns = this;
 	
 	/* Let's do it */
-	this._fnConstruct( oInit );
+	if ( ! this.s.dt._bInitComplete )
+	{
+		this.s.dt.oApi._fnCallbackReg( this.s.dt, 'aoInitComplete', function () {
+			that._fnConstruct( oInit );
+		}, 'FixedColumns' );
+	}
+	else
+	{
+		this._fnConstruct( oInit );
+	}
 };
 
 
