@@ -447,21 +447,13 @@ FixedColumns.prototype = {
 		this._fnGridSetup();
 
 		/* Event handlers */
-
-		// When the body is scrolled - scroll the left and right columns
-		$(this.dom.scroller).on( 'scroll mousewheel', function () {
-			if ( that.s.iLeftColumns > 0 )
-			{
-				that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
-			}
-			if ( that.s.iRightColumns > 0 )
-			{
-				that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
-			}
-		} );
-
 		if ( that.s.iLeftColumns > 0 )
 		{
+			// When the body is scrolled - scroll the left column
+			$(this.dom.scroller).on( 'scroll mousewheel', function () {
+				that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
+			} );
+
 			// When scrolling the left column, scroll the body and right column
 			$(that.dom.grid.left.liner).on( 'scroll mousewheel', function () {
 				that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
@@ -482,6 +474,11 @@ FixedColumns.prototype = {
 
 		if ( that.s.iRightColumns > 0 )
 		{
+			// When the body is scrolled - scroll the right column
+			$(this.dom.scroller).on( 'scroll mousewheel', function () {
+				that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
+			} );
+
 			// When scrolling the right column, scroll the body and the left column
 			$(that.dom.grid.right.liner).on( 'scroll mousewheel', function () {
 				that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
