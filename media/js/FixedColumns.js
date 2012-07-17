@@ -454,14 +454,18 @@ FixedColumns.prototype = {
 				that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
 			} );
 
-			// When scrolling the left column, scroll the body and right column
+			// When scrolling the left column, scroll the body
 			$(that.dom.grid.left.liner).on( 'scroll mousewheel', function () {
 				that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
-				if ( that.s.iRightColumns > 0 )
-				{
-					that.dom.grid.right.liner.scrollTop = that.dom.grid.left.liner.scrollTop;
-				}
 			} );
+
+			if ( that.s.iRightColumns > 0 )
+			{
+				// When scrolling the left column, scroll the right column
+				$(that.dom.grid.left.liner).on( 'scroll mousewheel', function () {
+					that.dom.grid.right.liner.scrollTop = that.dom.grid.left.liner.scrollTop;
+				});
+			}
 
 			// When x-scrolling in the fixed column(s) we need to pass that information on
 			// to the table's body, since otherwise we just swallow that information
@@ -479,14 +483,18 @@ FixedColumns.prototype = {
 				that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
 			} );
 
-			// When scrolling the right column, scroll the body and the left column
+			// When scrolling the right column, scroll the body
 			$(that.dom.grid.right.liner).on( 'scroll mousewheel', function () {
 				that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
-				if ( that.s.iLeftColumns > 0 )
-				{
-					that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
-				}
 			} );
+
+			if ( that.s.iLeftColumns > 0 )
+			{
+				// When scrolling the right column, scroll the left column
+				$(that.dom.grid.right.liner).on( 'scroll mousewheel', function () {
+					that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
+				});
+			}
 
 			// Adjust the body for x-scrolling
 			$(that.dom.grid.right.liner).bind( "mousewheel", function(e) {
