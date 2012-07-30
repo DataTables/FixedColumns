@@ -446,6 +446,9 @@ FixedColumns.prototype = {
 		/* Set up the DOM that we want for the fixed column layout grid */
 		this._fnGridSetup();
 
+		/* Detect browser - right now just used to appropriately bind event handlers */
+		this._fnDetectBrowser();
+
 		/* Bind event handlers */
 		this._fnBindEventHandlers();
 
@@ -471,39 +474,93 @@ FixedColumns.prototype = {
 	 * @ eturns {void}
 	 * @private
 	 */
+	"_fnDetectBrowser": function ()
+	{
+		var ua = navigator.userAgent.toLowerCase();
+
+		// userAgent RegExp
+		var rwebkit  = /(webkit)[ \/]([\w.]+)/,
+		    ropera   = /(opera)(?:.*version)?[ \/]([\w.]+)/,
+		    rmsie    = /(msie) ([\w.]+)/,
+		    rmozilla = /(mozilla)(?:.*? rv:([\w.]+))?/,
+		    rsafari  = /(safari)[ \/]([\w.]+)/,
+		    rchrome  = /(chrome)[ \/]([\w.]+)/;
+
+
+		this.browser = {
+			webkit:  rwebkit.test( ua ),
+			opera:   ropera.test( ua ),
+			msie:    rmsie.test( ua ),
+			safari:  rsafari.test( ua ) &&
+			         !rchrome.test( ua ),
+			chrome:  rchrome.test( ua ),
+			firefox: rmozilla.test( ua ) &&
+			         ua.indexOf("compatible") < 0 &&
+			         ua.indexOf("like") < 0
+		};
+	},
+
+	/**
+	 * Bind event handlers for scrolling and resizing of the window
+	 * @ eturns {void}
+	 * @private
+	 */
 	"_fnBindEventHandlers": function ()
 	{
 		var that = this;
 
+		var browser = this.browser;
+
 		/* Event handlers */
 		if ( that.s.iLeftColumns > 0 )
 		{
-			// When the body is scrolled - scroll the left column
-			// When scrolling the left column, scroll the body and right column
-			$(this.dom.scroller).on('scroll.DTFC', function () {
-				if (that.dom.grid.left.liner.scrollTop == that.dom.scroller.scrollTop)
-					return false;
-				that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
-			} );
-			// When scrolling the left column, scroll the body
-			$(that.dom.grid.left.liner).on('scroll', function () {
-				if (that.dom.scroller.scrollTop == that.dom.grid.left.liner.scrollTop)
-					return false
-				that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
-			} );
-
-			if ( that.s.iRightColumns > 0 )
+			if ( !browser.firefox )
 			{
-				// When scrolling the left column, scroll the right column
-				$(that.dom.grid.left.liner).on('scroll.DTFC', function () {
-					if (that.dom.grid.right.liner.scrollTop == that.dom.grid.left.liner.scrollTop)
-						return false;
-					that.dom.grid.right.liner.scrollTop = that.dom.grid.left.liner.scrollTop;
+				// When the body is scrolled - scroll the left column
+				// When scrolling the left column, scroll the body and right column
+				$(this.dom.scroller).on('scroll.DTFC', function () {
+					that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
 				} );
+				// When scrolling the left column, scroll the body
+				$(that.dom.grid.left.liner).on('scroll.DTFC', function () {
+					that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
+				} );
+
+				if ( that.s.iRightColumns > 0 )
+				{
+					// When scrolling the left column, scroll the right column
+					$(that.dom.grid.left.liner).on('scroll.DTFC', function () {
+						that.dom.grid.right.liner.scrollTop = that.dom.grid.left.liner.scrollTop;
+					} );
+				}
+			} else {
+				// When the body is scrolled - scroll the left column
+				// When scrolling the left column, scroll the body and right column
+				$(this.dom.scroller).on('scroll.DTFC', function () {
+					if (that.dom.grid.left.liner.scrollTop == that.dom.scroller.scrollTop)
+						return false;
+					that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
+				} );
+				// When scrolling the left column, scroll the body
+				$(that.dom.grid.left.liner).on('scroll.DTFC', function () {
+					if (that.dom.scroller.scrollTop == that.dom.grid.left.liner.scrollTop)
+						return false
+					that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
+				} );
+
+				if ( that.s.iRightColumns > 0 )
+				{
+					// When scrolling the left column, scroll the right column
+					$(that.dom.grid.left.liner).on('scroll.DTFC', function () {
+						if (that.dom.grid.right.liner.scrollTop == that.dom.grid.left.liner.scrollTop)
+							return false;
+						that.dom.grid.right.liner.scrollTop = that.dom.grid.left.liner.scrollTop;
+					} );
+				}
 			}
 
 			// Bind to 'mousewheel' event only for Safari
-			if ( $.browser.safari )
+			if ( browser.safari )
 			{
 				// When the body is scrolled - scroll the left column
 				$(this.dom.scroller).on('mousewheel.DTFC', function () {
@@ -536,32 +593,53 @@ FixedColumns.prototype = {
 
 		if ( that.s.iRightColumns > 0 )
 		{
-			// When the body is scrolled - scroll the right column
-			$(this.dom.scroller).on('scroll.DTFC', function () {
-				if (that.dom.grid.right.liner.scrollTop == that.dom.scroller.scrollTop)
-					return false;
-				that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
-			} );
-
-			// When scrolling the right column, scroll the body
-			$(that.dom.grid.right.liner).on('scroll.DTFC', function () {
-				if (that.dom.scroller.scrollTop == that.dom.grid.right.liner.scrollTop)
-					return false;
-				that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
-			} );
-
-			if ( that.s.iLeftColumns > 0 )
+			if ( !browser.firefox )
 			{
-				// When scrolling the right column, scroll the left column
-				$(that.dom.grid.right.liner).on('scroll.DTFC', function () {
-					if (that.dom.grid.left.liner.scrollTop == that.dom.grid.right.liner.scrollTop)
-						return false;
-					that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
+				// When the body is scrolled - scroll the right column
+				$(this.dom.scroller).on('scroll.DTFC', function () {
+					that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
 				} );
+
+				// When scrolling the right column, scroll the body
+				$(that.dom.grid.right.liner).on('scroll.DTFC', function () {
+					that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
+				} );
+
+				if ( that.s.iLeftColumns > 0 )
+				{
+					// When scrolling the right column, scroll the left column
+					$(that.dom.grid.right.liner).on('scroll.DTFC', function () {
+						that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
+					} );
+				}
+			} else {
+				// When the body is scrolled - scroll the right column
+				$(this.dom.scroller).on('scroll.DTFC', function () {
+					if (that.dom.grid.right.liner.scrollTop == that.dom.scroller.scrollTop)
+						return false;
+					that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
+				} );
+
+				// When scrolling the right column, scroll the body
+				$(that.dom.grid.right.liner).on('scroll.DTFC', function () {
+					if (that.dom.scroller.scrollTop == that.dom.grid.right.liner.scrollTop)
+						return false;
+					that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
+				} );
+
+				if ( that.s.iLeftColumns > 0 )
+				{
+					// When scrolling the right column, scroll the left column
+					$(that.dom.grid.right.liner).on('scroll.DTFC', function () {
+						if (that.dom.grid.left.liner.scrollTop == that.dom.grid.right.liner.scrollTop)
+							return false;
+						that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
+					} );
+				}
 			}
 
 			// Bind to 'mousewheel' event only for Safari
-			if ( $.browser.safari )
+			if ( browser.safari )
 			{
 				// When the body is scrolled - scroll the right column
 				$(this.dom.scroller).on('mousewheel.DTFC', function () {
