@@ -10,20 +10,28 @@
 		<link rel="stylesheet" type="text/css" href="../../media/css/jquery.dataTables.css">
 		<link rel="stylesheet" type="text/css" href="media/css/FixedColumns.css">
 
+		<style type="text/css">
+			#demo { display: none }
+		</style>
+
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" charset="utf-8" src="media/js/FixedColumns.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
-				var oTable = $('#example').dataTable( {
+				var table = $('#example').dataTable( {
 					"sScrollX": "100%",
 					"sScrollXInner": "140%",
 					"bScrollCollapse": true
 				} );
-				new FixedColumns( oTable, {
-					"iLeftColumns": 2,
-					"iLeftWidth": 350
+				var fc = new FixedColumns( table, {
+					"iLeftColumns": 2
 				} );
+
+				$('#demo').css('display','block');
+
+				table.fnAdjustColumnSizing();
+				fc.fnRedrawLayout();
 			} );
 		</script>
 	</head>
@@ -475,8 +483,7 @@
  		"bScrollCollapse": true
  	} );
  	new FixedColumns( oTable, {
- 		"iLeftColumns": 2,
-		"iLeftWidth": 350
+ 		"iLeftColumns": 2
  	} );
  } );</pre>
 

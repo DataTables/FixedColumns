@@ -309,7 +309,9 @@ FixedColumns.prototype = {
 	 */
 	"fnRedrawLayout": function ()
 	{
+		this._fnColCalc();
 		this._fnGridLayout();
+		this.fnUpdate();
 	},
 	
 	
@@ -408,42 +410,9 @@ FixedColumns.prototype = {
 		/* Set up the DOM as we need it and cache nodes */
 		this.dom.grid.dt = $(this.s.dt.nTable).parents('div.dataTables_scroll')[0];
 		this.dom.scroller = $('div.dataTables_scrollBody', this.dom.grid.dt )[0];
-
-		var iScrollWidth = $(this.dom.grid.dt).width();
-		var iLeftWidth = 0;
-		var iRightWidth = 0;
-
-		$('tbody>tr:eq(0)>td, tbody>tr:eq(0)>th', this.s.dt.nTable).each( function (i) {
-			// Inner width is used to assign widths to cells
-			that.s.aiInnerWidths.push( $(this).width() );
-			
-			// Outer width is used to calculate the container
-			iWidth = $(this).outerWidth();
-			that.s.aiOuterWidths.push( iWidth );
-
-			if ( i < that.s.iLeftColumns )
-			{
-				iLeftWidth += iWidth;
-			}
-			if ( that.s.iTableColumns-that.s.iRightColumns <= i )
-			{
-				iRightWidth += iWidth;
-			}
-		} );
-
-		if ( this.s.iLeftWidth === null )
-		{
-			this.s.iLeftWidth = this.s.sLeftWidth == 'fixed' ?
-				iLeftWidth : (iLeftWidth/iScrollWidth) * 100; 
-		}
-
-		if ( this.s.iRightWidth === null )
-		{
-			this.s.iRightWidth = this.s.sRightWidth == 'fixed' ?
-				iRightWidth : (iRightWidth/iScrollWidth) * 100;
-		}
 		
 		/* Set up the DOM that we want for the fixed column layout grid */
+		this._fnColCalc();
 		this._fnGridSetup();
 
 		/* Event handlers */
@@ -517,6 +486,46 @@ FixedColumns.prototype = {
 		 */
 		this._fnGridLayout();
 		this.s.dt.oInstance.fnDraw(false);
+	},
+	
+	
+	/**
+	 * Calculate the column widths for the grid layout
+	 *  @returns {void}
+	 *  @private
+	 */
+	"_fnColCalc": function ()
+	{
+		var that = this;
+		var iScrollWidth = $(this.dom.grid.dt).width();
+		var iLeftWidth = 0;
+		var iRightWidth = 0;
+
+		this.s.aiInnerWidths = [];
+
+		$('tbody>tr:eq(0)>td, tbody>tr:eq(0)>th', this.s.dt.nTable).each( function (i) {
+			// Inner width is used to assign widths to cells
+			that.s.aiInnerWidths.push( $(this).width() );
+			
+			// Outer width is used to calculate the container
+			iWidth = $(this).outerWidth();
+			that.s.aiOuterWidths.push( iWidth );
+
+			if ( i < that.s.iLeftColumns )
+			{
+				iLeftWidth += iWidth;
+			}
+			if ( that.s.iTableColumns-that.s.iRightColumns <= i )
+			{
+				iRightWidth += iWidth;
+			}
+		} );
+
+		this.s.iLeftWidth = this.s.sLeftWidth == 'fixed' ?
+			iLeftWidth : (iLeftWidth/iScrollWidth) * 100; 
+		
+		this.s.iRightWidth = this.s.sRightWidth == 'fixed' ?
+			iRightWidth : (iRightWidth/iScrollWidth) * 100;
 	},
 	
 	
