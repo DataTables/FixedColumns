@@ -476,8 +476,8 @@ FixedColumns.prototype = {
 	 */
 	"_fnBindEventHandlers": function ()
 	{
-		var that = this.
-			browser = this.browser;
+		var that = this,
+		    browser = this.browser;
 
 		/* Event handlers */
 		if ( that.s.iLeftColumns > 0 )
