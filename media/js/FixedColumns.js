@@ -28,12 +28,11 @@ var FixedColumns;
  * exactly this option (note for non-scrolling tables, please use the
  * FixedHeader plug-in, which can fix headers, footers and columns). Key
  * features include:
- *   <ul class="limit_length">
- *     <li>Freezes the left or right most columns to the side of the table</li>
- *     <li>Option to freeze two or more columns</li>
- *     <li>Full integration with DataTables' scrolling options</li>
- *     <li>Speed - FixedColumns is fast in its operation</li>
- *   </ul>
+ *
+ * * Freezes the left or right most columns to the side of the table
+ * * Option to freeze two or more columns
+ * * Full integration with DataTables' scrolling options
+ * * Speed - FixedColumns is fast in its operation
  *
  *  @class
  *  @constructor
