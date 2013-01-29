@@ -98,16 +98,7 @@ FixedColumns = function ( oDT, oInit ) {
 		 *  @type     array.<int>
 		 *  @default  []
 		 */
-		"aiInnerWidths": [],
-		
-		/** 
-		 * Flag to indicate if we are dealing with IE6/7 as these browsers need a little hack
-		 * in the odd place
-		 *  @type     boolean
-		 *  @default  Automatically calculated
-		 *  @readonly
-		 */
-		"bOldIE": ($.browser.msie && ($.browser.version == "6.0" || $.browser.version == "7.0"))
+		"aiInnerWidths": []
 	};
 	
 	
@@ -335,7 +326,7 @@ FixedColumns.prototype = {
 	 */
 	"fnRecalculateHeight": function ( nTr )
 	{
-		nTr._DTTC_iHeight = null;
+		delete nTr._DTTC_iHeight;
 		nTr.style.height = 'auto';
 	},
 	
@@ -356,18 +347,7 @@ FixedColumns.prototype = {
 	 */
 	"fnSetRowHeight": function ( nTarget, iHeight )
 	{
-		var jqBoxHack = $(nTarget).children(':first');
-		var iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height();
-
-		/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
-		if ( $.browser.mozilla || $.browser.opera )
-		{
-			nTarget.style.height = iHeight+"px";
-		}
-		else
-		{
-			$(nTarget).children().height( iHeight-iBoxHack );
-		}
+		nTarget.style.height = iHeight+"px";
 	},
 	
 	
@@ -1139,21 +1119,10 @@ FixedColumns.prototype = {
 			jqBoxHack    = $('>'+nodeName+'>tr:eq(0)', original).children(':first'),
 			iBoxHack     = jqBoxHack.outerHeight() - jqBoxHack.height(),
 			anOriginal   = this._fnGetTrNodes( rootOriginal ),
-		 	anClone      = this._fnGetTrNodes( rootClone );
+			anClone      = this._fnGetTrNodes( rootClone );
 		
 		for ( i=0, iLen=anClone.length ; i<iLen ; i++ )
 		{
-			if ( this.s.sHeightMatch == 'semiauto' && typeof anOriginal[i]._DTTC_iHeight != 'undefined' && 
-				anOriginal[i]._DTTC_iHeight !== null )
-			{
-				/* Oddly enough, IE / Chrome seem not to copy the style height - Mozilla and Opera keep it */
-				if ( $.browser.msie )
-				{
-					$(anClone[i]).children().height( anOriginal[i]._DTTC_iHeight-iBoxHack );
-				}
-				continue;
-			}
-			
 			iHeightOriginal = anOriginal[i].offsetHeight;
 			iHeightClone = anClone[i].offsetHeight;
 			iHeight = iHeightClone > iHeightOriginal ? iHeightClone : iHeightOriginal;
@@ -1163,17 +1132,8 @@ FixedColumns.prototype = {
 				anOriginal[i]._DTTC_iHeight = iHeight;
 			}
 			
-			/* Can we use some kind of object detection here?! This is very nasty - damn browsers */
-			if ( $.browser.msie && $.browser.version < 8 )
-			{
-				$(anClone[i]).children().height( iHeight-iBoxHack );
-				$(anOriginal[i]).children().height( iHeight-iBoxHack );	
-			}
-			else
-			{
-				anClone[i].style.height = iHeight+"px";
-				anOriginal[i].style.height = iHeight+"px";
-			}
+			anClone[i].style.height = iHeight+"px";
+			anOriginal[i].style.height = iHeight+"px";
 		}
 	}
 };
