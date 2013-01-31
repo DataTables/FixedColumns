@@ -24,29 +24,29 @@
 		<script type="text/javascript" charset="utf-8" src="media/js/dataTables.fixedColumns.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
-				var oTable = $('#example').dataTable( {
-					"sScrollX": "100%",
-					"sScrollXInner": "150%",
-					"bScrollCollapse": true,
-					"fnDrawCallback": function ( oSettings ) {
+				var t = $('#example').dataTable( {
+					"scrollX": "100%",
+					"scrollXInner": "150%",
+					"scrollCollapse": true,
+					"drawCallback": function ( settings ) {
 						/* Need to redo the counters if filtered or sorted */
-						if ( oSettings.bSorted || oSettings.bFiltered ) {
-							for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ ) {
-								this.fnUpdate( i+1, oSettings.aiDisplay[i], 0, false, false );
-								this.fnUpdate( i+1, oSettings.aiDisplay[i], 6, false, false );
+						if ( settings.bSorted || settings.bFiltered ) {
+							for ( var i=0, ien=settings.aiDisplay.length ; i<ien ; i++ ) {
+								this.fnUpdate( i+1, settings.aiDisplay[i], 0, false, false );
+								this.fnUpdate( i+1, settings.aiDisplay[i], 6, false, false );
 							}
 						}
 					},
-					"aoColumnDefs": [
-						{ "bSortable": false, "sClass": "indexLeft", "aTargets": [ 0 ] },
-						{ "bSortable": false, "sClass": "indexRight", "aTargets": [ -1 ] }
+					"columnDefs": [
+						{ "sortable": false, "class": "indexLeft", "targets": [ 0 ] },
+						{ "sortable": false, "class": "indexRight", "targets": [ -1 ] }
 					],
-					"aaSorting": [[ 1, 'asc' ]]
+					"sorting": [[ 1, 'asc' ]]
 				} );
 				
-				new $.fn.dataTable.FixedColumns( oTable, {
-					"iLeftColumns": 1,
-					"iRightColumns": 1
+				new $.fn.dataTable.FixedColumns( t, {
+					"leftColumns": 1,
+					"rightColumns": 1
 				} );
 			} );
 		</script>
@@ -611,29 +611,29 @@
 			
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
-	var oTable = $('#example').dataTable( {
-		"sScrollX": "100%",
-		"sScrollXInner": "150%",
-		"bScrollCollapse": true,
-		"fnDrawCallback": function ( oSettings ) {
+	var t = $('#example').dataTable( {
+		"scrollX": "100%",
+		"scrollXInner": "150%",
+		"scrollCollapse": true,
+		"drawCallback": function ( settings ) {
 			/* Need to redo the counters if filtered or sorted */
-			if ( oSettings.bSorted || oSettings.bFiltered ) {
-				for ( var i=0, iLen=oSettings.aiDisplay.length ; i&lt;iLen ; i++ ) {
-					this.fnUpdate( i+1, oSettings.aiDisplay[i], 0, false, false );
-					this.fnUpdate( i+1, oSettings.aiDisplay[i], 6, false, false );
+			if ( settings.bSorted || settings.bFiltered ) {
+				for ( var i=0, ien=settings.aiDisplay.length ; i&lt;ien ; i++ ) {
+					this.fnUpdate( i+1, settings.aiDisplay[i], 0, false, false );
+					this.fnUpdate( i+1, settings.aiDisplay[i], 6, false, false );
 				}
 			}
 		},
-		"aoColumnDefs": [
-			{ "bSortable": false, "sClass": "indexLeft", "aTargets": [ 0 ] },
-			{ "bSortable": false, "sClass": "indexRight", "aTargets": [ -1 ] }
+		"columnDefs": [
+			{ "sortable": false, "class": "indexLeft", "targets": [ 0 ] },
+			{ "sortable": false, "class": "indexRight", "targets": [ -1 ] }
 		],
-		"aaSorting": [[ 1, 'asc' ]]
+		"sorting": [[ 1, 'asc' ]]
 	} );
 	
-	new $.fn.dataTable.FixedColumns( oTable, {
-		"iLeftColumns": 1,
-		"iRightColumns": 1
+	new $.fn.dataTable.FixedColumns( t, {
+		"leftColumns": 1,
+		"rightColumns": 1
 	} );
 } );</pre>
 

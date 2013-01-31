@@ -64,6 +64,12 @@ FixedColumns = function ( dt, init ) {
 	{
 		init = {};
 	}
+
+	// Use the DataTables Hungarian notation mapping method, if it exists to
+	// provide forwards compatibility for camel case variables
+	if ( dt.oApi._fnCamelToHungarian ) {
+		dt.oApi._fnCamelToHungarian( FixedColumns.defaults, init );
+	}
 	
 	/**
 	 * Settings object which contains customisable information for FixedColumns instance
