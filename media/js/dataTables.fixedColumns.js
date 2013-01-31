@@ -1,7 +1,7 @@
 /**
  * @summary     FixedColumns
  * @description Freeze columns in place on a scrolling DataTable
- * @file        FixedColumns.js
+ * @file        dataTables.fixedColumns.js
  * @version     2.5.0.dev
  * @author      Allan Jardine (www.sprymedia.co.uk)
  * @license     GPL v2 or BSD 3 point style
@@ -16,10 +16,12 @@
  */
 
 
-/* Global scope for FixedColumns */
+/* Global scope for FixedColumns - legacy and undocumented. Please use
+ * $.fn.dataTable.FixedColumns
+ */
 var FixedColumns;
 
-(function($, window, document) {
+(function(window, document, $, undefined) {
 
 
 /**
@@ -36,19 +38,19 @@ var FixedColumns;
  *
  *  @class
  *  @constructor
- *  @param {object} oDT DataTables instance
- *  @param {object} [oInit={}] Configuration object for FixedColumns. Options are defined by {@link FixedColumns.defaults}
+ *  @param {object} dt DataTables instance
+ *  @param {object} [init={}] Configuration object for FixedColumns. Options are defined by {@link FixedColumns.defaults}
  *
- *  @requires jQuery 1.3+
+ *  @requires jQuery 1.7+
  *  @requires DataTables 1.8.0+
  *
  *  @example
  *      var oTable = $('#example').dataTable( {
  *        "sScrollX": "100%"
  *      } );
- *      new FixedColumns( oTable );
+ *      new $.fn.dataTable.fixedColumns( oTable );
  */
-FixedColumns = function ( oDT, oInit ) {
+FixedColumns = function ( dt, init ) {
 	var that = this;
 
 	/* Sanity check - you just know it will happen */
@@ -58,9 +60,9 @@ FixedColumns = function ( oDT, oInit ) {
 		return;
 	}
 	
-	if ( typeof oInit == 'undefined' )
+	if ( typeof init == 'undefined' )
 	{
-		oInit = {};
+		init = {};
 	}
 	
 	/**
@@ -74,14 +76,14 @@ FixedColumns = function ( oDT, oInit ) {
 		 *  @type     object
 		 *  @default  Obtained from DataTables instance
 		 */
-		"dt": oDT.fnSettings(),
+		"dt": dt.fnSettings(),
 		
 		/**
 		 * Number of columns in the DataTable - stored for quick access
 		 *  @type     int
 		 *  @default  Obtained from DataTables instance
 		 */
-		"iTableColumns": oDT.fnSettings().aoColumns.length,
+		"iTableColumns": dt.fnSettings().aoColumns.length,
 		
 		/**
 		 * Original outer widths of the columns as rendered by DataTables - used to calculate
@@ -247,12 +249,12 @@ FixedColumns = function ( oDT, oInit ) {
 	if ( ! this.s.dt._bInitComplete )
 	{
 		this.s.dt.oApi._fnCallbackReg( this.s.dt, 'aoInitComplete', function () {
-			that._fnConstruct( oInit );
+			that._fnConstruct( init );
 		}, 'FixedColumns' );
 	}
 	else
 	{
-		this._fnConstruct( oInit );
+		this._fnConstruct( init );
 	}
 };
 
@@ -271,7 +273,7 @@ FixedColumns.prototype = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      var oFC = new FixedColumns( oTable );
+	 *      var oFC = new $.fn.dataTable.fixedColumns( oTable );
 	 *
 	 *      // at some later point when the table has been manipulated....
 	 *      oFC.fnUpdate();
@@ -291,7 +293,7 @@ FixedColumns.prototype = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      var oFC = new FixedColumns( oTable );
+	 *      var oFC = new $.fn.dataTable.fixedColumns( oTable );
 	 *
 	 *      // Resize the table container and then have FixedColumns adjust its layout....
 	 *      $('#content').width( 1200 );
@@ -315,7 +317,7 @@ FixedColumns.prototype = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      var oFC = new FixedColumns( oTable );
+	 *      var oFC = new $.fn.dataTable.fixedColumns( oTable );
 	 *
 	 *      // manipulate the table - mark the row as needing an update then update the table
 	 *      // this allows the redraw performed by DataTables fnUpdate to recalculate the row
@@ -339,7 +341,7 @@ FixedColumns.prototype = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      var oFC = new FixedColumns( oTable );
+	 *      var oFC = new $.fn.dataTable.fixedColumns( oTable );
 	 *
 	 *      // You may want to do this after manipulating a row in the fixed column
 	 *      oFC.fnSetRowHeight( $('#example tbody tr:eq(0)')[0], 50 );
@@ -1160,7 +1162,7 @@ FixedColumns.defaults = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      new FixedColumns( oTable, {
+	 *      new $.fn.dataTable.fixedColumns( oTable, {
 	 *          "iLeftColumns": 2
 	 *      } );
 	 */
@@ -1175,7 +1177,7 @@ FixedColumns.defaults = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      new FixedColumns( oTable, {
+	 *      new $.fn.dataTable.fixedColumns( oTable, {
 	 *          "iRightColumns": 1
 	 *      } );
 	 */
@@ -1190,7 +1192,7 @@ FixedColumns.defaults = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      new FixedColumns( oTable, {
+	 *      new $.fn.dataTable.fixedColumns( oTable, {
 	 *          "fnDrawCallback": function () {
 	 *	            alert( "FixedColumns redraw" );
 	 *	        }
@@ -1209,7 +1211,7 @@ FixedColumns.defaults = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      new FixedColumns( oTable, {
+	 *      new $.fn.dataTable.fixedColumns( oTable, {
 	 *          "sLeftWidth": "relative",
 	 *          "iLeftWidth": 10 // percentage
 	 *      } );
@@ -1227,7 +1229,7 @@ FixedColumns.defaults = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      new FixedColumns( oTable, {
+	 *      new $.fn.dataTable.fixedColumns( oTable, {
 	 *          "iLeftWidth": 100 // pixels
 	 *      } );
 	 */
@@ -1244,7 +1246,7 @@ FixedColumns.defaults = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      new FixedColumns( oTable, {
+	 *      new $.fn.dataTable.fixedColumns( oTable, {
 	 *          "sRightWidth": "relative",
 	 *          "iRightWidth": 10 // percentage
 	 *      } );
@@ -1262,7 +1264,7 @@ FixedColumns.defaults = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      new FixedColumns( oTable, {
+	 *      new $.fn.dataTable.fixedColumns( oTable, {
 	 *          "iRightWidth": 200 // pixels
 	 *      } );
 	 */
@@ -1281,7 +1283,7 @@ FixedColumns.defaults = {
 	 *      var oTable = $('#example').dataTable( {
 	 *          "sScrollX": "100%"
 	 *      } );
-	 *      new FixedColumns( oTable, {
+	 *      new $.fn.dataTable.fixedColumns( oTable, {
 	 *          "sHeightMatch": "auto"
 	 *      } );
 	 */
@@ -1331,5 +1333,10 @@ FixedColumns.VERSION = "2.5.0.dev";
  * @param {object} o.rightClone Instance's object dom.clone.right for easy reference. This object contains references to the right fixed clumn column's nodes
  */
 
-})(jQuery, window, document);
+
+// Make FixedColumns accessible from the DataTables instance
+$.fn.dataTable.FixedColumns = FixedColumns;
+
+
+})(window, document, jQuery);
 

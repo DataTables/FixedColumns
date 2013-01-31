@@ -8,7 +8,7 @@
 
 		<link rel="stylesheet" type="text/css" href="../../media/css/demo_page.css">
 		<link rel="stylesheet" type="text/css" href="../../media/css/jquery.dataTables.css">
-		<link rel="stylesheet" type="text/css" href="media/css/FixedColumns.css">
+		<link rel="stylesheet" type="text/css" href="media/css/dataTables.fixedColumns.css">
 		
 		<style type="text/css">
 			tr { height: 50px; }
@@ -16,7 +16,7 @@
 
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
-		<script type="text/javascript" charset="utf-8" src="media/js/FixedColumns.js"></script>
+		<script type="text/javascript" charset="utf-8" src="media/js/dataTables.fixedColumns.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				var iStart = new Date().getTime();
@@ -27,7 +27,7 @@
 					"bScrollCollapse": true,
 					"bPaginate": false
 				} );
-				new FixedColumns( oTable, {
+				new $.fn.dataTable.FixedColumns( oTable, {
 					"sHeightMatch": "none"
 				} );
 			} );
@@ -488,7 +488,7 @@
 		"sScrollXInner": "150%",
 		"bScrollCollapse": true
 	} );
-	new FixedColumns( oTable );
+	new $.fn.dataTable.FixedColumns( oTable );
 } );</pre>
 
 

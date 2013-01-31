@@ -8,7 +8,7 @@
 
 		<link rel="stylesheet" type="text/css" href="../../media/css/demo_page.css">
 		<link rel="stylesheet" type="text/css" href="../../media/css/jquery.dataTables.css">
-		<link rel="stylesheet" type="text/css" href="media/css/FixedColumns.css">
+		<link rel="stylesheet" type="text/css" href="media/css/dataTables.fixedColumns.css">
 
 		<style type="text/css">
 			td.index, tr.DTFC_NoData td { background-color: white; border-right: 1px solid black; }
@@ -18,7 +18,7 @@
 		
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
-		<script type="text/javascript" charset="utf-8" src="media/js/FixedColumns.js"></script>
+		<script type="text/javascript" charset="utf-8" src="media/js/dataTables.fixedColumns.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				var oTable = $('#example').dataTable( {
@@ -38,7 +38,7 @@
 					],
 					"aaSorting": [[ 1, 'asc' ]]
 				} );
-				new FixedColumns( oTable );
+				new $.fn.dataTable.FixedColumns( oTable );
 			} );
 		</script>
 	</head>
@@ -560,7 +560,7 @@
 		],
 		"aaSorting": [[ 1, 'asc' ]]
 	} );
-	new FixedColumns( oTable );
+	new $.fn.dataTable.FixedColumns( oTable );
 } );</pre>
 
 

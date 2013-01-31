@@ -8,7 +8,7 @@
 		
 		<link rel="stylesheet" type="text/css" href="../../media/css/demo_page.css">
 		<link rel="stylesheet" type="text/css" href="../../media/css/jquery.dataTables.css">
-		<link rel="stylesheet" type="text/css" href="media/css/FixedColumns.css">
+		<link rel="stylesheet" type="text/css" href="media/css/dataTables.fixedColumns.css">
 
 		<style type="text/css">
 			#demo { display: none }
@@ -16,7 +16,7 @@
 
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
-		<script type="text/javascript" charset="utf-8" src="media/js/FixedColumns.js"></script>
+		<script type="text/javascript" charset="utf-8" src="media/js/dataTables.fixedColumns.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				var table = $('#example').dataTable( {
@@ -24,7 +24,7 @@
 					"sScrollXInner": "140%",
 					"bScrollCollapse": true
 				} );
-				var fc = new FixedColumns( table, {
+				var fc = new $.fn.dataTable.FixedColumns( table, {
 					"iLeftColumns": 2
 				} );
 
@@ -482,7 +482,7 @@
  		"sScrollXInner": "150%",
  		"bScrollCollapse": true
  	} );
- 	new FixedColumns( oTable, {
+ 	new $.fn.dataTable.FixedColumns( oTable, {
  		"iLeftColumns": 2
  	} );
  } );</pre>

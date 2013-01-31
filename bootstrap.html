@@ -14,7 +14,7 @@
 
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
-		<script type="text/javascript" charset="utf-8" src="media/js/FixedColumns.js"></script>
+		<script type="text/javascript" charset="utf-8" src="media/js/dataTables.fixedColumns.js"></script>
 		<script type="text/javascript" charset="utf-8" src="http://datatables.github.com/Plugins/integration/bootstrap/dataTables.bootstrap.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
@@ -25,7 +25,7 @@
 					"bScrollCollapse": true,
 					"bPaginate": false
 				} );
-				new FixedColumns( oTable );
+				new $.fn.dataTable.FixedColumns( oTable );
 			} );
 		</script>
 	</head>
@@ -477,7 +477,7 @@
 		"sScrollXInner": "150%",
 		"bScrollCollapse": true
 	} );
-	new FixedColumns( oTable );
+	new $.fn.dataTable.FixedColumns( oTable );
 } );</pre>
 
 
