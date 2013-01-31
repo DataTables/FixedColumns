@@ -405,7 +405,7 @@ FixedColumns.prototype = {
 		/* Event handlers */
 
 		// When the body is scrolled - scroll the left and right columns
-		$(this.dom.scroller).scroll( function () {
+		$(this.dom.scroller).on( 'scroll.DTFC', function () {
 			if ( that.s.iLeftColumns > 0 )
 			{
 				that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
@@ -419,7 +419,7 @@ FixedColumns.prototype = {
 		if ( that.s.iLeftColumns > 0 )
 		{
 			// When scrolling the left column, scroll the body and right column
-			$(that.dom.grid.left.liner).scroll( function () {
+			$(that.dom.grid.left.liner).on( 'scroll.DTFC', function () {
 				that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
 				if ( that.s.iRightColumns > 0 )
 				{
@@ -430,7 +430,7 @@ FixedColumns.prototype = {
 			// When x-scrolling in the fixed column(s) we need to pass that information on
 			// to the table's body, since otherwise we just swallow that information
 			// TODO - This is far from perfect - how can be be improved?
-			$(that.dom.grid.left.liner).bind( "mousewheel", function(e) {
+			$(that.dom.grid.left.liner).on( "mousewheel.DTFC", function(e) {
 				var xDelta = e.originalEvent.wheelDeltaX / 3;
 				that.dom.scroller.scrollLeft -= xDelta;
 			} );
@@ -439,7 +439,7 @@ FixedColumns.prototype = {
 		if ( that.s.iRightColumns > 0 )
 		{
 			// When scrolling the right column, scroll the body and the left column
-			$(that.dom.grid.right.liner).scroll( function () {
+			$(that.dom.grid.right.liner).on( 'scroll.DTFC', function () {
 				that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
 				if ( that.s.iLeftColumns > 0 )
 				{
@@ -448,7 +448,7 @@ FixedColumns.prototype = {
 			} );
 
 			// Adjust the body for x-scrolling
-			$(that.dom.grid.right.liner).bind( "mousewheel", function(e) {
+			$(that.dom.grid.right.liner).on( "mousewheel.DTFC", function(e) {
 				var xDelta = e.originalEvent.wheelDeltaX / 3;
 				that.dom.scroller.scrollLeft -= xDelta;
 			} );
