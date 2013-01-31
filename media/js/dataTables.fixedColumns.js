@@ -45,10 +45,10 @@ var FixedColumns;
  *  @requires DataTables 1.8.0+
  *
  *  @example
- *      var oTable = $('#example').dataTable( {
- *        "sScrollX": "100%"
+ *      var table = $('#example').dataTable( {
+ *        "scrollX": "100%"
  *      } );
- *      new $.fn.dataTable.fixedColumns( oTable );
+ *      new $.fn.dataTable.fixedColumns( table );
  */
 FixedColumns = function ( dt, init ) {
 	var that = this;
@@ -70,7 +70,7 @@ FixedColumns = function ( dt, init ) {
 	if ( dt.oApi._fnCamelToHungarian ) {
 		dt.oApi._fnCamelToHungarian( FixedColumns.defaults, init );
 	}
-	
+
 	/**
 	 * Settings object which contains customisable information for FixedColumns instance
 	 * @namespace
@@ -276,13 +276,13 @@ FixedColumns.prototype = {
 	 * automatically update the display whenever the host DataTable redraws.
 	 *  @returns {void}
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      var oFC = new $.fn.dataTable.fixedColumns( oTable );
+	 *      var fc = new $.fn.dataTable.fixedColumns( table );
 	 *
 	 *      // at some later point when the table has been manipulated....
-	 *      oFC.fnUpdate();
+	 *      fc.fnUpdate();
 	 */
 	"fnUpdate": function ()
 	{
@@ -296,14 +296,14 @@ FixedColumns.prototype = {
 	 * perform this function automatically when the window.resize event is fired.
 	 *  @returns {void}
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      var oFC = new $.fn.dataTable.fixedColumns( oTable );
+	 *      var fc = new $.fn.dataTable.fixedColumns( table );
 	 *
 	 *      // Resize the table container and then have FixedColumns adjust its layout....
 	 *      $('#content').width( 1200 );
-	 *      oFC.fnRedrawLayout();
+	 *      fc.fnRedrawLayout();
 	 */
 	"fnRedrawLayout": function ()
 	{
@@ -320,16 +320,16 @@ FixedColumns.prototype = {
 	 *  @param   {Node} nTr TR element that should have it's height recalculated
 	 *  @returns {void}
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      var oFC = new $.fn.dataTable.fixedColumns( oTable );
+	 *      var fc = new $.fn.dataTable.fixedColumns( table );
 	 *
 	 *      // manipulate the table - mark the row as needing an update then update the table
 	 *      // this allows the redraw performed by DataTables fnUpdate to recalculate the row
 	 *      // height
-	 *      oFC.fnRecalculateHeight();
-	 *      oTable.fnUpdate( $('#example tbody tr:eq(0)')[0], ["insert date", 1, 2, 3 ... ]);
+	 *      fc.fnRecalculateHeight();
+	 *      table.fnUpdate( $('#example tbody tr:eq(0)')[0], ["insert date", 1, 2, 3 ... ]);
 	 */
 	"fnRecalculateHeight": function ( nTr )
 	{
@@ -344,13 +344,13 @@ FixedColumns.prototype = {
 	 *  @param   {int} iHeight Height in pixels to set
 	 *  @returns {void}
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      var oFC = new $.fn.dataTable.fixedColumns( oTable );
+	 *      var fc = new $.fn.dataTable.fixedColumns( table );
 	 *
 	 *      // You may want to do this after manipulating a row in the fixed column
-	 *      oFC.fnSetRowHeight( $('#example tbody tr:eq(0)')[0], 50 );
+	 *      fc.fnSetRowHeight( $('#example tbody tr:eq(0)')[0], 50 );
 	 */
 	"fnSetRowHeight": function ( nTarget, iHeight )
 	{
@@ -1165,11 +1165,11 @@ FixedColumns.defaults = {
 	 *  @default  1
 	 *  @static
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var  = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( oTable, {
-	 *          "iLeftColumns": 2
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "leftColumns": 2
 	 *      } );
 	 */
 	"iLeftColumns": 1,
@@ -1180,11 +1180,11 @@ FixedColumns.defaults = {
 	 *  @default  0
 	 *  @static
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( oTable, {
-	 *          "iRightColumns": 1
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "rightColumns": 1
 	 *      } );
 	 */
 	"iRightColumns": 0,
@@ -1195,11 +1195,11 @@ FixedColumns.defaults = {
 	 *  @default  null
 	 *  @static
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( oTable, {
-	 *          "fnDrawCallback": function () {
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "drawCallback": function () {
 	 *	            alert( "FixedColumns redraw" );
 	 *	        }
 	 *      } );
@@ -1214,12 +1214,12 @@ FixedColumns.defaults = {
 	 *  @default  fixed
 	 *  @static
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( oTable, {
-	 *          "sLeftWidth": "relative",
-	 *          "iLeftWidth": 10 // percentage
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "leftWidth": "relative",
+	 *          "leftWidth": 10 // percentage
 	 *      } );
 	 */
 	"sLeftWidth": "fixed",
@@ -1232,11 +1232,11 @@ FixedColumns.defaults = {
 	 *  @default  null
 	 *  @static
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( oTable, {
-	 *          "iLeftWidth": 100 // pixels
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "leftWidth": 100 // pixels
 	 *      } );
 	 */
 	"iLeftWidth": null,
@@ -1249,12 +1249,12 @@ FixedColumns.defaults = {
 	 *  @default  fixed
 	 *  @static
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( oTable, {
-	 *          "sRightWidth": "relative",
-	 *          "iRightWidth": 10 // percentage
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "rightWidth": "relative",
+	 *          "rightWidth": 10 // percentage
 	 *      } );
 	 */
 	"sRightWidth": "fixed",
@@ -1267,11 +1267,11 @@ FixedColumns.defaults = {
 	 *  @default  null
 	 *  @static
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( oTable, {
-	 *          "iRightWidth": 200 // pixels
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "rightWidth": 200 // pixels
 	 *      } );
 	 */
 	"iRightWidth": null,
@@ -1286,11 +1286,11 @@ FixedColumns.defaults = {
 	 *  @default  semiauto
 	 *  @static
 	 *  @example
-	 *      var oTable = $('#example').dataTable( {
-	 *          "sScrollX": "100%"
+	 *      var table = $('#example').dataTable( {
+	 *          "scrollX": "100%"
 	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( oTable, {
-	 *          "sHeightMatch": "auto"
+	 *      new $.fn.dataTable.fixedColumns( table, {
+	 *          "heightMatch": "auto"
 	 *      } );
 	 */
 	"sHeightMatch": "semiauto"
