@@ -490,7 +490,7 @@ FixedColumns.prototype = {
 
 		this.s.aiInnerWidths = [];
 
-		$('tbody>tr:eq(0)>td, tbody>tr:eq(0)>th', this.s.dt.nTable).each( function (i) {
+		$('thead>tr:eq(0)>td, thead>tr:eq(0)>th', this.s.dt.nTable).each( function (i) {
 			// Inner width is used to assign widths to cells
 			that.s.aiInnerWidths.push( $(this).width() );
 			
@@ -985,7 +985,7 @@ FixedColumns.prototype = {
 					that.s.dt.aiDisplay[ that.s.dt._iDisplayStart+z ] : z;
 				for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
 				{
-					var aTds = that.s.dt.oApi._fnGetTdNodes( that.s.dt, i );
+					var aTds = that.s.dt.aoData[i].anCells || that.s.dt.oApi._fnGetTdNodes( that.s.dt, i );
 					iColumn = aiColumns[iIndex];
 
 					if ( aTds.length > 0 )
