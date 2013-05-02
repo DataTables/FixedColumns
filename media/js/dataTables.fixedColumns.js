@@ -59,7 +59,7 @@ FixedColumns = function ( dt, init ) {
 		alert( "FixedColumns warning: FixedColumns must be initialised with the 'new' keyword." );
 		return;
 	}
-	
+
 	if ( typeof init == 'undefined' )
 	{
 		init = {};
@@ -83,14 +83,14 @@ FixedColumns = function ( dt, init ) {
 		 *  @default  Obtained from DataTables instance
 		 */
 		"dt": dt.fnSettings(),
-		
+
 		/**
 		 * Number of columns in the DataTable - stored for quick access
 		 *  @type     int
 		 *  @default  Obtained from DataTables instance
 		 */
 		"iTableColumns": dt.fnSettings().aoColumns.length,
-		
+
 		/**
 		 * Original outer widths of the columns as rendered by DataTables - used to calculate
 		 * the FixedColumns grid bounding box
@@ -98,7 +98,7 @@ FixedColumns = function ( dt, init ) {
 		 *  @default  []
 		 */
 		"aiOuterWidths": [],
-		
+
 		/**
 		 * Original inner widths of the columns as rendered by DataTables - used to apply widths
 		 * to the columns
@@ -107,8 +107,8 @@ FixedColumns = function ( dt, init ) {
 		 */
 		"aiInnerWidths": []
 	};
-	
-	
+
+
 	/**
 	 * DOM elements used by the class instance
 	 * @namespace
@@ -121,21 +121,21 @@ FixedColumns = function ( dt, init ) {
 		 *  @default  null
 		 */
 		"scroller": null,
-		
+
 		/**
 		 * DataTables header table
 		 *  @type     node
 		 *  @default  null
 		 */
 		"header": null,
-		
+
 		/**
 		 * DataTables body table
 		 *  @type     node
 		 *  @default  null
 		 */
 		"body": null,
-		
+
 		/**
 		 * DataTables footer table
 		 *  @type     node
@@ -186,7 +186,7 @@ FixedColumns = function ( dt, init ) {
 				"foot": null
 			}
 		},
-		
+
 		/**
 		 * Cloned table nodes
 		 * @namespace
@@ -218,7 +218,7 @@ FixedColumns = function ( dt, init ) {
 				 */
 				"footer": null
 			},
-			
+
 			/**
 			 * Right column cloned table nodes
 			 * @namespace
@@ -250,7 +250,7 @@ FixedColumns = function ( dt, init ) {
 
 	/* Attach the instance to the DataTables instance so it can be accessed easily */
 	this.s.dt.oFixedColumns = this;
-	
+
 	/* Let's do it */
 	if ( ! this.s.dt._bInitComplete )
 	{
@@ -270,7 +270,7 @@ FixedColumns.prototype = {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Public methods
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-	
+
 	/**
 	 * Update the fixed columns - including headers and footers. Note that FixedColumns will
 	 * automatically update the display whenever the host DataTable redraws.
@@ -288,8 +288,8 @@ FixedColumns.prototype = {
 	{
 		this._fnDraw( true );
 	},
-	
-	
+
+
 	/**
 	 * Recalculate the resizes of the 3x3 grid that FixedColumns uses for display of the table.
 	 * This is useful if you update the width of the table container. Note that FixedColumns will
@@ -311,8 +311,8 @@ FixedColumns.prototype = {
 		this._fnGridLayout();
 		this.fnUpdate();
 	},
-	
-	
+
+
 	/**
 	 * Mark a row such that it's height should be recalculated when using 'semiauto' row
 	 * height matching. This function will have no effect when 'none' or 'auto' row height
@@ -336,8 +336,8 @@ FixedColumns.prototype = {
 		delete nTr._DTTC_iHeight;
 		nTr.style.height = 'auto';
 	},
-	
-	
+
+
 	/**
 	 * Set the height of a given row - provides cross browser compatibility
 	 *  @param   {Node} nTarget TR element that should have it's height recalculated
@@ -356,13 +356,13 @@ FixedColumns.prototype = {
 	{
 		nTarget.style.height = iHeight+"px";
 	},
-	
-	
-	
+
+
+
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Private methods (they are of course public in JS, but recommended as private)
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-	
+
 	/**
 	 * Initialisation for FixedColumns
 	 *  @param   {Object} oInit User settings for initialisation
@@ -373,7 +373,7 @@ FixedColumns.prototype = {
 	{
 		var i, iLen, iWidth,
 			that = this;
-		
+
 		/* Sanity checking */
 		if ( typeof this.s.dt.oInstance.fnVersionCheck != 'function' ||
 		     this.s.dt.oInstance.fnVersionCheck( '1.8.0' ) !== true )
@@ -382,7 +382,7 @@ FixedColumns.prototype = {
 				"Please upgrade your DataTables installation" );
 			return;
 		}
-		
+
 		if ( this.s.dt.oScroll.sX === "" )
 		{
 			this.s.dt.oInstance.oApi._fnLog( this.s.dt, 1, "FixedColumns is not needed (no "+
@@ -390,14 +390,14 @@ FixedColumns.prototype = {
 				"column fixing when scrolling is not enabled" );
 			return;
 		}
-		
+
 		/* Apply the settings from the user / defaults */
 		this.s = $.extend( true, this.s, FixedColumns.defaults, oInit );
 
 		/* Set up the DOM as we need it and cache nodes */
 		this.dom.grid.dt = $(this.s.dt.nTable).parents('div.dataTables_scroll')[0];
 		this.dom.scroller = $('div.dataTables_scrollBody', this.dom.grid.dt )[0];
-		
+
 		/* Set up the DOM that we want for the fixed column layout grid */
 		this._fnColCalc();
 		this._fnGridSetup();
@@ -457,7 +457,7 @@ FixedColumns.prototype = {
 		$(window).resize( function () {
 			that._fnGridLayout.call( that );
 		} );
-		
+
 		var bFirstDraw = true;
 		this.s.dt.aoDrawCallback = [ {
 			"fn": function () {
@@ -467,15 +467,15 @@ FixedColumns.prototype = {
 			},
 			"sName": "FixedColumns"
 		} ].concat( this.s.dt.aoDrawCallback );
-		
+
 		/* Get things right to start with - note that due to adjusting the columns, there must be
 		 * another redraw of the main table. It doesn't need to be a full redraw however.
 		 */
 		this._fnGridLayout();
 		this.s.dt.oInstance.fnDraw(false);
 	},
-	
-	
+
+
 	/**
 	 * Calculate the column widths for the grid layout
 	 *  @returns {void}
@@ -493,7 +493,7 @@ FixedColumns.prototype = {
 		$('thead>tr:eq(0)>td, thead>tr:eq(0)>th', this.s.dt.nTable).each( function (i) {
 			// Inner width is used to assign widths to cells
 			that.s.aiInnerWidths.push( $(this).width() );
-			
+
 			// Outer width is used to calculate the container
 			var iWidth = $(this).outerWidth();
 			that.s.aiOuterWidths.push( iWidth );
@@ -510,12 +510,12 @@ FixedColumns.prototype = {
 
 		this.s.iLeftWidth = this.s.sLeftWidth == 'fixed' ?
 			iLeftWidth : (iLeftWidth/iScrollWidth) * 100;
-		
+
 		this.s.iRightWidth = this.s.sRightWidth == 'fixed' ?
 			iRightWidth : (iRightWidth/iScrollWidth) * 100;
 	},
-	
-	
+
+
 	/**
 	 * Set up the DOM for the fixed column. The way the layout works is to create a 1x3 grid
 	 * for the left column, the DataTable (for which we just reuse the scrolling element DataTable
@@ -534,7 +534,7 @@ FixedColumns.prototype = {
 		this.dom.body = this.s.dt.nTable;
 		this.dom.header = this.s.dt.nTHead.parentNode;
 		this.dom.header.parentNode.parentNode.style.position = "relative";
-		
+
 		var nSWrapper =
 			$('<div class="DTFC_ScrollWrapper" style="position:relative; clear:both;">'+
 				'<div class="DTFC_LeftWrapper" style="position:absolute; top:0; left:0;">'+
@@ -570,7 +570,7 @@ FixedColumns.prototype = {
 			this.dom.grid.left.head = nLeft.childNodes[0];
 			this.dom.grid.left.body = nLeft.childNodes[1];
 			this.dom.grid.left.liner = $('div.DTFC_LeftBodyLiner', nSWrapper)[0];
-			
+
 			nSWrapper.appendChild( nLeft );
 		}
 
@@ -590,10 +590,10 @@ FixedColumns.prototype = {
 			block.style.width = oOverflow.bar+"px";
 			block.style.right = -oOverflow.bar+"px";
 			this.dom.grid.right.footBlock = block;
-	
+
 			nSWrapper.appendChild( nRight );
 		}
-		
+
 		if ( this.s.dt.nTFoot )
 		{
 			this.dom.footer = this.s.dt.nTFoot.parentNode;
@@ -607,8 +607,8 @@ FixedColumns.prototype = {
 			}
 		}
 	},
-	
-	
+
+
 	/**
 	 * Style and position the grid used for the FixedColumns layout based on the instance settings.
 	 * Specifically sLeftWidth ('fixed' or 'absolute'), iLeftWidth (px if fixed, % if absolute) and
@@ -648,7 +648,7 @@ FixedColumns.prototype = {
 		{
 			iBodyHeight -= oOverflow.bar;
 		}
-		
+
 		oGrid.wrapper.style.height = iFullHeight+"px";
 
 		if ( this.s.iLeftColumns > 0 )
@@ -687,8 +687,8 @@ FixedColumns.prototype = {
 			oGrid.right.footBlock.style.display = oOverflow.x ? 'block' : 'none';
 		}
 	},
-	
-	
+
+
 	/**
 	 * Get information about the DataTable's scrolling state - specifically if the table is scrolling
 	 * on either the x or y axis, and also the scrollbar width.
@@ -718,8 +718,8 @@ FixedColumns.prototype = {
 
 		return out;
 	},
-	
-	
+
+
 	/**
 	 * Clone and position the fixed columns
 	 *  @returns {void}
@@ -743,8 +743,8 @@ FixedColumns.prototype = {
 			"rightClone": this.dom.clone.right
 		} );
 	},
-	
-	
+
+
 	/**
 	 * Clone the right columns
 	 *  @returns {void}
@@ -757,7 +757,7 @@ FixedColumns.prototype = {
 		{
 			return;
 		}
-		
+
 		var that = this,
 			i, jq,
 			aiColumns = [];
@@ -769,8 +769,8 @@ FixedColumns.prototype = {
 
 		this._fnClone( this.dom.clone.right, this.dom.grid.right, aiColumns, bAll );
 	},
-	
-	
+
+
 	/**
 	 * Clone the left columns
 	 *  @returns {void}
@@ -783,11 +783,11 @@ FixedColumns.prototype = {
 		{
 			return;
 		}
-		
+
 		var that = this,
 			i, jq,
 			aiColumns = [];
-		
+
 		for ( i=0 ; i<this.s.iLeftColumns ; i++ )
 		{
 			aiColumns.push( i );
@@ -795,8 +795,8 @@ FixedColumns.prototype = {
 
 		this._fnClone( this.dom.clone.left, this.dom.grid.left, aiColumns, bAll );
 	},
-	
-	
+
+
 	/**
 	 * Make a copy of the layout object for a header or footer element from DataTables. Note that
 	 * this method will clone the nodes in the layout object.
@@ -843,14 +843,14 @@ FixedColumns.prototype = {
 					} );
 				}
 			}
-			
+
 			aReturn.push( aRow );
 		}
 
 		return aReturn;
 	},
-	
-	
+
+
 	/**
 	 * Clone the DataTable nodes and place them in the DOM (sized correctly)
 	 *  @returns {void}
@@ -880,7 +880,7 @@ FixedColumns.prototype = {
 			oClone.header.className += " DTFC_Cloned";
 			oClone.header.style.width = "100%";
 			oGrid.head.appendChild( oClone.header );
-			
+
 			/* Copy the DataTables layout cache for the header for our floating column */
 			aoCloneLayout = this._fnCopyLayout( this.s.dt.aoHeader, aiColumns );
 			jqCloneThead = $('>thead', oClone.header);
@@ -923,7 +923,7 @@ FixedColumns.prototype = {
 			}
 		}
 		this._fnEqualiseHeights( 'thead', this.dom.header, oClone.header );
-		
+
 		/*
 		 * Body
 		 */
@@ -932,13 +932,13 @@ FixedColumns.prototype = {
 			/* Remove any heights which have been applied already and let the browser figure it out */
 			$('>tbody>tr', that.dom.body).css('height', 'auto');
 		}
-		
+
 		if ( oClone.body !== null )
 		{
 			oClone.body.parentNode.removeChild( oClone.body );
 			oClone.body = null;
 		}
-		
+
 		oClone.body = $(this.dom.body).clone(true)[0];
 		oClone.body.className += " DTFC_Cloned";
 		oClone.body.style.paddingBottom = this.s.dt.oScroll.iBarWidth+"px";
@@ -947,10 +947,10 @@ FixedColumns.prototype = {
 		{
 			oClone.body.removeAttribute('id');
 		}
-		
+
 		$('>thead>tr', oClone.body).empty();
 		$('>tfoot', oClone.body).remove();
-		
+
 		var nBody = $('tbody', oClone.body)[0];
 		$(nBody).empty();
 		if ( this.s.dt.aiDisplay.length > 0 )
@@ -1006,7 +1006,7 @@ FixedColumns.prototype = {
 				nBody.appendChild( nClone );
 			} );
 		}
-		
+
 		oClone.body.style.width = "100%";
 		oClone.body.style.margin = "0";
 		oClone.body.style.padding = "0";
@@ -1021,7 +1021,7 @@ FixedColumns.prototype = {
 		oGrid.liner.appendChild( oClone.body );
 
 		this._fnEqualiseHeights( 'tbody', that.dom.body, oClone.body );
-		
+
 		/*
 		 * Footer
 		 */
@@ -1042,7 +1042,7 @@ FixedColumns.prototype = {
 				aoCloneLayout = this._fnCopyLayout( this.s.dt.aoFooter, aiColumns );
 				var jqCloneTfoot = $('>tfoot', oClone.footer);
 				jqCloneTfoot.empty();
-	
+
 				for ( i=0, iLen=aoCloneLayout.length ; i<iLen ; i++ )
 				{
 					jqCloneTfoot[0].appendChild( aoCloneLayout[i].nTr );
@@ -1083,8 +1083,8 @@ FixedColumns.prototype = {
 			} );
 		}
 	},
-	
-	
+
+
 	/**
 	 * From a given table node (THEAD etc), get a list of TR direct child elements
 	 *  @param   {Node} nIn Table element to search for TR elements (THEAD, TBODY or TFOOT element)
@@ -1104,7 +1104,7 @@ FixedColumns.prototype = {
 		return aOut;
 	},
 
-	
+
 	/**
 	 * Equalise the heights of the rows in a given table node in a cross browser way
 	 *  @returns {void}
@@ -1119,7 +1119,7 @@ FixedColumns.prototype = {
 		{
 			return;
 		}
-		
+
 		var that = this,
 			i, iLen, iHeight, iHeight2, iHeightOriginal, iHeightClone,
 			rootOriginal = original.getElementsByTagName(nodeName)[0],
@@ -1128,18 +1128,18 @@ FixedColumns.prototype = {
 			iBoxHack     = jqBoxHack.outerHeight() - jqBoxHack.height(),
 			anOriginal   = this._fnGetTrNodes( rootOriginal ),
 			anClone      = this._fnGetTrNodes( rootClone );
-		
+
 		for ( i=0, iLen=anClone.length ; i<iLen ; i++ )
 		{
 			iHeightOriginal = anOriginal[i].offsetHeight;
 			iHeightClone = anClone[i].offsetHeight;
 			iHeight = iHeightClone > iHeightOriginal ? iHeightClone : iHeightOriginal;
-			
+
 			if ( this.s.sHeightMatch == 'semiauto' )
 			{
 				anOriginal[i]._DTTC_iHeight = iHeight;
 			}
-			
+
 			anClone[i].style.height = iHeight+"px";
 			anOriginal[i].style.height = iHeight+"px";
 		}
@@ -1173,7 +1173,7 @@ FixedColumns.defaults = {
 	 *      } );
 	 */
 	"iLeftColumns": 1,
-	
+
 	/**
 	 * Number of right hand columns to fix in position
 	 *  @type     int
@@ -1188,7 +1188,7 @@ FixedColumns.defaults = {
 	 *      } );
 	 */
 	"iRightColumns": 0,
-	
+
 	/**
 	 * Draw callback function which is called when FixedColumns has redrawn the fixed assets
 	 *  @type     function(object, object):void
@@ -1205,7 +1205,7 @@ FixedColumns.defaults = {
 	 *      } );
 	 */
 	"fnDrawCallback": null,
-	
+
 	/**
 	 * Type of left column size calculation. Can take the values of "fixed", whereby the iLeftWidth
 	 * value will be treated as a pixel value, or "relative" for which case iLeftWidth will be
@@ -1223,7 +1223,7 @@ FixedColumns.defaults = {
 	 *      } );
 	 */
 	"sLeftWidth": "fixed",
-	
+
 	/**
 	 * Width to set for the width of the left fixed column(s) - note that the behaviour of this
 	 * property is directly effected by the sLeftWidth property. If not defined then this property
@@ -1240,7 +1240,7 @@ FixedColumns.defaults = {
 	 *      } );
 	 */
 	"iLeftWidth": null,
-	
+
 	/**
 	 * Type of right column size calculation. Can take the values of "fixed", whereby the
 	 * iRightWidth value will be treated as a pixel value, or "relative" for which case
@@ -1258,7 +1258,7 @@ FixedColumns.defaults = {
 	 *      } );
 	 */
 	"sRightWidth": "fixed",
-	
+
 	/**
 	 * Width to set for the width of the right fixed column(s) - note that the behaviour of this
 	 * property is directly effected by the sRightWidth property. If not defined then this property
@@ -1275,7 +1275,7 @@ FixedColumns.defaults = {
 	 *      } );
 	 */
 	"iRightWidth": null,
-	
+
 	/**
 	 * Height matching algorthim to use. This can be "none" which will result in no height
 	 * matching being applied by FixedColumns (height matching could be forced by CSS in this
