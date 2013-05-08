@@ -654,7 +654,7 @@ FixedColumns.prototype = {
 		if ( this.s.iLeftColumns > 0 )
 		{
 			oGrid.left.wrapper.style.width = iLeftWidth+"px";
-			oGrid.left.wrapper.style.height = iFullHeight+"px";
+			oGrid.left.wrapper.style.height = "1px";
 			oGrid.left.body.style.height = iBodyHeight+"px";
 			if ( oGrid.left.foot ) {
 				oGrid.left.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px"; // shift footer for scrollbar
@@ -674,7 +674,7 @@ FixedColumns.prototype = {
 
 			oGrid.right.wrapper.style.width = iRightWidth+"px";
 			oGrid.right.wrapper.style.left = iRight+"px";
-			oGrid.right.wrapper.style.height = iFullHeight+"px";
+			oGrid.right.wrapper.style.height = "1px";
 			oGrid.right.body.style.height = iBodyHeight+"px";
 			if ( oGrid.right.foot ) {
 				oGrid.right.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px";
