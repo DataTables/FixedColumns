@@ -683,8 +683,8 @@ FixedColumns.prototype = {
 			oGrid.right.liner.style.width = (iRightWidth+oOverflow.bar)+"px";
 			oGrid.right.liner.style.height = iBodyHeight+"px";
 
-			oGrid.right.headBlock.style.display = oOverflow.x ? 'block' : 'none';
-			oGrid.right.footBlock.style.display = oOverflow.x ? 'block' : 'none';
+			oGrid.right.headBlock.style.display = oOverflow.y ? 'block' : 'none';
+			oGrid.right.footBlock.style.display = oOverflow.y ? 'block' : 'none';
 		}
 	},
 
