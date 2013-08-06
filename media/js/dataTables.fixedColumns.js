@@ -468,6 +468,12 @@ FixedColumns.prototype = {
 			"sName": "FixedColumns"
 		} ].concat( this.s.dt.aoDrawCallback );
 
+		// When DataTables adjusts the column sizes, we want to update ours
+		$(this.s.dt.nTable).on('column-sizing', function () {
+			that._fnColCalc();
+			that._fnGridLayout();
+		} );
+
 		/* Get things right to start with - note that due to adjusting the columns, there must be
 		 * another redraw of the main table. It doesn't need to be a full redraw however.
 		 */
@@ -490,7 +496,7 @@ FixedColumns.prototype = {
 
 		this.s.aiInnerWidths = [];
 
-		$('thead>tr:eq(0)>td, thead>tr:eq(0)>th', this.s.dt.nTable).each( function (i) {
+		$('tr:eq(0)>td, tr:eq(0)>th', this.s.dt.nTHead).each( function (i) {
 			// Inner width is used to assign widths to cells
 			that.s.aiInnerWidths.push( $(this).width() );
 
