@@ -712,12 +712,12 @@ FixedColumns.prototype = {
 			"bar": this.s.dt.oScroll.iBarWidth
 		};
 
-		if ( nTable.offsetWidth > nTableScrollBody.offsetWidth )
+		if ( nTable.offsetWidth > nTableScrollBody.clientWidth )
 		{
 			out.x = true;
 		}
 
-		if ( nTable.offsetHeight > nTableScrollBody.offsetHeight )
+		if ( nTable.offsetHeight > nTableScrollBody.clientHeight )
 		{
 			out.y = true;
 		}
