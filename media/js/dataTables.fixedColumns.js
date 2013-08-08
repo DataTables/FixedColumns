@@ -462,17 +462,12 @@ FixedColumns.prototype = {
 		this.s.dt.aoDrawCallback = [ {
 			"fn": function () {
 				that._fnDraw.call( that, bFirstDraw );
+				that._fnColCalc();
 				that._fnGridLayout( that );
 				bFirstDraw = false;
 			},
 			"sName": "FixedColumns"
 		} ].concat( this.s.dt.aoDrawCallback );
-
-		// When DataTables adjusts the column sizes, we want to update ours
-		$(this.s.dt.nTable).on('column-sizing', function () {
-			that._fnColCalc();
-			that._fnGridLayout();
-		} );
 
 		/* Get things right to start with - note that due to adjusting the columns, there must be
 		 * another redraw of the main table. It doesn't need to be a full redraw however.
