@@ -491,21 +491,30 @@ FixedColumns.prototype = {
 
 		this.s.aiInnerWidths = [];
 
-		$('tr:eq(0)>td, tr:eq(0)>th', this.s.dt.nTHead).each( function (i) {
-			// Inner width is used to assign widths to cells
-			that.s.aiInnerWidths.push( $(this).width() );
+		$.each( this.s.dt.aoColumns, function (i, col) {
+			var th = $(col.nTh);
 
-			// Outer width is used to calculate the container
-			var iWidth = $(this).outerWidth();
-			that.s.aiOuterWidths.push( iWidth );
-
-			if ( i < that.s.iLeftColumns )
-			{
-				iLeftWidth += iWidth;
+			if ( ! th.filter(':visible').length ) {
+				that.s.aiInnerWidths.push( 0 );
+				that.s.aiOuterWidths.push( 0 );
 			}
-			if ( that.s.iTableColumns-that.s.iRightColumns <= i )
+			else
 			{
-				iRightWidth += iWidth;
+				// Inner width is used to assign widths to cells
+				// Outer width is used to calculate the container
+				var iWidth = th.outerWidth();
+				that.s.aiOuterWidths.push( iWidth );
+				that.s.aiInnerWidths.push( th.width() );
+
+				if ( i < that.s.iLeftColumns )
+				{
+					iLeftWidth += iWidth;
+				}
+
+				if ( that.s.iTableColumns-that.s.iRightColumns <= i )
+				{
+					iRightWidth += iWidth;
+				}
 			}
 		} );
 
