@@ -11,7 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="media/css/dataTables.fixedColumns.css">
 
 		<style type="text/css">
-			table.DTFC_Cloned th { white-space: nowrap; }
+			th, td { white-space: nowrap; }
 		</style>
 
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
@@ -22,13 +22,14 @@
 				var oTable = $('#example').dataTable( {
 					"sScrollY": "300px",
 					"sScrollX": "100%",
-					"sScrollXInner": "1200px",
 					"bScrollCollapse": true,
-					"bPaginate": false
+					"bPaginate": false,
+					"aoColumnDefs": [ {
+						aTargets: [ 0 ],
+						sWidth: "150"
+					} ]
 				} );
-				new $.fn.dataTable.FixedColumns( oTable, {
-					"iLeftWidth": 150
-				} );
+				new $.fn.dataTable.FixedColumns( oTable );
 			} );
 		</script>
 	</head>
@@ -39,11 +40,12 @@
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>This example shows how the fixed column can have a specific pixel width defined for it. By giving the parameter <i>iLeftWidth</i> to FixedColumns, it will use this value to set the width of the fixed column (or columns, if multiple columns are used). Resizing the window will simply cause the DataTable scrolling area to resize dynamically. Note that sScrollXInner is used to force the width of the DataTable - you probably won't want or need this. Note also that the scaling in this demo contrasts with the <a href="scale_relative.html">relative scaling</a> example where the fixed column width is a percentage of the visible area.</p>
+			<p>FixedColumns uses the column width from the host DataTable. So to set a fixed width for a column, simply use the <code>width</code> attribute for the column - in this case set to a pixel value. Be sure also to add <code>width="100%"</code> to the <code>table</code> tag, which allows DataTables to dynamically resize the table to use 100% available width. Resizing the browser page horizontally will activate and deactivate scrolling as required.</p>
+			<p>It is important to note that although this example sets the column width to 150px, because of the way HTML tables are sized by browsers, it won't always be 150px exactly. The browser will take into account the content of the rest of table and the overall table size before assigning the column width. To get pixel perfect control of the table, use the CSS <code>table-layout: fixed</code> option.</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
-<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="example" width="100%">
 	<thead>
 		<tr>
 			<th>Rendering engine</th>

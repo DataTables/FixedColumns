@@ -11,7 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="media/css/dataTables.fixedColumns.css">
 
 		<style type="text/css">
-			table.DTFC_Cloned th { white-space: nowrap; }
+			th, td { white-space: nowrap; }
 		</style>
 		
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
@@ -22,14 +22,14 @@
 				var oTable = $('#example').dataTable( {
 					"sScrollY": "300px",
 					"sScrollX": "100%",
-					"sScrollXInner": "1200px",
 					"bScrollCollapse": true,
-					"bPaginate": false
+					"bPaginate": false,
+					"aoColumnDefs": [ {
+						aTargets: [ 0 ],
+						sWidth: "20%"
+					} ]
 				} );
-				new $.fn.dataTable.FixedColumns( oTable, {
-					"sLeftWidth": 'relative',
-					"iLeftWidth": 20
-				} );
+				new $.fn.dataTable.FixedColumns( oTable );
 			} );
 		</script>
 	</head>
@@ -40,11 +40,11 @@
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>This example shows how the fixed column can be given a relative width (relative to the DataTables viewport). By giving <i>sLeftWidth</i> as 'relative' (the default is 'fixed') and using <i>iLeftWidth</i> to indicate what percentage of the viewport you wish the fixed column to take, FixedColumns will automatically scale the DataTables display. Resizing the window will cause the DataTable scrolling area to resize dynamically, including the fixed column. Note that sScrollXInner is used to force the width of the DataTable - you probably won't want or need this. Note also that the scaling in this demo contrasts with the <a href="scale_fixed.html">fixed scaling</a> example where the fixed column width fixed to an abslute pixel value.</p>
+			<p>FixedColumns uses the column width from the host DataTable. So to set a fixed width for a column, simply use the <code>width</code> attribute for the column - in this case set to a percentage value to have it relative to the rest of the table. Be sure also to add <code>width="100%"</code> to the <code>table</code> tag, which allows DataTables to dynamically resize the table to use 100% available width. Resizing the browser page horizontally will activate and deactivate scrolling as required.</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
-<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="example" width="100%">
 	<thead>
 		<tr>
 			<th>Rendering engine</th>

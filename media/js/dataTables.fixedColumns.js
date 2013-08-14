@@ -462,12 +462,15 @@ FixedColumns.prototype = {
 		this.s.dt.aoDrawCallback = [ {
 			"fn": function () {
 				that._fnDraw.call( that, bFirstDraw );
-				that._fnColCalc();
-				that._fnGridLayout( that );
 				bFirstDraw = false;
 			},
 			"sName": "FixedColumns"
 		} ].concat( this.s.dt.aoDrawCallback );
+
+		$(this.s.dt.nTable).on( 'column-sizing', function () {
+			that._fnColCalc();
+			that._fnGridLayout( that );
+		} );
 
 		/* Get things right to start with - note that due to adjusting the columns, there must be
 		 * another redraw of the main table. It doesn't need to be a full redraw however.
@@ -485,11 +488,11 @@ FixedColumns.prototype = {
 	"_fnColCalc": function ()
 	{
 		var that = this;
-		var iScrollWidth = $(this.dom.grid.dt).width();
 		var iLeftWidth = 0;
 		var iRightWidth = 0;
 
 		this.s.aiInnerWidths = [];
+		this.s.aiOuterWidths = [];
 
 		$.each( this.s.dt.aoColumns, function (i, col) {
 			var th = $(col.nTh);
@@ -518,11 +521,11 @@ FixedColumns.prototype = {
 			}
 		} );
 
-		this.s.iLeftWidth = this.s.sLeftWidth == 'fixed' ?
-			iLeftWidth : (iLeftWidth/iScrollWidth) * 100;
+		console.log( 'iLeftWidth', iLeftWidth );
+		console.log( that.s.aiInnerWidths, that.s.aiOuterWidths );
 
-		this.s.iRightWidth = this.s.sRightWidth == 'fixed' ?
-			iRightWidth : (iRightWidth/iScrollWidth) * 100;
+		this.s.iLeftWidth = iLeftWidth;
+		this.s.iRightWidth = iRightWidth;
 	},
 
 
@@ -620,9 +623,7 @@ FixedColumns.prototype = {
 
 
 	/**
-	 * Style and position the grid used for the FixedColumns layout based on the instance settings.
-	 * Specifically sLeftWidth ('fixed' or 'absolute'), iLeftWidth (px if fixed, % if absolute) and
-	 * there 'right' counterparts.
+	 * Style and position the grid used for the FixedColumns layout
 	 *  @returns {void}
 	 *  @private
 	 */
@@ -632,26 +633,11 @@ FixedColumns.prototype = {
 		var iWidth = $(oGrid.wrapper).width();
 		var iBodyHeight = $(this.s.dt.nTable.parentNode).height();
 		var iFullHeight = $(this.s.dt.nTable.parentNode.parentNode).height();
-		var iLeftWidth, iRight, iRightWidth;
 		var oOverflow = this._fnDTOverflow();
-
-		if ( this.s.sLeftWidth == 'fixed' )
-		{
-			iLeftWidth = this.s.iLeftWidth;
-		}
-		else
-		{
-			iLeftWidth = ( this.s.iLeftWidth / 100 ) * iWidth;
-		}
-
-		if ( this.s.sRightWidth == 'fixed' )
-		{
-			iRightWidth = this.s.iRightWidth;
-		}
-		else
-		{
-			iRightWidth = ( this.s.iRightWidth / 100 ) * iWidth;
-		}
+		var
+			iLeftWidth = this.s.iLeftWidth,
+			iRightWidth = this.s.iRightWidth,
+			iRight;
 
 		// When x scrolling - don't paint the fixed columns over the x scrollbar
 		if ( oOverflow.x )
@@ -1215,76 +1201,6 @@ FixedColumns.defaults = {
 	 *      } );
 	 */
 	"fnDrawCallback": null,
-
-	/**
-	 * Type of left column size calculation. Can take the values of "fixed", whereby the iLeftWidth
-	 * value will be treated as a pixel value, or "relative" for which case iLeftWidth will be
-	 * treated as a percentage value.
-	 *  @type     string
-	 *  @default  fixed
-	 *  @static
-	 *  @example
-	 *      var table = $('#example').dataTable( {
-	 *          "scrollX": "100%"
-	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( table, {
-	 *          "leftWidth": "relative",
-	 *          "leftWidth": 10 // percentage
-	 *      } );
-	 */
-	"sLeftWidth": "fixed",
-
-	/**
-	 * Width to set for the width of the left fixed column(s) - note that the behaviour of this
-	 * property is directly effected by the sLeftWidth property. If not defined then this property
-	 * is calculated automatically from what has been assigned by DataTables.
-	 *  @type     int
-	 *  @default  null
-	 *  @static
-	 *  @example
-	 *      var table = $('#example').dataTable( {
-	 *          "scrollX": "100%"
-	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( table, {
-	 *          "leftWidth": 100 // pixels
-	 *      } );
-	 */
-	"iLeftWidth": null,
-
-	/**
-	 * Type of right column size calculation. Can take the values of "fixed", whereby the
-	 * iRightWidth value will be treated as a pixel value, or "relative" for which case
-	 * iRightWidth will be treated as a percentage value.
-	 *  @type     string
-	 *  @default  fixed
-	 *  @static
-	 *  @example
-	 *      var table = $('#example').dataTable( {
-	 *          "scrollX": "100%"
-	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( table, {
-	 *          "rightWidth": "relative",
-	 *          "rightWidth": 10 // percentage
-	 *      } );
-	 */
-	"sRightWidth": "fixed",
-
-	/**
-	 * Width to set for the width of the right fixed column(s) - note that the behaviour of this
-	 * property is directly effected by the sRightWidth property. If not defined then this property
-	 * is calculated automatically from what has been assigned by DataTables.
-	 *  @type     int
-	 *  @default  null
-	 *  @static
-	 *  @example
-	 *      var table = $('#example').dataTable( {
-	 *          "scrollX": "100%"
-	 *      } );
-	 *      new $.fn.dataTable.fixedColumns( table, {
-	 *          "rightWidth": 200 // pixels
-	 *      } );
-	 */
-	"iRightWidth": null,
 
 	/**
 	 * Height matching algorthim to use. This can be "none" which will result in no height
