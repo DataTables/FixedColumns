@@ -46,7 +46,7 @@ var FixedColumns;
  *
  *  @example
  *      var table = $('#example').dataTable( {
- *        "scrollX": "100%"
+ *        "sScrollX": "100%"
  *      } );
  *      new $.fn.dataTable.fixedColumns( table );
  */
