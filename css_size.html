@@ -488,7 +488,9 @@
 		"sScrollXInner": "150%",
 		"bScrollCollapse": true
 	} );
-	new $.fn.dataTable.FixedColumns( oTable );
+	new $.fn.dataTable.FixedColumns( oTable, {
+		"sHeightMatch": "none"
+	} );
 } );</pre>
 
 
