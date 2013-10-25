@@ -521,9 +521,6 @@ FixedColumns.prototype = {
 			}
 		} );
 
-		console.log( 'iLeftWidth', iLeftWidth );
-		console.log( that.s.aiInnerWidths, that.s.aiOuterWidths );
-
 		this.s.iLeftWidth = iLeftWidth;
 		this.s.iRightWidth = iRightWidth;
 	},
@@ -1123,7 +1120,8 @@ FixedColumns.prototype = {
 			jqBoxHack    = $('>'+nodeName+'>tr:eq(0)', original).children(':first'),
 			iBoxHack     = jqBoxHack.outerHeight() - jqBoxHack.height(),
 			anOriginal   = this._fnGetTrNodes( rootOriginal ),
-			anClone      = this._fnGetTrNodes( rootClone );
+			anClone      = this._fnGetTrNodes( rootClone ),
+			heights      = [];
 
 		for ( i=0, iLen=anClone.length ; i<iLen ; i++ )
 		{
@@ -1136,8 +1134,13 @@ FixedColumns.prototype = {
 				anOriginal[i]._DTTC_iHeight = iHeight;
 			}
 
-			anClone[i].style.height = iHeight+"px";
-			anOriginal[i].style.height = iHeight+"px";
+			heights.push( iHeight );
+		}
+
+		for ( i=0, iLen=anClone.length ; i<iLen ; i++ )
+		{
+			anClone[i].style.height = heights[i]+"px";
+			anOriginal[i].style.height = heights[i]+"px";
 		}
 	}
 };
