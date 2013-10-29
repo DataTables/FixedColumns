@@ -506,6 +506,14 @@ FixedColumns.prototype = {
 				// Inner width is used to assign widths to cells
 				// Outer width is used to calculate the container
 				var iWidth = th.outerWidth();
+
+				// When working with the left most-cell, need to add on the
+				// table's border to the outerWidth, since we need to take
+				// account of it, but it isn't in any cell
+				if ( that.s.aiOuterWidths.length === 0 ) {
+					iWidth += parseInt( $(that.s.dt.nTable).css('border-left-width'), 10 );
+				}
+
 				that.s.aiOuterWidths.push( iWidth );
 				that.s.aiInnerWidths.push( th.width() );
 
