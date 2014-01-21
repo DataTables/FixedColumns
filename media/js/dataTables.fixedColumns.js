@@ -505,18 +505,28 @@ FixedColumns.prototype = {
 		} );
 
 		var bFirstDraw = true;
-		this.s.dt.aoDrawCallback = [ {
-			"fn": function () {
+		var jqTable = $(this.s.dt.nTable);
+
+		jqTable
+			.on( 'draw.dt.DTFC', function () {
 				that._fnDraw.call( that, bFirstDraw );
 				bFirstDraw = false;
-			},
-			"sName": "FixedColumns"
-		} ].concat( this.s.dt.aoDrawCallback );
+			} )
+			.on( 'column-sizing.dt.DTFC', function () {
+				that._fnColCalc();
+				that._fnGridLayout( that );
+			} )
+			.on( 'destroy.dt.DTFC', function () {
+				jqTable.off( 'column-sizing.dt.DTFC destroy.dt.DTFC draw.dt.DTFC' );
 
-		$(this.s.dt.nTable).on( 'column-sizing', function () {
-			that._fnColCalc();
-			that._fnGridLayout( that );
-		} );
+				$(that.dom.scroller).on( 'scroll.DTFC' );
+
+				$(that.dom.grid.left.liner).on( 'scroll.DTFC mousewheel.DTFC' );
+				$(that.dom.grid.left.wrapper).remove();
+
+				$(that.dom.grid.right.liner).on( 'scroll.DTFC mousewheel.DTFC' );
+				$(that.dom.grid.right.wrapper).remove();
+			} );
 
 		/* Get things right to start with - note that due to adjusting the columns, there must be
 		 * another redraw of the main table. It doesn't need to be a full redraw however.
