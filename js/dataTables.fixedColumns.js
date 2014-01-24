@@ -1,28 +1,28 @@
+/*! FixedColumns 2.5.0-dev
+ * ©2010-2014 SpryMedia Ltd - datatables.net/license
+ */
+
 /**
  * @summary     FixedColumns
  * @description Freeze columns in place on a scrolling DataTable
+ * @version     1.10.0-dev
  * @file        dataTables.fixedColumns.js
- * @version     2.5.0.dev
- * @author      Allan Jardine (www.sprymedia.co.uk)
- * @license     GPL v2 or BSD 3 point style
+ * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
+ * @copyright   Copyright 2010-2014 SpryMedia Ltd.
  *
- * @copyright Copyright 2010-2013 Allan Jardine, all rights reserved.
+ * This source file is free software, available under the following license:
+ *   MIT license - http://datatables.net/license/mit
  *
- * This source file is free software, under either the GPL v2 license or a
- * BSD style license, available at:
- *   http://datatables.net/license_gpl2
- *   http://datatables.net/license_bsd
+ * This source file is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
+ *
+ * For details please refer to: http://www.datatables.net
  */
 
-
-/* Global scope for FixedColumns - legacy and undocumented. Please use
- * $.fn.dataTable.FixedColumns
- */
-var FixedColumns;
 
 (function(window, document, $, undefined) {
-
 
 /**
  * When making use of DataTables' x-axis scrolling feature, you may wish to
@@ -53,7 +53,7 @@ var FixedColumns;
  *      } );
  *      new $.fn.dataTable.fixedColumns( table );
  */
-FixedColumns = function ( dt, init ) {
+var FixedColumns = function ( dt, init ) {
 	var that = this;
 
 	/* Sanity check - you just know it will happen */
