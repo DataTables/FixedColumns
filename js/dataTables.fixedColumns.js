@@ -22,7 +22,11 @@
  */
 
 
-(function(window, document, $, undefined) {
+(function(window, document, undefined) {
+
+
+var factory = function( $, DataTable ) {
+"use strict";
 
 /**
  * When making use of DataTables' x-axis scrolling feature, you may wish to
@@ -1304,24 +1308,14 @@ FixedColumns.defaults = {
  * Constants
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
-/**
- * Name of this class
- *  @constant CLASS
- *  @type     String
- *  @default  FixedColumns
- */
-FixedColumns.prototype.CLASS = "FixedColumns";
-
-
 /**
  * FixedColumns version
- *  @constant  FixedColumns.VERSION
+ *  @constant  FixedColumns.version
  *  @type      String
  *  @default   See code
  *  @static
  */
-FixedColumns.VERSION = "2.5.0.dev";
+FixedColumns.version = "2.5.0.dev";
 
 
 
@@ -1346,5 +1340,19 @@ $.fn.dataTable.FixedColumns = FixedColumns;
 $.fn.DataTable.FixedColumns = FixedColumns;
 
 
-})(window, document, jQuery);
+return FixedColumns;
+}; // /factory
+
+
+// Define as an AMD module if possible
+if ( typeof define === 'function' && define.amd ) {
+	define( 'datatables-fixedcolumns', ['jquery', 'datatables'], factory );
+}
+else if ( jQuery && !jQuery.fn.dataTable.FixedColumns ) {
+	// Otherwise simply initialise as normal, stopping multiple evaluation
+	factory( jQuery, jQuery.fn.dataTable );
+}
+
+
+})(window, document);
 
