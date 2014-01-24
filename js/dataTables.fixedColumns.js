@@ -38,8 +38,11 @@ var FixedColumns;
  *
  *  @class
  *  @constructor
- *  @param {object} dt DataTables instance
- *  @param {object} [init={}] Configuration object for FixedColumns. Options are defined by {@link FixedColumns.defaults}
+ *  @param {object} dt DataTables instance. With DataTables 1.10 this can also
+ *    be a jQuery collection, a jQuery selector, DataTables API instance or
+ *    settings object.
+ *  @param {object} [init={}] Configuration object for FixedColumns. Options are
+ *    defined by {@link FixedColumns.defaults}
  *
  *  @requires jQuery 1.7+
  *  @requires DataTables 1.8.0+
@@ -67,9 +70,14 @@ FixedColumns = function ( dt, init ) {
 
 	// Use the DataTables Hungarian notation mapping method, if it exists to
 	// provide forwards compatibility for camel case variables
-	if ( dt.oApi._fnCamelToHungarian ) {
-		dt.oApi._fnCamelToHungarian( FixedColumns.defaults, init );
+	if ( $.fn.dataTable.camelToHungarian ) {
+		$.fn.dataTable.camelToHungarian( FixedColumns.defaults, init );
 	}
+
+	// v1.10 allows the settings object to be got form a number of sources
+	var dtSettings = $.fn.dataTable.Api ?
+		new $.fn.dataTable.Api( dt ).settings()[0] :
+		dt.fnSettings();
 
 	/**
 	 * Settings object which contains customisable information for FixedColumns instance
@@ -82,14 +90,14 @@ FixedColumns = function ( dt, init ) {
 		 *  @type     object
 		 *  @default  Obtained from DataTables instance
 		 */
-		"dt": dt.fnSettings(),
+		"dt": dtSettings,
 
 		/**
 		 * Number of columns in the DataTable - stored for quick access
 		 *  @type     int
 		 *  @default  Obtained from DataTables instance
 		 */
-		"iTableColumns": dt.fnSettings().aoColumns.length,
+		"iTableColumns": dtSettings.aoColumns.length,
 
 		/**
 		 * Original outer widths of the columns as rendered by DataTables - used to calculate
@@ -249,12 +257,12 @@ FixedColumns = function ( dt, init ) {
 	};
 
 	/* Attach the instance to the DataTables instance so it can be accessed easily */
-	this.s.dt.oFixedColumns = this;
+	dtSettings._oFixedColumns = this;
 
 	/* Let's do it */
-	if ( ! this.s.dt._bInitComplete )
+	if ( ! dtSettings._bInitComplete )
 	{
-		this.s.dt.oApi._fnCallbackReg( this.s.dt, 'aoInitComplete', function () {
+		dtSettings.oApi._fnCallbackReg( dtSettings, 'aoInitComplete', function () {
 			that._fnConstruct( init );
 		}, 'FixedColumns' );
 	}
@@ -386,12 +394,12 @@ FixedColumns.prototype = {
 			// Its in the cloned table, so need to look up position
 			if ( node.nodeName.toLowerCase() === 'tr' ) {
 				idx = $(node).index();
-				return inst.fnGetPosition( $('tr', this.s.dt.nTBody)[ idx ] );;
+				return inst.fnGetPosition( $('tr', this.s.dt.nTBody)[ idx ] );
 			}
 			else
 			{
 				var colIdx = $(node).index();
-				var idx = $(node.parentNode).index();
+				idx = $(node.parentNode).index();
 				var row = inst.fnGetPosition( $('tr', this.s.dt.nTBody)[ idx ] );
 
 				return [
@@ -1335,6 +1343,7 @@ FixedColumns.VERSION = "2.5.0.dev";
 
 // Make FixedColumns accessible from the DataTables instance
 $.fn.dataTable.FixedColumns = FixedColumns;
+$.fn.DataTable.FixedColumns = FixedColumns;
 
 
 })(window, document, jQuery);

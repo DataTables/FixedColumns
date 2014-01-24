@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide-footer" table-class="stripe row-border order-column" order="1">
+
+<css lib="datatables fixedcolumns">
+	/* Ensure that the demo table scrolls */
+	th, td { white-space: nowrap; }
+	div.dataTables_wrapper {
+		width: 800px;
+		margin: 0 auto;
+	}
+</css>
+<js lib="jquery datatables fixedcolumns">
+<![CDATA[
+$(document).ready(function() {
+	// Setup - add a text input to each footer cell
+	$('#example tfoot th').each( function () {
+		var title = $('#example thead th').eq( $(this).index() ).text();
+		$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+	} );
+ 
+	// DataTable
+	var table = $('#example').DataTable( {
+		scrollY:        "300px",
+		scrollX:        true,
+		scrollCollapse: true,
+		paging:         false
+	} );
+	 
+	// Apply the filter
+	table.columns().indexes().each( function (idx) {
+		$( 'input', table.column( idx ).footer() ).on( 'keyup change', function () {
+			table
+				.column( idx )
+				.search( this.value )
+				.draw();
+		} );
+	} );
+
+	new $.fn.dataTable.FixedColumns( table );
+} );
+]]>
+</js>
+
+<title lib="FixedColumns">Individual column filtering</title>
+
+<info><![CDATA[
+
+This example shows FixedColumns being configured with individual column filtering abilities. Note that the event handler for the filtering is applied to the `dt-tag input` elements before FixedColumns is initialised, so when FixedColumns clones nodes it also copies the event.
+
+]]></info>
+
+</dt-example>
