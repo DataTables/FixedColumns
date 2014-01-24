@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide-footer" table-class="stripe row-border order-column" order="1">
+<dt-example table-type="html-wide-footer" table-class="stripe row-border order-column" order="9">
 
 <css lib="datatables fixedcolumns">
 	/* Ensure that the demo table scrolls */
