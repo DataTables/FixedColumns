@@ -538,6 +538,11 @@ FixedColumns.prototype = {
 				that._fnColCalc();
 				that._fnGridLayout( that );
 			} )
+			.on( 'column-visibility.dt.DTFC', function () {
+				that._fnColCalc();
+				that._fnGridLayout( that );
+				that._fnDraw( true );
+			} )
 			.on( 'destroy.dt.DTFC', function () {
 				jqTable.off( 'column-sizing.dt.DTFC destroy.dt.DTFC draw.dt.DTFC' );
 
@@ -834,8 +839,7 @@ FixedColumns.prototype = {
 	 */
 	"_fnCloneRight": function ( bAll )
 	{
-		if ( this.s.iRightColumns <= 0 )
-		{
+		if ( this.s.iRightColumns <= 0 ) {
 			return;
 		}
 
@@ -843,9 +847,10 @@ FixedColumns.prototype = {
 			i, jq,
 			aiColumns = [];
 
-		for ( i=this.s.iTableColumns-this.s.iRightColumns ; i<this.s.iTableColumns ; i++ )
-		{
-			aiColumns.push( i );
+		for ( i=this.s.iTableColumns-this.s.iRightColumns ; i<this.s.iTableColumns ; i++ ) {
+			if ( this.s.dt.aoColumns[i].bVisible ) {
+				aiColumns.push( i );
+			}
 		}
 
 		this._fnClone( this.dom.clone.right, this.dom.grid.right, aiColumns, bAll );
@@ -860,8 +865,7 @@ FixedColumns.prototype = {
 	 */
 	"_fnCloneLeft": function ( bAll )
 	{
-		if ( this.s.iLeftColumns <= 0 )
-		{
+		if ( this.s.iLeftColumns <= 0 ) {
 			return;
 		}
 
@@ -869,9 +873,10 @@ FixedColumns.prototype = {
 			i, jq,
 			aiColumns = [];
 
-		for ( i=0 ; i<this.s.iLeftColumns ; i++ )
-		{
-			aiColumns.push( i );
+		for ( i=0 ; i<this.s.iLeftColumns ; i++ ) {
+			if ( this.s.dt.aoColumns[i].bVisible ) {
+				aiColumns.push( i );
+			}
 		}
 
 		this._fnClone( this.dom.clone.left, this.dom.grid.left, aiColumns, bAll );
