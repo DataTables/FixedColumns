@@ -16,10 +16,7 @@ $(document).ready(function() {
 		scrollY:        "300px",
 		scrollX:        true,
 		scrollCollapse: true,
-		paging:         false,
-		columnDefs: [
-			{ width: '20%', targets: 0 }
-		]
+		paging:         false
 	} );
 	new $.fn.dataTable.FixedColumns( table, {
 		leftColumns: 2
