@@ -453,8 +453,9 @@ FixedColumns.prototype = {
 		this.s = $.extend( true, this.s, FixedColumns.defaults, oInit );
 
 		/* Set up the DOM as we need it and cache nodes */
-		this.dom.grid.dt = $(this.s.dt.nTable).parents('div.dataTables_scroll')[0];
-		this.dom.scroller = $('div.dataTables_scrollBody', this.dom.grid.dt )[0];
+		var classes = this.s.dt.oClasses;
+		this.dom.grid.dt = $(this.s.dt.nTable).parents('div.'+classes.sScrollWrapper)[0];
+		this.dom.scroller = $('div.'+classes.sScrollBody, this.dom.grid.dt )[0];
 
 		/* Set up the DOM that we want for the fixed column layout grid */
 		this._fnColCalc();
