@@ -895,7 +895,7 @@ FixedColumns.prototype = {
 		for ( var i=0, iLen=aoOriginal.length ; i<iLen ; i++ )
 		{
 			var aRow = [];
-			aRow.nTr = $(aoOriginal[i].nTr).clone(true)[0];
+			aRow.nTr = $(aoOriginal[i].nTr).clone(true, true)[0];
 
 			for ( var j=0, jLen=this.s.iTableColumns ; j<jLen ; j++ )
 			{
@@ -907,7 +907,7 @@ FixedColumns.prototype = {
 				var iCloned = $.inArray( aoOriginal[i][j].cell, aCloned );
 				if ( iCloned === -1 )
 				{
-					var nClone = $(aoOriginal[i][j].cell).clone(true)[0];
+					var nClone = $(aoOriginal[i][j].cell).clone(true, true)[0];
 					aClones.push( nClone );
 					aCloned.push( aoOriginal[i][j].cell );
 
@@ -957,7 +957,7 @@ FixedColumns.prototype = {
 			{
 				oClone.header.parentNode.removeChild( oClone.header );
 			}
-			oClone.header = $(this.dom.header).clone(true)[0];
+			oClone.header = $(this.dom.header).clone(true, true)[0];
 			oClone.header.className += " DTFC_Cloned";
 			oClone.header.style.width = "100%";
 			oGrid.head.appendChild( oClone.header );
@@ -1071,7 +1071,7 @@ FixedColumns.prototype = {
 
 					if ( aTds.length > 0 )
 					{
-						nClone = $( aTds[iColumn] ).clone(true)[0];
+						nClone = $( aTds[iColumn] ).clone(true, true)[0];
 						n.appendChild( nClone );
 					}
 				}
@@ -1114,7 +1114,7 @@ FixedColumns.prototype = {
 				{
 					oClone.footer.parentNode.removeChild( oClone.footer );
 				}
-				oClone.footer = $(this.dom.footer).clone(true)[0];
+				oClone.footer = $(this.dom.footer).clone(true, true)[0];
 				oClone.footer.className += " DTFC_Cloned";
 				oClone.footer.style.width = "100%";
 				oGrid.foot.appendChild( oClone.footer );
