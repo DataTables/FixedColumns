@@ -35,7 +35,7 @@ $(document).ready(function() {
 
 The columns that are fixed in place by FixedColumns take their width from the parent DataTable. As such, the width of the column can be controlled using the `dt-init columns.width` option.
 
-This example shows the first column being set to `width: 200px` (note that this is not pixel perfect in a table, the browser will make some adjustments!), a width that is reflected in the fixed column. Resize the browser window horizontally and you will be able to see that the fixed column retains its width (again with a small margin dictated by the browser) while the scrolling viewport and the table resize.
+This example shows the first column being set to `width: 200px` (note that this is not pixel perfect in a table, the browser will make some adjustments!), a width that is reflected in the fixed column. Resize the browser window horizontally and you will be able to see that the fixed column retains its width while the scrolling viewport and the table resize.
 
 ]]></info>
 
