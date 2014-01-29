@@ -42,6 +42,7 @@ var factory = function( $, DataTable ) {
  *
  *  @class
  *  @constructor
+ *  @global
  *  @param {object} dt DataTables instance. With DataTables 1.10 this can also
  *    be a jQuery collection, a jQuery selector, DataTables API instance or
  *    settings object.
@@ -87,6 +88,7 @@ var FixedColumns = function ( dt, init ) {
 	 * Settings object which contains customisable information for FixedColumns instance
 	 * @namespace
 	 * @extends FixedColumns.defaults
+	 * @private
 	 */
 	this.s = {
 		/**
@@ -124,6 +126,7 @@ var FixedColumns = function ( dt, init ) {
 	/**
 	 * DOM elements used by the class instance
 	 * @namespace
+	 * @private
 	 *
 	 */
 	this.dom = {
@@ -278,7 +281,7 @@ var FixedColumns = function ( dt, init ) {
 
 
 
-FixedColumns.prototype = {
+FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Public methods
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -1247,10 +1250,11 @@ FixedColumns.prototype = {
 
 /**
  * FixedColumns default settings for initialisation
+ *  @name {FixedColumns.defaults}
  *  @namespace
  *  @static
  */
-FixedColumns.defaults = {
+FixedColumns.defaults = /** @lends FixedColumns.defaults */{
 	/**
 	 * Number of left hand columns to fix in position
 	 *  @type     int
@@ -1327,7 +1331,7 @@ FixedColumns.defaults = {
 
 /**
  * FixedColumns version
- *  @constant  FixedColumns.version
+ *  @name      FixedColumns.version
  *  @type      String
  *  @default   See code
  *  @static
