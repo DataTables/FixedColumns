@@ -461,58 +461,67 @@ FixedColumns.prototype = {
 		this._fnGridSetup();
 
 		/* Event handlers */
+		var mouseController;
 
 		// When the body is scrolled - scroll the left and right columns
-		$(this.dom.scroller).on( 'scroll.DTFC', function () {
-			if ( that.s.iLeftColumns > 0 )
-			{
-				that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
-			}
-			if ( that.s.iRightColumns > 0 )
-			{
-				that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
-			}
-		} );
+		$(this.dom.scroller)
+			.on( 'mouseover.DTFC', function () {
+				mouseController = 'main';
+			} )
+			.on( 'scroll.DTFC', function () {
+				if ( mouseController === 'main' ) {
+					if ( that.s.iLeftColumns > 0 ) {
+						that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
+					}
+					if ( that.s.iRightColumns > 0 ) {
+						that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
+					}
+				}
+			} );
 
-		if ( that.s.iLeftColumns > 0 )
-		{
+		if ( that.s.iLeftColumns > 0 ) {
 			// When scrolling the left column, scroll the body and right column
-			$(that.dom.grid.left.liner).on( 'scroll.DTFC', function () {
-				that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
-				if ( that.s.iRightColumns > 0 )
-				{
-					that.dom.grid.right.liner.scrollTop = that.dom.grid.left.liner.scrollTop;
-				}
-			} );
-
-			// When x-scrolling in the fixed column(s) we need to pass that information on
-			// to the table's body, since otherwise we just swallow that information
-			// TODO - This is far from perfect - how can be be improved?
-			$(that.dom.grid.left.liner).on( "mousewheel.DTFC", function(e) {
-				var xDelta = e.originalEvent.wheelDeltaX / 3;
-				that.dom.scroller.scrollLeft -= xDelta;
-			} );
+			$(that.dom.grid.left.liner)
+				.on( 'mouseover.DTFC', function () {
+					mouseController = 'left';
+				} )
+				.on( 'scroll.DTFC', function () {
+					if ( mouseController === 'left' ) {
+						that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
+						if ( that.s.iRightColumns > 0 ) {
+							that.dom.grid.right.liner.scrollTop = that.dom.grid.left.liner.scrollTop;
+						}
+					}
+				} )
+				.on( "wheel.DTFC", function(e) {
+					// Pass horizontal scrolling through
+					var xDelta = -e.originalEvent.deltaX;
+					that.dom.scroller.scrollLeft -= xDelta;
+				} );
 		}
 
-		if ( that.s.iRightColumns > 0 )
-		{
+		if ( that.s.iRightColumns > 0 ) {
 			// When scrolling the right column, scroll the body and the left column
-			$(that.dom.grid.right.liner).on( 'scroll.DTFC', function () {
-				that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
-				if ( that.s.iLeftColumns > 0 )
-				{
-					that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
-				}
-			} );
-
-			// Adjust the body for x-scrolling
-			$(that.dom.grid.right.liner).on( "mousewheel.DTFC", function(e) {
-				var xDelta = e.originalEvent.wheelDeltaX / 3;
-				that.dom.scroller.scrollLeft -= xDelta;
-			} );
+			$(that.dom.grid.right.liner)
+				.on( 'mouseover.DTFC', function () {
+					mouseController = 'right';
+				} )
+				.on( 'scroll.DTFC', function () {
+					if ( mouseController === 'right' ) {
+						that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
+						if ( that.s.iLeftColumns > 0 ) {
+							that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
+						}
+					}
+				} )
+				.on( "wheel.DTFC", function(e) {
+					// Pass horizontal scrolling through
+					var xDelta = -e.originalEvent.deltaX;
+					that.dom.scroller.scrollLeft -= xDelta;
+				} );
 		}
 
-		$(window).resize( function () {
+		$(window).on( 'resize.DTFC', function () {
 			that._fnGridLayout.call( that );
 		} );
 
@@ -531,12 +540,13 @@ FixedColumns.prototype = {
 			.on( 'destroy.dt.DTFC', function () {
 				jqTable.off( 'column-sizing.dt.DTFC destroy.dt.DTFC draw.dt.DTFC' );
 
-				$(that.dom.scroller).on( 'scroll.DTFC' );
+				$(that.dom.scroller).fn( 'scroll.DTFC mouseover.DTFC' );
+				$(window).off( 'resize.DTFC' );
 
-				$(that.dom.grid.left.liner).on( 'scroll.DTFC mousewheel.DTFC' );
+				$(that.dom.grid.left.liner).on( 'scroll.DTFC wheel.DTFC mouseover.DTFC' );
 				$(that.dom.grid.left.wrapper).remove();
 
-				$(that.dom.grid.right.liner).on( 'scroll.DTFC mousewheel.DTFC' );
+				$(that.dom.grid.right.liner).on( 'scroll.DTFC wheel.DTFC mouseover.DTFC' );
 				$(that.dom.grid.right.wrapper).remove();
 			} );
 
