@@ -797,6 +797,7 @@ FixedColumns.prototype = {
 	 */
 	"_fnDraw": function ( bAll )
 	{
+		this._fnGridLayout();
 		this._fnCloneLeft( bAll );
 		this._fnCloneRight( bAll );
 
