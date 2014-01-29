@@ -827,7 +827,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 		}
 
 		/* Event triggering */
-		$(this).trigger( 'draw', {
+		$(this).trigger( 'draw.dtfc', {
 			"leftClone": this.dom.clone.left,
 			"rightClone": this.dom.clone.right
 		} );
@@ -1347,7 +1347,7 @@ FixedColumns.version = "3.0.0";
 
 /**
  * Event fired whenever FixedColumns redraws the fixed columns (i.e. clones the table elements from the main DataTable). This will occur whenever the DataTable that the FixedColumns instance is attached does its own draw.
- * @name FixedColumns#draw
+ * @name FixedColumns#draw.dtfc
  * @event
  * @param {event} e jQuery event object
  * @param {object} o Event parameters from FixedColumns
