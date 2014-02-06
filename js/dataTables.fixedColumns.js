@@ -469,7 +469,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 
 		// When the body is scrolled - scroll the left and right columns
 		$(this.dom.scroller)
-			.on( 'mouseover.DTFC', function () {
+			.on( 'mouseover.DTFC touchstart.DTFC', function () {
 				mouseController = 'main';
 			} )
 			.on( 'scroll.DTFC', function () {
@@ -486,7 +486,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 		if ( that.s.iLeftColumns > 0 ) {
 			// When scrolling the left column, scroll the body and right column
 			$(that.dom.grid.left.liner)
-				.on( 'mouseover.DTFC', function () {
+				.on( 'mouseover.DTFC touchstart.DTFC', function () {
 					mouseController = 'left';
 				} )
 				.on( 'scroll.DTFC', function () {
@@ -507,7 +507,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 		if ( that.s.iRightColumns > 0 ) {
 			// When scrolling the right column, scroll the body and the left column
 			$(that.dom.grid.right.liner)
-				.on( 'mouseover.DTFC', function () {
+				.on( 'mouseover.DTFC touchstart.DTFC', function () {
 					mouseController = 'right';
 				} )
 				.on( 'scroll.DTFC', function () {
@@ -549,13 +549,13 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 			.on( 'destroy.dt.DTFC', function () {
 				jqTable.off( 'column-sizing.dt.DTFC destroy.dt.DTFC draw.dt.DTFC' );
 
-				$(that.dom.scroller).fn( 'scroll.DTFC mouseover.DTFC' );
+				$(that.dom.scroller).fn( 'scroll.DTFC mouseover.DTFC touchstart.DTFC' );
 				$(window).off( 'resize.DTFC' );
 
-				$(that.dom.grid.left.liner).on( 'scroll.DTFC wheel.DTFC mouseover.DTFC' );
+				$(that.dom.grid.left.liner).on( 'scroll.DTFC wheel.DTFC mouseover.DTFC touchstart.DTFC' );
 				$(that.dom.grid.left.wrapper).remove();
 
-				$(that.dom.grid.right.liner).on( 'scroll.DTFC wheel.DTFC mouseover.DTFC' );
+				$(that.dom.grid.right.liner).on( 'scroll.DTFC wheel.DTFC mouseover.DTFC touchstart.DTFC' );
 				$(that.dom.grid.right.wrapper).remove();
 			} );
 
