@@ -549,13 +549,13 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 			.on( 'destroy.dt.DTFC', function () {
 				jqTable.off( 'column-sizing.dt.DTFC destroy.dt.DTFC draw.dt.DTFC' );
 
-				$(that.dom.scroller).fn( 'scroll.DTFC mouseover.DTFC' );
+				$(that.dom.scroller).off( 'scroll.DTFC mouseover.DTFC' );
 				$(window).off( 'resize.DTFC' );
 
-				$(that.dom.grid.left.liner).on( 'scroll.DTFC wheel.DTFC mouseover.DTFC' );
+				$(that.dom.grid.left.liner).off( 'scroll.DTFC wheel.DTFC mouseover.DTFC' );
 				$(that.dom.grid.left.wrapper).remove();
 
-				$(that.dom.grid.right.liner).on( 'scroll.DTFC wheel.DTFC mouseover.DTFC' );
+				$(that.dom.grid.right.liner).off( 'scroll.DTFC wheel.DTFC mouseover.DTFC' );
 				$(that.dom.grid.right.wrapper).remove();
 			} );
 
