@@ -1,11 +1,11 @@
-/*! FixedColumns 3.0.0
+/*! FixedColumns 3.0.1-dev
  * ©2010-2014 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     FixedColumns
  * @description Freeze columns in place on a scrolling DataTable
- * @version     3.0.0
+ * @version     3.0.1-dev
  * @file        dataTables.fixedColumns.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -598,7 +598,8 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				// table's border to the outerWidth, since we need to take
 				// account of it, but it isn't in any cell
 				if ( that.s.aiOuterWidths.length === 0 ) {
-					iWidth += parseInt( $(that.s.dt.nTable).css('border-left-width'), 10 );
+					var border = $(that.s.dt.nTable).css('border-left-width');
+					iWidth += typeof border === 'string' ? 1 : parseInt( border, 10 );
 				}
 
 				that.s.aiOuterWidths.push( iWidth );
@@ -1336,7 +1337,7 @@ FixedColumns.defaults = /** @lends FixedColumns.defaults */{
  *  @default   See code
  *  @static
  */
-FixedColumns.version = "3.0.0";
+FixedColumns.version = "3.0.1-dev";
 
 
 
