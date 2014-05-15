@@ -483,6 +483,10 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				}
 			} );
 
+		var wheelType = 'onwheel' in document.createElement('div') ?
+			'wheel.DTFC' :
+			'mousewheel.DTFC';
+
 		if ( that.s.iLeftColumns > 0 ) {
 			// When scrolling the left column, scroll the body and right column
 			$(that.dom.grid.left.liner)
@@ -497,9 +501,11 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 						}
 					}
 				} )
-				.on( "wheel.DTFC", function(e) {
+				.on( wheelType, function(e) { // xxx update the destroy as well
 					// Pass horizontal scrolling through
-					var xDelta = -e.originalEvent.deltaX;
+					var xDelta = e.type === 'wheel' ?
+						-e.originalEvent.deltaX :
+						e.originalEvent.wheelDeltaX;
 					that.dom.scroller.scrollLeft -= xDelta;
 				} );
 		}
@@ -518,9 +524,11 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 						}
 					}
 				} )
-				.on( "wheel.DTFC", function(e) {
+				.on( wheelType, function(e) {
 					// Pass horizontal scrolling through
-					var xDelta = -e.originalEvent.deltaX;
+					var xDelta = e.type === 'wheel' ?
+						-e.originalEvent.deltaX :
+						e.originalEvent.wheelDeltaX;
 					that.dom.scroller.scrollLeft -= xDelta;
 				} );
 		}
@@ -552,10 +560,10 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				$(that.dom.scroller).off( 'scroll.DTFC mouseover.DTFC' );
 				$(window).off( 'resize.DTFC' );
 
-				$(that.dom.grid.left.liner).off( 'scroll.DTFC wheel.DTFC mouseover.DTFC' );
+				$(that.dom.grid.left.liner).off( 'scroll.DTFC mouseover.DTFC '+wheelType );
 				$(that.dom.grid.left.wrapper).remove();
 
-				$(that.dom.grid.right.liner).off( 'scroll.DTFC wheel.DTFC mouseover.DTFC' );
+				$(that.dom.grid.right.liner).off( 'scroll.DTFC mouseover.DTFC '+wheelType );
 				$(that.dom.grid.right.wrapper).remove();
 			} );
 
@@ -583,6 +591,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 
 		$.each( this.s.dt.aoColumns, function (i, col) {
 			var th = $(col.nTh);
+			var border;
 
 			if ( ! th.filter(':visible').length ) {
 				that.s.aiInnerWidths.push( 0 );
@@ -598,7 +607,13 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				// table's border to the outerWidth, since we need to take
 				// account of it, but it isn't in any cell
 				if ( that.s.aiOuterWidths.length === 0 ) {
-					var border = $(that.s.dt.nTable).css('border-left-width');
+					border = $(that.s.dt.nTable).css('border-left-width');
+					iWidth += typeof border === 'string' ? 1 : parseInt( border, 10 );
+				}
+
+				// Likewise with the final column on the right
+				if ( that.s.aiOuterWidths.length === that.s.dt.aoColumns.length-1 ) {
+					border = $(that.s.dt.nTable).css('border-right-width');
 					iWidth += typeof border === 'string' ? 1 : parseInt( border, 10 );
 				}
 
@@ -724,8 +739,8 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 	{
 		var oGrid = this.dom.grid;
 		var iWidth = $(oGrid.wrapper).width();
-		var iBodyHeight = $(this.s.dt.nTable.parentNode).height();
-		var iFullHeight = $(this.s.dt.nTable.parentNode.parentNode).height();
+		var iBodyHeight = $(this.s.dt.nTable.parentNode).outerHeight();
+		var iFullHeight = $(this.s.dt.nTable.parentNode.parentNode).outerHeight();
 		var oOverflow = this._fnDTOverflow();
 		var
 			iLeftWidth = this.s.iLeftWidth,
