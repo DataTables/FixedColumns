@@ -1,11 +1,11 @@
-/*! FixedColumns 3.0.2
+/*! FixedColumns 3.0.3-dev
  * ©2010-2014 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     FixedColumns
  * @description Freeze columns in place on a scrolling DataTable
- * @version     3.0.2
+ * @version     3.0.3-dev
  * @file        dataTables.fixedColumns.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -75,8 +75,10 @@ var FixedColumns = function ( dt, init ) {
 
 	// Use the DataTables Hungarian notation mapping method, if it exists to
 	// provide forwards compatibility for camel case variables
-	if ( $.fn.dataTable.camelToHungarian ) {
-		$.fn.dataTable.camelToHungarian( FixedColumns.defaults, init );
+	var camelToHungarian = $.fn.dataTable.camelToHungarian;
+	if ( camelToHungarian ) {
+		camelToHungarian( FixedColumns.defaults, FixedColumns.defaults, true );
+		camelToHungarian( FixedColumns.defaults, init );
 	}
 
 	// v1.10 allows the settings object to be got form a number of sources
@@ -1352,7 +1354,7 @@ FixedColumns.defaults = /** @lends FixedColumns.defaults */{
  *  @default   See code
  *  @static
  */
-FixedColumns.version = "3.0.2";
+FixedColumns.version = "3.0.3-dev";
 
 
 
