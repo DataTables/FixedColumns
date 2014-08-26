@@ -21,6 +21,55 @@
  * For details please refer to: http://www.datatables.net
  */
 
+/**
+ * Removes white spaces from a string
+ *
+ * @class String
+ * @namespace JavaScript
+ * @method trim
+ * @return {String}
+ */
+if (typeof String.prototype.trim !== 'function') {
+    String.prototype.trim = function () {
+        return this.replace(/^\s+|\s+$/g, '');
+    }
+}
+
+/**
+ * Parses the given CSS and returns the value for the given attribute
+ *
+ * @method parseCSS
+ * @class window
+ * @param css The CSS
+ * @param attr The attribute name to retrieve
+ * @return {String|null}
+ */
+window.parseCss = function (css, attr) {
+    var returnValue = null;
+    css = css.split(';');
+
+    jQuery(css).each(function (i, e) {
+        if (!e) {
+            return;
+        }
+
+        e = e.split(':');
+
+        if (e.length != 2) {
+            return;
+        }
+
+        var attrName = e[0].trim();
+        var attrValue = e[1].trim();
+
+        if (attrName == attr) {
+            returnValue = attrValue;
+        }
+    });
+
+    return returnValue;
+};
+
 
 (function(window, document, undefined) {
 
@@ -384,7 +433,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 	 * table, so you can pass in nodes from the master table, or the cloned
 	 * tables and get the index position for the data in the main table.
 	 *  @param {node} node TR, TH or TD element to get the information about
-	 *  @returns {int} If nNode is given as a TR, then a single index is 
+	 *  @returns {int} If nNode is given as a TR, then a single index is
 	 *    returned, or if given as a cell, an array of [row index, column index
 	 *    (visible), column index (all)] is given.
 	 */
@@ -603,7 +652,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 			{
 				// Inner width is used to assign widths to cells
 				// Outer width is used to calculate the container
-				var iWidth = th.outerWidth();
+                var iWidth = parseInt(parseCss(th.attr('style'), 'width'));
 
 				// When working with the left most-cell, need to add on the
 				// table's border to the outerWidth, since we need to take
