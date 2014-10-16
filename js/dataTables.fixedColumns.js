@@ -748,6 +748,18 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 			iLeftWidth = this.s.iLeftWidth,
 			iRightWidth = this.s.iRightWidth,
 			iRight;
+		var scrollbarAdjust = function ( node, width ) {
+			if ( ! oOverflow.bar ) {
+				// If there is no scrollbar (Macs) we need to hide the auto scrollbar
+				node.style.width = (width+20)+"px";
+				node.style.paddingRight = "20px";
+				node.style.boxSizing = "border-box";
+			}
+			else {
+				// Otherwise just overflow by the scrollbar
+				node.style.width = (width+oOverflow.bar)+"px";
+			}
+		};
 
 		// When x scrolling - don't paint the fixed columns over the x scrollbar
 		if ( oOverflow.x )
@@ -766,7 +778,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				oGrid.left.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px"; // shift footer for scrollbar
 			}
 
-			oGrid.left.liner.style.width = (iLeftWidth+oOverflow.bar)+"px";
+			scrollbarAdjust( oGrid.left.liner, iLeftWidth );
 			oGrid.left.liner.style.height = iBodyHeight+"px";
 		}
 
@@ -786,7 +798,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				oGrid.right.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px";
 			}
 
-			oGrid.right.liner.style.width = (iRightWidth+oOverflow.bar)+"px";
+			scrollbarAdjust( oGrid.right.liner, iRightWidth );
 			oGrid.right.liner.style.height = iBodyHeight+"px";
 
 			oGrid.right.headBlock.style.display = oOverflow.y ? 'block' : 'none';
