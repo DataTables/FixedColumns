@@ -62,7 +62,7 @@ var FixedColumns = function ( dt, init ) {
 	var that = this;
 
 	/* Sanity check - you just know it will happen */
-	if ( ! this instanceof FixedColumns )
+	if ( ! ( this instanceof FixedColumns ) )
 	{
 		alert( "FixedColumns warning: FixedColumns must be initialised with the 'new' keyword." );
 		return;
