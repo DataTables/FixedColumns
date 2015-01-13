@@ -420,7 +420,23 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 		}
 	},
 
+	"_fnScrollTo": function( scrollTopPosition ) 
+	{
+		function setScrollTop(property, val){
+			// Ensure no browsers trigger repeating scroll event:
+			if(property.scrollTop != val){
+				property.scrollTop = val;
+			}
+		}
 
+		setScrollTop(this.dom.scroller, scrollTopPosition);
+		if ( this.s.iLeftColumns > 0 ) {
+			setScrollTop(this.dom.grid.left.liner, scrollTopPosition);
+		}
+		if ( this.s.iRightColumns > 0 ) {
+			setScrollTop(this.dom.grid.right.liner, scrollTopPosition);
+		}
+	},
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Private methods (they are of course public in JS, but recommended as private)
@@ -467,22 +483,11 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 		this._fnGridSetup();
 
 		/* Event handlers */
-		var mouseController;
 
 		// When the body is scrolled - scroll the left and right columns
 		$(this.dom.scroller)
-			.on( 'mouseover.DTFC touchstart.DTFC', function () {
-				mouseController = 'main';
-			} )
 			.on( 'scroll.DTFC', function () {
-				if ( mouseController === 'main' ) {
-					if ( that.s.iLeftColumns > 0 ) {
-						that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
-					}
-					if ( that.s.iRightColumns > 0 ) {
-						that.dom.grid.right.liner.scrollTop = that.dom.scroller.scrollTop;
-					}
-				}
+				that._fnScrollTo(that.dom.scroller.scrollTop);
 			} );
 
 		var wheelType = 'onwheel' in document.createElement('div') ?
@@ -492,16 +497,8 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 		if ( that.s.iLeftColumns > 0 ) {
 			// When scrolling the left column, scroll the body and right column
 			$(that.dom.grid.left.liner)
-				.on( 'mouseover.DTFC touchstart.DTFC', function () {
-					mouseController = 'left';
-				} )
 				.on( 'scroll.DTFC', function () {
-					if ( mouseController === 'left' ) {
-						that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
-						if ( that.s.iRightColumns > 0 ) {
-							that.dom.grid.right.liner.scrollTop = that.dom.grid.left.liner.scrollTop;
-						}
-					}
+					that._fnScrollTo(that.dom.grid.left.liner.scrollTop);
 				} )
 				.on( wheelType, function(e) { // xxx update the destroy as well
 					// Pass horizontal scrolling through
@@ -515,16 +512,8 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 		if ( that.s.iRightColumns > 0 ) {
 			// When scrolling the right column, scroll the body and the left column
 			$(that.dom.grid.right.liner)
-				.on( 'mouseover.DTFC touchstart.DTFC', function () {
-					mouseController = 'right';
-				} )
 				.on( 'scroll.DTFC', function () {
-					if ( mouseController === 'right' ) {
-						that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
-						if ( that.s.iLeftColumns > 0 ) {
-							that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
-						}
-					}
+					that._fnScrollTo(that.dom.grid.right.liner.scrollTop);
 				} )
 				.on( wheelType, function(e) {
 					// Pass horizontal scrolling through
