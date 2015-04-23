@@ -503,7 +503,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 						}
 					}
 				} )
-				.on( wheelType, function(e) { // xxx update the destroy as well
+				.on( wheelType, function(e) {
 					// Pass horizontal scrolling through
 					var xDelta = e.type === 'wheel' ?
 						-e.originalEvent.deltaX :
@@ -559,13 +559,13 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 			.on( 'destroy.dt.DTFC', function () {
 				jqTable.off( 'column-sizing.dt.DTFC column-visibility.dt.DTFC destroy.dt.DTFC draw.dt.DTFC' );
 
-				$(that.dom.scroller).off( 'scroll.DTFC mouseover.DTFC' );
+				$(that.dom.scroller).off( 'mouseover.DTFC touchstart.DTFC scroll.DTFC' );
 				$(window).off( 'resize.DTFC' );
 
-				$(that.dom.grid.left.liner).off( 'scroll.DTFC mouseover.DTFC '+wheelType );
+				$(that.dom.grid.left.liner).off( 'mouseover.DTFC touchstart.DTFC scroll.DTFC '+wheelType );
 				$(that.dom.grid.left.wrapper).remove();
 
-				$(that.dom.grid.right.liner).off( 'scroll.DTFC mouseover.DTFC '+wheelType );
+				$(that.dom.grid.right.liner).off( 'mouseover.DTFC touchstart.DTFC scroll.DTFC '+wheelType );
 				$(that.dom.grid.right.wrapper).remove();
 			} );
 
@@ -933,7 +933,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 		for ( var i=0, iLen=aoOriginal.length ; i<iLen ; i++ )
 		{
 			var aRow = [];
-			aRow.nTr = $(aoOriginal[i].nTr).clone(true, true)[0];
+			aRow.nTr = $(aoOriginal[i].nTr).clone(true, false)[0];
 
 			for ( var j=0, jLen=this.s.iTableColumns ; j<jLen ; j++ )
 			{
@@ -945,7 +945,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				var iCloned = $.inArray( aoOriginal[i][j].cell, aCloned );
 				if ( iCloned === -1 )
 				{
-					var nClone = $(aoOriginal[i][j].cell).clone(true, true)[0];
+					var nClone = $(aoOriginal[i][j].cell).clone(true, false)[0];
 					aClones.push( nClone );
 					aCloned.push( aoOriginal[i][j].cell );
 
@@ -996,7 +996,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 			{
 				oClone.header.parentNode.removeChild( oClone.header );
 			}
-			oClone.header = $(this.dom.header).clone(true, true)[0];
+			oClone.header = $(this.dom.header).clone(true, false)[0];
 			oClone.header.className += " DTFC_Cloned";
 			oClone.header.style.width = "100%";
 			oGrid.head.appendChild( oClone.header );
