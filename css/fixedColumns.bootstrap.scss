@@ -1,0 +1,47 @@
+
+table.DTFC_Cloned tr.even {
+	background-color: white;
+	margin-bottom: 0;
+}
+ 
+div.DTFC_RightHeadWrapper table ,
+div.DTFC_LeftHeadWrapper table {
+	border-bottom: none !important;
+	margin-bottom: 0 !important;
+	background-color: white;
+}
+ 
+div.DTFC_RightBodyWrapper table,
+div.DTFC_LeftBodyWrapper table {
+	border-top: none;
+	margin: 0 !important;
+
+	tbody tr:first-child th,
+	tbody tr:first-child td,
+	tbody tr:first-child th,
+	tbody tr:first-child td {
+		border-top: none;
+	}
+}
+ 
+div.DTFC_RightFootWrapper table,
+div.DTFC_LeftFootWrapper table {
+	border-top: none;
+	margin-top: 0 !important;
+	background-color: white;
+}
+
+
+div.DTFC_LeftBodyWrapper,
+div.DTFC_RightBodyWrapper {
+	table.dataTable thead {
+		.sorting:after,
+		.sorting_asc:after,
+		.sorting_desc:after,
+		.sorting:after,
+		.sorting_asc:after,
+		.sorting_desc:after {
+		   display: none;
+		}
+	}
+}

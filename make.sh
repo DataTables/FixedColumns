@@ -12,7 +12,8 @@ DT_BUILT="${DT_SRC}/built/DataTables"
 
 # Copy CSS
 rsync -r css $OUT_DIR
-css_compress $OUT_DIR/css/dataTables.fixedColumns.css
+scss_compile $OUT_DIR/css/fixedColumns.dataTables.scss
+scss_compile $OUT_DIR/css/fixedColumns.bootstrap.scss
 
 # Copy JS
 rsync -r js $OUT_DIR
