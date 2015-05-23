@@ -32,7 +32,7 @@ $(document).ready(function() {
 
 # Documentation / support
 
-* Documentation: http://datatables.net/extensions/FixedColumns/
+* Documentation: http://datatables.net/extensions/fixedcolumns/
 * DataTables support forums: http://datatables.net/forums
 
 
