@@ -23,10 +23,10 @@ $(document).ready(function() {
 		scrollY:        "300px",
 		scrollX:        true,
 		scrollCollapse: true,
-		ajax: "../../../examples/server_side/scripts/server_processing.php",
-		serverSide: true
+		ajax:           "../../../../examples/server_side/scripts/server_processing.php",
+		serverSide:     true,
+		fixedColumns:   true
 	} );
-	new $.fn.dataTable.FixedColumns( table );
 } );
 ]]>
 </js>

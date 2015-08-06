@@ -16,12 +16,11 @@ $(document).ready(function() {
 		scrollY:        "300px",
 		scrollX:        true,
 		scrollCollapse: true,
-		paging:         false
-	} );
-
-	new $.fn.dataTable.FixedColumns( table, {
-		leftColumns: 1,
-		rightColumns: 1
+		paging:         false,
+		fixedColumns:   {
+			leftColumns: 1,
+			rightColumns: 1
+		}
 	} );
 } );
 ]]>
@@ -31,7 +30,7 @@ $(document).ready(function() {
 
 <info><![CDATA[
 
-FixedColumns allows columns to be fixed from both the left and right hand sides of the table. Fixing right hand-side columns is done by using the `rightColumns` initialisation parameter, which works just the same as `leftColumns` does for the left side of the table. This example shows both the left and right columns being fixed in place.
+FixedColumns allows columns to be fixed from both the left and right hand sides of the table. Fixing right hand-side columns is done by using the `fc-init fixedColumns.rightColumns` initialisation parameter, which works just the same as `fc-init fixedColumns.leftColumns` does for the left side of the table. This example shows both the left and right columns being fixed in place.
 
 ]]></info>
 

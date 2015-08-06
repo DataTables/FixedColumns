@@ -18,11 +18,10 @@ $(document).ready(function() {
 		scrollY:        "300px",
 		scrollX:        true,
 		scrollCollapse: true,
-		paging:         false
-	} );
-
-	new $.fn.dataTable.FixedColumns( table, {
-		heightMatch: 'none'
+		paging:         false,
+		fixedColumns:   {
+			heightMatch: 'none'
+		}
 	} );
 } );
 ]]>

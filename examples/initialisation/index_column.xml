@@ -42,7 +42,8 @@ $(document).ready(function() {
 			"class": "index",
 			targets: 0
 		} ],
-		order: [[ 1, 'asc' ]]
+		order: [[ 1, 'asc' ]],
+		fixedColumns: true
 	} );
 
 	table.on( 'order.dt search.dt', function () {
@@ -50,8 +51,6 @@ $(document).ready(function() {
 			cell.innerHTML = i+1;
 		} );
 	} ).draw();
-
-	new $.fn.dataTable.FixedColumns( table );
 } );
 ]]>
 </js>

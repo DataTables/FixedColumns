@@ -10,10 +10,8 @@ $(document).ready(function() {
 		scrollX:        true,
 		scrollCollapse: true,
 		paging:         false,
-		processing: true
+		fixedColumns:   true
 	} );
-
-	new $.fn.dataTable.FixedColumns( table );
 } );
 ]]>
 </js>

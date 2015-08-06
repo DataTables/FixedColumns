@@ -20,9 +20,9 @@ $(document).ready(function() {
 		scrollY:        "300px",
 		scrollX:        true,
 		scrollCollapse: true,
-		paging:         false
+		paging:         false,
+		fixedColumns:   true
 	} );
-	new $.fn.dataTable.FixedColumns( table );
 } );
 ]]>
 </js>

@@ -16,10 +16,10 @@ $(document).ready(function() {
 		scrollY:        "300px",
 		scrollX:        true,
 		scrollCollapse: true,
-		paging:         false
-	} );
-	new $.fn.dataTable.FixedColumns( table, {
-		leftColumns: 2
+		paging:         false,
+		fixedColumns:   {
+			leftColumns: 2
+		}
 	} );
 } );
 ]]>
@@ -29,7 +29,7 @@ $(document).ready(function() {
 
 <info><![CDATA[
 
-FixedColumns allows more than one column to be frozen into place using the `leftColumns` parameter. The example below shows two columns fixed.
+FixedColumns allows more than one column to be frozen into place using the `fc-init fixedColumns.leftColumns` parameter. The example below shows two columns fixed.
 
 ]]></info>
 
