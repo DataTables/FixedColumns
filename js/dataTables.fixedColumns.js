@@ -474,7 +474,11 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 			.on( 'mouseover.DTFC touchstart.DTFC', function () {
 				mouseController = 'main';
 			} )
-			.on( 'scroll.DTFC', function () {
+			.on( 'scroll.DTFC', function (e) {
+				if ( ! mouseController && e.originalEvent ) {
+					mouseController = 'main';
+				}
+
 				if ( mouseController === 'main' ) {
 					if ( that.s.iLeftColumns > 0 ) {
 						that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
@@ -495,7 +499,11 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				.on( 'mouseover.DTFC touchstart.DTFC', function () {
 					mouseController = 'left';
 				} )
-				.on( 'scroll.DTFC', function () {
+				.on( 'scroll.DTFC', function ( e ) {
+					if ( ! mouseController && e.originalEvent ) {
+						mouseController = 'left';
+					}
+
 					if ( mouseController === 'left' ) {
 						that.dom.scroller.scrollTop = that.dom.grid.left.liner.scrollTop;
 						if ( that.s.iRightColumns > 0 ) {
@@ -518,7 +526,11 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				.on( 'mouseover.DTFC touchstart.DTFC', function () {
 					mouseController = 'right';
 				} )
-				.on( 'scroll.DTFC', function () {
+				.on( 'scroll.DTFC', function ( e ) {
+					if ( ! mouseController && e.originalEvent ) {
+						mouseController = 'right';
+					}
+
 					if ( mouseController === 'right' ) {
 						that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
 						if ( that.s.iLeftColumns > 0 ) {
