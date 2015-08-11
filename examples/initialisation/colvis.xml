@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" table-class="stripe row-border order-column" order="5">
 
-<css lib="datatables fixedcolumns buttons buttons-colvis">
+<css lib="datatables fixedcolumns buttons">
 	/* Ensure that the demo table scrolls */
 	th, td { white-space: nowrap; }
 	div.dataTables_wrapper {

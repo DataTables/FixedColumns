@@ -8,6 +8,10 @@
 		width: 800px;
 		margin: 0 auto;
 	}
+
+	th input {
+		width: 90%;
+	}
 </css>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
