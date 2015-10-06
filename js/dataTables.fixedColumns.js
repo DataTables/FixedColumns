@@ -20,25 +20,27 @@
  *
  * For details please refer to: http://www.datatables.net
  */
-
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
 		// AMD
 		define( ['jquery', 'datatables'], factory );
 	}
 	else if ( typeof exports === 'object' ) {
-		// Node / CommonJS
-		module.exports = function ($, dt) {
+		// CommonJS
+		module.exports = function ($) {
 			if ( ! $ ) { $ = require('jquery'); }
-			factory( $, dt || $.fn.dataTable || require('datatables') );
+			if ( ! $.fn.dataTable ) { require('datatables')($); }
+
+			factory( $ );
 		};
 	}
-	else if ( jQuery ) {
-		// Browser standard
-		factory( jQuery, jQuery.fn.dataTable );
+	else {
+		// Browser
+		factory( jQuery );
 	}
-}(function( $, DataTable ) {
+}(function( $ ) {
 'use strict';
+var DataTable = $.fn.dataTable;
 
 
 /**
