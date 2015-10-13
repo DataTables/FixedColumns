@@ -578,10 +578,12 @@ $.extend( FixedColumns.prototype , {
 				that._fnColCalc();
 				that._fnGridLayout( that );
 			} )
-			.on( 'column-visibility.dt.DTFC', function () {
-				that._fnColCalc();
-				that._fnGridLayout( that );
-				that._fnDraw( true );
+			.on( 'column-visibility.dt.DTFC', function ( e, settings, column, vis, recalc ) {
+				if ( recalc === undefined || recalc ) {
+					that._fnColCalc();
+					that._fnGridLayout( that );
+					that._fnDraw( true );
+				}
 			} )
 			.on( 'destroy.dt.DTFC', function () {
 				jqTable.off( 'column-sizing.dt.DTFC column-visibility.dt.DTFC destroy.dt.DTFC draw.dt.DTFC' );
