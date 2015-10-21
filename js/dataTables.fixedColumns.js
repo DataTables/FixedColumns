@@ -786,7 +786,7 @@ $.extend( FixedColumns.prototype , {
 			}
 			else {
 				// Otherwise just overflow by the scrollbar
-				node.style.width = (width+oOverflow.bar)+"px";
+				node.style.width = (width+oOverflow.bar+1)+"px";
 			}
 		};
 
