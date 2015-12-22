@@ -1,11 +1,11 @@
-/*! FixedColumns 3.2.0
+/*! FixedColumns 3.2.1-dev
  * ©2010-2014 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     FixedColumns
  * @description Freeze columns in place on a scrolling DataTable
- * @version     3.2.0
+ * @version     3.2.1-dev
  * @file        dataTables.fixedColumns.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -578,6 +578,7 @@ $.extend( FixedColumns.prototype , {
 
 		jqTable
 			.on( 'draw.dt.DTFC', function () {
+				that._fnColCalc();
 				that._fnDraw.call( that, bFirstDraw );
 				bFirstDraw = false;
 			} )
@@ -1411,7 +1412,7 @@ FixedColumns.defaults = /** @lends FixedColumns.defaults */{
  *  @default   See code
  *  @static
  */
-FixedColumns.version = "3.2.0";
+FixedColumns.version = "3.2.1-dev";
 
 
 
