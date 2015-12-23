@@ -48,7 +48,7 @@
 }(function( $, window, document, undefined ) {
 'use strict';
 var DataTable = $.fn.dataTable;
-
+var _firefoxScroll;
 
 /**
  * When making use of DataTables' x-axis scrolling feature, you may wish to
@@ -776,6 +776,7 @@ $.extend( FixedColumns.prototype , {
 	 */
 	"_fnGridLayout": function ()
 	{
+		var that = this;
 		var oGrid = this.dom.grid;
 		var iWidth = $(oGrid.wrapper).width();
 		var iBodyHeight = $(this.s.dt.nTable.parentNode).outerHeight();
@@ -791,6 +792,12 @@ $.extend( FixedColumns.prototype , {
 				node.style.width = (width+20)+"px";
 				node.style.paddingRight = "20px";
 				node.style.boxSizing = "border-box";
+			}
+			else if ( that._firefoxScrollError() ) {
+				// See the above function for why this is required
+				if ( $(node).height() > 34 ) {
+					node.style.width = (width+oOverflow.bar)+"px";
+				}
 			}
 			else {
 				// Otherwise just overflow by the scrollbar
@@ -1315,6 +1322,41 @@ $.extend( FixedColumns.prototype , {
 			anClone[i].style.height = heights[i]+"px";
 			anOriginal[i].style.height = heights[i]+"px";
 		}
+	},
+
+	/**
+	 * Determine if the UA suffers from Firefox's overflow:scroll scrollbars
+	 * not being shown bug.
+	 *
+	 * Firefox doesn't draw scrollbars, even if it is told to using
+	 * overflow:scroll, if the div is less than 34px height. See bugs 292284 and
+	 * 781885. Using UA detection here since this is particularly hard to detect
+	 * using objects - its a straight up rendering error in Firefox.
+	 *
+	 * @return {boolean} True if Firefox error is present, false otherwise
+	 */
+	_firefoxScrollError: function () {
+		if ( _firefoxScroll === undefined ) {
+			var test = $('<div/>')
+				.css( {
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					height: 10,
+					width: 50,
+					overflow: 'scroll'
+				} )
+				.appendTo( 'body' );
+
+			// Make sure this doesn't apply on Macs with 0 width scrollbars
+			_firefoxScroll = (
+				test[0].clientWidth === test[0].offsetWidth && this._fnDTOverflow().bar !== 0
+			);
+
+			test.remove();
+		}
+
+		return _firefoxScroll;
 	}
 } );
 
