@@ -704,7 +704,7 @@ $.extend( FixedColumns.prototype , {
 					'</div>'+
 					'<div class="DTFC_LeftFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
 				'</div>'+
-				'<div class="DTFC_RightWrapper" style="position:absolute; top:0; left:0;">'+
+				'<div class="DTFC_RightWrapper" style="position:absolute; top:0; right:0;">'+
 					'<div class="DTFC_RightHeadWrapper" style="position:relative; top:0; left:0;">'+
 						'<div class="DTFC_RightHeadBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div>'+
 					'</div>'+
@@ -741,6 +741,8 @@ $.extend( FixedColumns.prototype , {
 			this.dom.grid.right.body = nRight.childNodes[1];
 			this.dom.grid.right.liner = $('div.DTFC_RightBodyLiner', nSWrapper)[0];
 
+			nRight.style.right = oOverflow.bar+"px";
+
 			block = $('div.DTFC_RightHeadBlocker', nSWrapper)[0];
 			block.style.width = oOverflow.bar+"px";
 			block.style.right = -oOverflow.bar+"px";
@@ -765,6 +767,24 @@ $.extend( FixedColumns.prototype , {
 			{
 				this.dom.grid.right.foot = nRight.childNodes[2];
 			}
+		}
+
+		// RTL support - swap the position of the left and right columns (#48)
+		if ( $(this.dom.body).css('direction') === 'rtl' ) {
+			$(nLeft).css( {
+				left: '',
+				right: 0
+			} );
+
+			$(nRight).css( {
+				left: oOverflow.bar+"px",
+				right: ''
+			} );
+
+			$('div.DTFC_RightHeadBlocker', nSWrapper).css( {
+				left: -oOverflow.bar+'px',
+				right: ''
+			} );
 		}
 	},
 
@@ -835,7 +855,6 @@ $.extend( FixedColumns.prototype , {
 			}
 
 			oGrid.right.wrapper.style.width = iRightWidth+"px";
-			oGrid.right.wrapper.style.left = iRight+"px";
 			oGrid.right.wrapper.style.height = "1px";
 			oGrid.right.body.style.height = iBodyHeight+"px";
 			if ( oGrid.right.foot ) {
