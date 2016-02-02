@@ -15,7 +15,7 @@
 	</type>
 
 	<description>
-		This method can be used to flag one or more rows in the table to have their heights recalculated when using `-string semiauto` row height matching (`fc-init heightMatch`) on the next draw (`dt-api draw()`). This function will have no effect when `-string none` or `-string auto` row height matching is used.
+		This method can be used to flag one or more rows in the table to have their heights recalculated when using `-string semiauto` row height matching (`fc-init fixedColumns.heightMatch`) on the next draw (`dt-api draw()`). This function will have no effect when `-string none` or `-string auto` row height matching is used.
 
 		This can be useful when the data in a DataTable has changed, potentially effecting the heights of the rows in question.
 
