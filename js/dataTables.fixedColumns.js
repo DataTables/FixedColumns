@@ -490,11 +490,24 @@ $.extend( FixedColumns.prototype , {
 
 		/* Event handlers */
 		var mouseController;
+		var mouseDown = false;
+
+		// When the mouse is down (drag scroll) the mouse controller cannot
+		// change, as the browser keeps the original element as the scrolling one
+		$(this.s.dt.nTableWrapper).on( 'mousedown.DTFC', function () {
+			mouseDown = true;
+
+			$(document).one( 'mouseup', function () {
+				mouseDown = false;
+			} );
+		} );
 
 		// When the body is scrolled - scroll the left and right columns
 		$(this.dom.scroller)
 			.on( 'mouseover.DTFC touchstart.DTFC', function () {
-				mouseController = 'main';
+				if ( ! mouseDown ) {
+					mouseController = 'main';
+				}
 			} )
 			.on( 'scroll.DTFC', function (e) {
 				if ( ! mouseController && e.originalEvent ) {
@@ -519,7 +532,9 @@ $.extend( FixedColumns.prototype , {
 			// When scrolling the left column, scroll the body and right column
 			$(that.dom.grid.left.liner)
 				.on( 'mouseover.DTFC touchstart.DTFC', function () {
-					mouseController = 'left';
+					if ( ! mouseDown ) {
+						mouseController = 'left';
+					}
 				} )
 				.on( 'scroll.DTFC', function ( e ) {
 					if ( ! mouseController && e.originalEvent ) {
@@ -546,7 +561,9 @@ $.extend( FixedColumns.prototype , {
 			// When scrolling the right column, scroll the body and the left column
 			$(that.dom.grid.right.liner)
 				.on( 'mouseover.DTFC touchstart.DTFC', function () {
-					mouseController = 'right';
+					if ( ! mouseDown ) {
+						mouseController = 'right';
+					}
 				} )
 				.on( 'scroll.DTFC', function ( e ) {
 					if ( ! mouseController && e.originalEvent ) {
@@ -598,6 +615,7 @@ $.extend( FixedColumns.prototype , {
 
 				$(that.dom.scroller).off( 'mouseover.DTFC touchstart.DTFC scroll.DTFC' );
 				$(window).off( 'resize.DTFC' );
+				$(this.s.dt.nTableWrapper).off( 'mousedown.DTFC' );
 
 				$(that.dom.grid.left.liner).off( 'mouseover.DTFC touchstart.DTFC scroll.DTFC '+wheelType );
 				$(that.dom.grid.left.wrapper).remove();
