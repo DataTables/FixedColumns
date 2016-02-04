@@ -17,6 +17,25 @@
 		</description>
 	</type>
 
+	<deprecated>
+		<version>3.2.1</version>
+		<description>
+			As of DataTables 1.10.11 and FixedColumns 3.2.1 this method is no longer required to obtain a cell index from a node as the `dt-api cell()` method will accept the `-tag td` elements in the fixed column as selector arguments.
+		</description>
+		<example title="Get the cell index for any cell clicked upon in a table (from the fixed column, or the main table)"><![CDATA[
+
+var table = $('myTable').DataTable();
+
+$(table.table().container()).on( 'click', 'td', function () {
+	var cell = table.cell( this );
+	
+	console.log( cell.index() );
+} );
+
+]]>
+		</example>
+	</deprecated>
+
 	<description>
 		When working with FixedColumns, there is additional complexity in the DataTable as the fixed columns are not technically part of the host DataTables - they just look like it! They are in fact HTML `-tag table` elements themselves, with specific styling to visually integrate them with the host table.
 
