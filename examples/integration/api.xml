@@ -42,6 +42,8 @@ This example shows how the cells in the fixed columns operate seamlessly with th
 
 Obviously this is a trivial use case, but it demonstrates clearly how the cells in the fixed columns operate with the DataTables API selector methods.
 
+Note that the `dt-api table().container()` method is used to get the table's wrapper `-tag div` to use as the base element for the delegated _click_ event. This is appropriate in this case rather than simply using `#example` since the fixed column elements are not inside the original `-tag table` element.
+
 ]]></info>
 
 <demo-html>
