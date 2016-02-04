@@ -610,17 +610,20 @@ $.extend( FixedColumns.prototype , {
 					that._fnDraw( true );
 				}
 			} )
+			.on( 'select.dt.DTFC deselect.dt.DTFC', function ( e, dt, type, indexes ) {
+				that._fnDraw( false );
+			} )
 			.on( 'destroy.dt.DTFC', function () {
-				jqTable.off( 'column-sizing.dt.DTFC column-visibility.dt.DTFC destroy.dt.DTFC draw.dt.DTFC' );
+				jqTable.off( '.DTFC' );
 
-				$(that.dom.scroller).off( 'mouseover.DTFC touchstart.DTFC scroll.DTFC' );
-				$(window).off( 'resize.DTFC' );
-				$(this.s.dt.nTableWrapper).off( 'mousedown.DTFC' );
+				$(that.dom.scroller).off( '.DTFC' );
+				$(window).off( '.DTFC' );
+				$(this.s.dt.nTableWrapper).off( '.DTFC' );
 
-				$(that.dom.grid.left.liner).off( 'mouseover.DTFC touchstart.DTFC scroll.DTFC '+wheelType );
+				$(that.dom.grid.left.liner).off( '.DTFC '+wheelType );
 				$(that.dom.grid.left.wrapper).remove();
 
-				$(that.dom.grid.right.liner).off( 'mouseover.DTFC touchstart.DTFC scroll.DTFC '+wheelType );
+				$(that.dom.grid.right.liner).off( '.DTFC '+wheelType );
 				$(that.dom.grid.right.wrapper).remove();
 			} );
 
@@ -1180,11 +1183,13 @@ $.extend( FixedColumns.prototype , {
 
 			/* Add in the tbody elements, cloning form the master table */
 			$('>tbody>tr', that.dom.body).each( function (z) {
-				var n = this.cloneNode(false);
-				n.removeAttribute('id');
 				var i = that.s.dt.oFeatures.bServerSide===false ?
 					that.s.dt.aiDisplay[ that.s.dt._iDisplayStart+z ] : z;
 				var aTds = that.s.dt.aoData[ i ].anCells || $(this).children('td, th');
+
+				var n = this.cloneNode(false);
+				n.removeAttribute('id');
+				n.setAttribute( 'data-dt-row', i );
 
 				for ( iIndex=0 ; iIndex<aiColumns.length ; iIndex++ )
 				{
@@ -1193,6 +1198,8 @@ $.extend( FixedColumns.prototype , {
 					if ( aTds.length > 0 )
 					{
 						nClone = $( aTds[iColumn] ).clone(true, true)[0];
+						nClone.setAttribute( 'data-dt-row', i );
+						nClone.setAttribute( 'data-dt-column', iIndex );
 						n.appendChild( nClone );
 					}
 				}
