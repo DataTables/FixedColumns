@@ -1,6 +1,5 @@
 {
 	"name": "datatables-fixedcolumns",
-	"version": "3.1.0",
 	"main": [
 		"js/dataTables.fixedColumns.js",
 		"css/fixedColumns.dataTables.scss"
