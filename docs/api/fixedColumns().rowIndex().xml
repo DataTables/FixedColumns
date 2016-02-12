@@ -24,7 +24,7 @@
 		</description>
 		<example title="Get the row index for any row clicked upon in a table (from the fixed column, or the main table)"><![CDATA[
 
-var table = $('myTable').DataTable();
+var table = $('#myTable').DataTable();
 
 $(table.table().container()).on( 'click', 'tr', function () {
 	var row = table.row( this );
