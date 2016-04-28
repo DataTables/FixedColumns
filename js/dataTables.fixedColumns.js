@@ -627,7 +627,7 @@ $.extend( FixedColumns.prototype , {
 
 				$(that.dom.scroller).off( '.DTFC' );
 				$(window).off( '.DTFC' );
-				$(this.s.dt.nTableWrapper).off( '.DTFC' );
+				$(that.s.dt.nTableWrapper).off( '.DTFC' );
 
 				$(that.dom.grid.left.liner).off( '.DTFC '+wheelType );
 				$(that.dom.grid.left.wrapper).remove();
