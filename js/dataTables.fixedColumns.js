@@ -139,7 +139,14 @@ var FixedColumns = function ( dt, init ) {
 		 *  @type     array.<int>
 		 *  @default  []
 		 */
-		"aiInnerWidths": []
+		"aiInnerWidths": [],
+
+
+		/**
+		 * Is the document layout right-to-left
+		 * @type boolean
+		 */
+		rtl: $(dtSettings.nTable).css('direction') === 'rtl'
 	};
 
 
@@ -793,17 +800,7 @@ $.extend( FixedColumns.prototype , {
 		}
 
 		// RTL support - swap the position of the left and right columns (#48)
-		if ( $(this.dom.body).css('direction') === 'rtl' ) {
-			$(nLeft).css( {
-				left: '',
-				right: 0
-			} );
-
-			$(nRight).css( {
-				left: oOverflow.bar+"px",
-				right: ''
-			} );
-
+		if ( this.s.rtl ) {
 			$('div.DTFC_RightHeadBlocker', nSWrapper).css( {
 				left: -oOverflow.bar+'px',
 				right: ''
@@ -825,10 +822,10 @@ $.extend( FixedColumns.prototype , {
 		var iBodyHeight = $(this.s.dt.nTable.parentNode).outerHeight();
 		var iFullHeight = $(this.s.dt.nTable.parentNode.parentNode).outerHeight();
 		var oOverflow = this._fnDTOverflow();
-		var
-			iLeftWidth = this.s.iLeftWidth,
-			iRightWidth = this.s.iRightWidth,
-			iRight;
+		var iLeftWidth = this.s.iLeftWidth;
+		var iRightWidth = this.s.iRightWidth;
+		var rtl = $(this.dom.body).css('direction') === 'rtl';
+		var wrapper;
 		var scrollbarAdjust = function ( node, width ) {
 			if ( ! oOverflow.bar ) {
 				// If there is no scrollbar (Macs) we need to hide the auto scrollbar
@@ -858,8 +855,21 @@ $.extend( FixedColumns.prototype , {
 
 		if ( this.s.iLeftColumns > 0 )
 		{
-			oGrid.left.wrapper.style.width = iLeftWidth+"px";
-			oGrid.left.wrapper.style.height = "1px";
+			wrapper = oGrid.left.wrapper;
+			wrapper.style.width = iLeftWidth+'px';
+			wrapper.style.height = '1px';
+
+			// Swap the position of the left and right columns for rtl (#48)
+			// This is always up against the edge, scrollbar on the far side
+			if ( rtl ) {
+				wrapper.style.left = '';
+				wrapper.style.right = 0;
+			}
+			else {
+				wrapper.style.left = 0;
+				wrapper.style.right = '';
+			}
+
 			oGrid.left.body.style.height = iBodyHeight+"px";
 			if ( oGrid.left.foot ) {
 				oGrid.left.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px"; // shift footer for scrollbar
@@ -871,14 +881,20 @@ $.extend( FixedColumns.prototype , {
 
 		if ( this.s.iRightColumns > 0 )
 		{
-			iRight = iWidth - iRightWidth;
-			if ( oOverflow.y )
-			{
-				iRight -= oOverflow.bar;
+			wrapper = oGrid.right.wrapper;
+			wrapper.style.width = iRightWidth+'px';
+			wrapper.style.height = '1px';
+
+			// Need to take account of the vertical scrollbar
+			if ( this.s.rtl ) {
+				wrapper.style.left = oOverflow.y ? oOverflow.bar+'px' : 0;
+				wrapper.style.right = '';
+			}
+			else {
+				wrapper.style.left = '';
+				wrapper.style.right = oOverflow.y ? oOverflow.bar+'px' : 0;
 			}
 
-			oGrid.right.wrapper.style.width = iRightWidth+"px";
-			oGrid.right.wrapper.style.height = "1px";
 			oGrid.right.body.style.height = iBodyHeight+"px";
 			if ( oGrid.right.foot ) {
 				oGrid.right.foot.style.top = (oOverflow.x ? oOverflow.bar : 0)+"px";
