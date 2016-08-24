@@ -10,7 +10,9 @@ $(document).ready(function() {
 		scrollX:        true,
 		scrollCollapse: true,
 		paging:         false,
-		fixedColumns:   true,
+		fixedColumns:   {
+			leftColumns: 2
+		},
 		columnDefs: [ {
 			orderable: false,
 			className: 'select-checkbox',
