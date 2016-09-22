@@ -17,3 +17,25 @@ div.DTFC_LeftWrapper table.dataTable,
 div.DTFC_RightWrapper table.dataTable {
 	z-index: 2;
 }
+
+div.DTFC_LeftHeadWrapper table.ui.table.dataTable,
+div.DTFC_RightHeadWrapper table.ui.table.dataTable {
+	border-bottom: none;
+}
+
+div.DTFC_LeftBodyWrapper table.ui.table.dataTable,
+div.DTFC_RightBodyWrapper table.ui.table.dataTable {
+	border-top: none;
+
+	// Hide sorting icons
+	thead {
+		.sorting:after,
+		.sorting_asc:after,
+		.sorting_desc:after,
+		.sorting:after,
+		.sorting_asc:after,
+		.sorting_desc:after {
+			display: none;
+		}
+	}
+}
