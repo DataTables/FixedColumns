@@ -7,3 +7,10 @@ div.DTFC_RightWrapper table.dataTable {
 		border-bottom: none;
 	}
 }
+
+// Block out the gap above the scrollbar on the right, when there is a fixed
+// right column
+div.DTFC_Blocker {
+	background-color: white;
+}
+
