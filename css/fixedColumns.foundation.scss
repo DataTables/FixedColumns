@@ -27,3 +27,10 @@ div.DTFC_LeftFootWrapper table,
 div.DTFC_RightFootWrapper table {
 	margin-top: 0 !important;
 }
+
+// Block out the gap above the scrollbar on the right, when there is a fixed
+// right column
+div.DTFC_Blocker {
+	background-color: white;
+}
+
