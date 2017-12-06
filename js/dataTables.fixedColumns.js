@@ -819,8 +819,8 @@ $.extend( FixedColumns.prototype , {
 		var that = this;
 		var oGrid = this.dom.grid;
 		var iWidth = $(oGrid.wrapper).width();
-		var iBodyHeight = $(this.s.dt.nTable.parentNode).outerHeight();
-		var iFullHeight = $(this.s.dt.nTable.parentNode.parentNode).outerHeight();
+		var iBodyHeight = this.s.dt.nTable.parentNode.offsetHeight;
+		var iFullHeight = this.s.dt.nTable.parentNode.parentNode.offsetHeight;
 		var oOverflow = this._fnDTOverflow();
 		var iLeftWidth = this.s.iLeftWidth;
 		var iRightWidth = this.s.iRightWidth;
@@ -877,6 +877,7 @@ $.extend( FixedColumns.prototype , {
 
 			scrollbarAdjust( oGrid.left.liner, iLeftWidth );
 			oGrid.left.liner.style.height = iBodyHeight+"px";
+				console.log( iBodyHeight );
 		}
 
 		if ( this.s.iRightColumns > 0 )
