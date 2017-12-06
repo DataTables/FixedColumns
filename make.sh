@@ -11,7 +11,11 @@ fi
 # If not run from DataTables build script, redirect to there
 if [ -z "$DT_BUILD" ]; then
 	cd $DT_DIR/build
+<<<<<<< HEAD
 	./make.sh extension FixedColumns $DEBUG
+=======
+	./make.sh extension RowGroup $DEBUG
+>>>>>>> a9a544bd227d0900d964f32ba7d1be918332b87d
 	cd -
 	exit
 fi

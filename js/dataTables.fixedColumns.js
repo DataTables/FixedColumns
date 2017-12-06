@@ -1,11 +1,11 @@
-/*! FixedColumns 3.2.3-dev
+/*! FixedColumns 3.2.3
  * ©2010-2016 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     FixedColumns
  * @description Freeze columns in place on a scrolling DataTable
- * @version     3.2.3-dev
+ * @version     3.2.3
  * @file        dataTables.fixedColumns.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -877,7 +877,7 @@ $.extend( FixedColumns.prototype , {
 
 			scrollbarAdjust( oGrid.left.liner, iLeftWidth );
 			oGrid.left.liner.style.height = iBodyHeight+"px";
-				console.log( iBodyHeight );
+			oGrid.left.liner.style.maxHeight = iBodyHeight+"px";
 		}
 
 		if ( this.s.iRightColumns > 0 )
@@ -903,6 +903,7 @@ $.extend( FixedColumns.prototype , {
 
 			scrollbarAdjust( oGrid.right.liner, iRightWidth );
 			oGrid.right.liner.style.height = iBodyHeight+"px";
+			oGrid.right.liner.style.maxHeight = iBodyHeight+"px";
 
 			oGrid.right.headBlock.style.display = oOverflow.y ? 'block' : 'none';
 			oGrid.right.footBlock.style.display = oOverflow.y ? 'block' : 'none';
@@ -1217,6 +1218,7 @@ $.extend( FixedColumns.prototype , {
 					if ( aTds.length > 0 )
 					{
 						nClone = $( aTds[iColumn] ).clone(true, true)[0];
+						nClone.removeAttribute( 'id' );
 						nClone.setAttribute( 'data-dt-row', i );
 						nClone.setAttribute( 'data-dt-column', dt.oApi._fnVisibleToColumnIndex( dt, iColumn ) );
 						n.appendChild( nClone );
@@ -1517,7 +1519,7 @@ FixedColumns.defaults = /** @lends FixedColumns.defaults */{
  *  @default   See code
  *  @static
  */
-FixedColumns.version = "3.2.3-dev";
+FixedColumns.version = "3.2.3";
 
 
 
