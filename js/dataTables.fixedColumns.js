@@ -501,12 +501,14 @@ $.extend( FixedColumns.prototype , {
 
 		// When the mouse is down (drag scroll) the mouse controller cannot
 		// change, as the browser keeps the original element as the scrolling one
-		$(this.s.dt.nTableWrapper).on( 'mousedown.DTFC', function () {
-			mouseDown = true;
+		$(this.s.dt.nTableWrapper).on( 'mousedown.DTFC', function (e) {
+			if ( e.button === 0 ) {
+				mouseDown = true;
 
-			$(document).one( 'mouseup', function () {
-				mouseDown = false;
-			} );
+				$(document).one( 'mouseup', function () {
+					mouseDown = false;
+				} );
+			}
 		} );
 
 		// When the body is scrolled - scroll the left and right columns
