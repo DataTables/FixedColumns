@@ -733,14 +733,14 @@ $.extend( FixedColumns.prototype , {
 
 		var nSWrapper =
 			$('<div class="DTFC_ScrollWrapper" style="position:relative; clear:both;">'+
-				'<div class="DTFC_LeftWrapper" style="position:absolute; top:0; left:0;">'+
+				'<div class="DTFC_LeftWrapper" style="position:absolute; top:0; left:0;" aria-hidden="true">'+
 					'<div class="DTFC_LeftHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
 					'<div class="DTFC_LeftBodyWrapper" style="position:relative; top:0; left:0; overflow:hidden;">'+
 						'<div class="DTFC_LeftBodyLiner" style="position:relative; top:0; left:0; overflow-y:scroll;"></div>'+
 					'</div>'+
 					'<div class="DTFC_LeftFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
 				'</div>'+
-				'<div class="DTFC_RightWrapper" style="position:absolute; top:0; right:0;">'+
+				'<div class="DTFC_RightWrapper" style="position:absolute; top:0; right:0;" aria-hidden="true">'+
 					'<div class="DTFC_RightHeadWrapper" style="position:relative; top:0; left:0;">'+
 						'<div class="DTFC_RightHeadBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div>'+
 					'</div>'+
