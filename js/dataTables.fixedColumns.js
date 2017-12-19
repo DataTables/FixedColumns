@@ -674,10 +674,22 @@ $.extend( FixedColumns.prototype , {
 				// Outer width is used to calculate the container
 				var iWidth = th.outerWidth();
 
+				// resole scroll bar if it hide the first column
+                // check if the previous column is all hidden or not
+                // if true it need to add additional border to avoid width scrollbar
+                var previousAllHidden = true;
+                var arrayLength = that.s.aiOuterWidths.length;
+                for (var j = 0; i < arrayLength; i++) {
+                    if(that.s.aiOuterWidths[j] != 0){
+                        previousAllHidden = false;
+                        break;
+                    }
+                }
+
 				// When working with the left most-cell, need to add on the
 				// table's border to the outerWidth, since we need to take
 				// account of it, but it isn't in any cell
-				if ( that.s.aiOuterWidths.length === 0 ) {
+				if ( that.s.aiOuterWidths.length === 0 || previousAllHidden) {
 					border = $(that.s.dt.nTable).css('border-left-width');
 					iWidth += typeof border === 'string' && border.indexOf('px') === -1 ?
 						1 :
