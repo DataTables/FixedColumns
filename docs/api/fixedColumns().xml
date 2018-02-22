@@ -10,7 +10,7 @@
 			DataTables API instance with the FixedColumns methods available.
 		</returns>
 		<description>
-			Namespacing for FixedColumns methods - FixedColumns' methods are available available on the returned API instance.
+			Namespacing for FixedColumns methods - FixedColumns' methods are available on the returned API instance.
 		</description>
 	</type>
 

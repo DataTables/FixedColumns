@@ -30,7 +30,7 @@ $(document).ready(function() {
 
 <info><![CDATA[
 
-FixedColumns has the ability to freeze columns on both the left and right hand sides of the table. By default it will fix the first column on the left, but using the initialisation parameters `fc-init fixedColumns.leftColumns` and `fc-init fixedColumns.rightColumns` you can alter this to fix the columns on the right as well. This example shows a single column fixed in place, in this case the right most column.
+FixedColumns has the ability to freeze columns on both the left and the right hand sides of the table. By default it will fix the first column on the left, but using the initialisation parameters `fc-init fixedColumns.leftColumns` and `fc-init fixedColumns.rightColumns` you can alter this to fix the columns on the right as well. This example shows a single column fixed in place, in this case the right most column.
 
 ]]></info>
 
