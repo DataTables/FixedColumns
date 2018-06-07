@@ -1,5 +1,5 @@
 /*! FixedColumns 3.2.4
- * ©2010-2017 SpryMedia Ltd - datatables.net/license
+ * ©2010-2018 SpryMedia Ltd - datatables.net/license
  */
 
 /**
@@ -9,7 +9,7 @@
  * @file        dataTables.fixedColumns.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
- * @copyright   Copyright 2010-2017 SpryMedia Ltd.
+ * @copyright   Copyright 2010-2018 SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
  *   MIT license - http://datatables.net/license/mit
