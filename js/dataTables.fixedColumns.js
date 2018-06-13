@@ -1226,7 +1226,7 @@ $.extend( FixedColumns.prototype , {
 						nClone = $( aTds[iColumn] ).clone(true, true)[0];
 						nClone.removeAttribute( 'id' );
 						nClone.setAttribute( 'data-dt-row', i );
-						nClone.setAttribute( 'data-dt-column', dt.oApi._fnVisibleToColumnIndex( dt, iColumn ) );
+						nClone.setAttribute( 'data-dt-column', iColumn );
 						n.appendChild( nClone );
 					}
 				}
