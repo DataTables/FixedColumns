@@ -39,6 +39,7 @@ describe('fixedColumns - leftColumns', function() {
 		it('Cycle through all columns', function() {
 			for (let i = 1; i <= 6; i++) {
 				table = $('#example').DataTable({
+					destroy: true,
 					scrollX: true,
 					fixedColumns: {
 						leftColumns: i
@@ -46,8 +47,6 @@ describe('fixedColumns - leftColumns', function() {
 				});
 
 				checkElements(i, 0);
-
-				table.destroy();
 			}
 		});
 

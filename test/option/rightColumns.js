@@ -20,7 +20,7 @@ describe('fixedColumns - rightColumns', function() {
 
 	describe('Check the defaults', function() {
 		dt.html('basic');
-		it('No columna set by default', function() {
+		it('No column set by default', function() {
 			expect($.fn.dataTable.FixedColumns.defaults.iRightColumns).toBe(0);
 		});
 
@@ -39,6 +39,7 @@ describe('fixedColumns - rightColumns', function() {
 		it('Cycle through all columns', function() {
 			for (let i = 0; i <= 5; i++) {
 				table = $('#example').DataTable({
+					destroy: true,
 					scrollX: true,
 					fixedColumns: {
 						rightColumns: i
@@ -46,8 +47,6 @@ describe('fixedColumns - rightColumns', function() {
 				});
 
 				checkElements(1, i);
-
-				table.destroy();
 			}
 		});
 
