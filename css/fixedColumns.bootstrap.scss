@@ -18,13 +18,16 @@ div.DTFC_RightBodyWrapper table {
 
 	// Hide sorting icons
 	thead {
-		.sorting:after,
-		.sorting_asc:after,
-		.sorting_desc:after,
-		.sorting:after,
-		.sorting_asc:after,
-		.sorting_desc:after {
-			display: none;
+		.sorting,
+		.sorting_asc,
+		.sorting_desc,
+		.sorting,
+		.sorting_asc,
+		.sorting_desc {
+			&:before,
+			&:after {
+				display: none;
+			}
 		}
 	}
 
