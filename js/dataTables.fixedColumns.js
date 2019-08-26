@@ -1229,7 +1229,7 @@ $.extend( FixedColumns.prototype , {
 			/* Add in the tbody elements, cloning form the master table */
 			$('>tbody>tr', that.dom.body).each( function (z) {
 				var i = that.s.dt.oFeatures.bServerSide===false ?
-					that.s.dt.aiDisplay[ that.s.dt._iDisplayStart+z ] : z;
+					that.s.dt.aiDisplay[ parseInt(that.s.dt._iDisplayStart, 10) + z ] : z;
 				var aTds = that.s.dt.aoData[ i ].anCells || $(this).children('td, th');
 
 				var n = this.cloneNode(false);
