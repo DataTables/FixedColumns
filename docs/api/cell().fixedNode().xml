@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-api library="FixedColumns">
+	<name>cell().fixedNode()</name>
+	<summary>Get the fixed column cell node for a cell</summary>
+	<since>3.8.0</since>
+
+	<type type="function">
+	<name>cell().fixedNode()</name>
+		<signature>cell().fixedNode()</signature>
+		<description>
+			Get the node for a cell from a fixed column, or if not fixed, get the node from the main table.
+		</description>
+		<returns type="node">Node for the cell requested</returns>
+	</type>
+
+	<description>
+        Generally when working with FixedColumns and events, you want to convert from a cell in the fixed column to the host cell or row in the DataTable (to get the full data for the row for example). DataTables' row, column and cell selectors does that for us, but it can also be useful to go the other way - needing to get the fixed cell from a DataTable API cell reference. This method provides that ability.
+
+        Using a standard `-api cell()` selector, then call `fixedNode()` to get the node for that cell in the fixed column. You might want to do this if you need to draw something temporarily into the fixed cell without effecting the table's data for example.
+
+        Note that this method will return the cell from the original DataTable if there is no matching fixed cell found (e.g. requesting a node from a non-fixed column).
+	</description>
+
+	<example title="Get the fixed cell from a cell index"><![CDATA[
+
+$('#example').DataTable().cell(2, 0).fixedNode()
+
+]]></example>
+
+    <related>-api cells().fixedNodes()</related>
+    <related>-api cell().node()</related>
+</dt-api>

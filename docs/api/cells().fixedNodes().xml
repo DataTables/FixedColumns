@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-api library="FixedColumns">
+	<name>cells().fixedNodes()</name>
+	<summary>Get the fixed column cell nodes for multiple cells</summary>
+	<since>3.8.0</since>
+
+	<type type="function">
+	<name>cells().fixedNodes()</name>
+		<signature>cells().fixedNodes()</signature>
+		<description>
+			Get the nodes for cells from a fixed column, or if not fixed, get the nodes from the main table.
+		</description>
+		<returns type="DataTables.Api">API instane containing the nodes requested</returns>
+	</type>
+
+	<description>
+        This is the plural version of `-api cell().fixedNode()` whereby you can get the fixed display nodes for cells from a DataTable based on a `-api cell()` selector.
+
+        Note that this method will return the cell from the original DataTable if there is no matching fixed cell found (e.g. requesting a node from a non-fixed column).
+	</description>
+
+	<example title="Get the fixed cells for column index 0"><![CDATA[
+
+$('#example').DataTable().cells(null, 0).fixedNode()
+
+]]></example>
+
+    <related>-api cell().fixedNode()</related>
+    <related>-api cell().node()</related>
+</dt-api>
