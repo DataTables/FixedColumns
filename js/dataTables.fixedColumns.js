@@ -542,7 +542,7 @@ $.extend( FixedColumns.prototype , {
 					mouseController = 'main';
 				}
 
-				if ( mouseController === 'main' || mouseController === 'left') {
+				if ( mouseController === 'main' || mouseController === 'left' || mouseController === 'right') {
 					if ( that.s.iLeftColumns > 0 ) {
 						that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
 					}
@@ -598,7 +598,7 @@ $.extend( FixedColumns.prototype , {
 						mouseController = 'right';
 					}
 
-					if ( mouseController === 'right' ) {
+					if ( mouseController === 'right' || mouseController === 'main' ) {
 						that.dom.scroller.scrollTop = that.dom.grid.right.liner.scrollTop;
 						if ( that.s.iLeftColumns > 0 ) {
 							that.dom.grid.left.liner.scrollTop = that.dom.grid.right.liner.scrollTop;
