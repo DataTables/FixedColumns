@@ -1619,7 +1619,7 @@ DataTable.Api.registerPlural( 'cells().fixedNodes()', 'cell().fixedNode()', func
 	return this.iterator( 'cell', function ( settings, row, column ) {
 		return settings._oFixedColumns
 			? settings._oFixedColumns.fnToFixedNode( row, column )
-			: this.node();
+			: this.cell(row, column).node();
 	}, 1 );
 } );
 
