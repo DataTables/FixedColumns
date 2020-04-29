@@ -643,6 +643,16 @@ $.extend( FixedColumns.prototype , {
 					that._fnDraw( false );
 				}
 			} )
+			.on( 'position.dts.dt.DTFC', function (e, tableTop) {
+				// Sync up with Scroller
+				if (that.dom.grid.left.body) {
+					$(that.dom.grid.left.body).find('table').eq(0).css('top', tableTop);
+				}
+
+				if (that.dom.grid.right.body) {
+					$(that.dom.grid.right.body).find('table').eq(0).css('top', tableTop);
+				}
+			} )
 			.on( 'destroy.dt.DTFC', function () {
 				jqTable.off( '.DTFC' );
 
