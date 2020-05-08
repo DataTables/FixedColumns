@@ -542,7 +542,7 @@ $.extend( FixedColumns.prototype , {
 					mouseController = 'main';
 				}
 
-				if ( mouseController === 'main' ) {
+				if ( mouseController === 'main' || mouseController === 'key' ) {
 					if ( that.s.iLeftColumns > 0 ) {
 						that.dom.grid.left.liner.scrollTop = that.dom.scroller.scrollTop;
 					}
@@ -560,7 +560,7 @@ $.extend( FixedColumns.prototype , {
 			// When scrolling the left column, scroll the body and right column
 			$(that.dom.grid.left.liner)
 				.on( 'mouseover.DTFC touchstart.DTFC', function () {
-					if ( ! mouseDown ) {
+					if ( ! mouseDown && mouseController !== 'key' ) {
 						mouseController = 'left';
 					}
 				} )
@@ -577,6 +577,8 @@ $.extend( FixedColumns.prototype , {
 					}
 				} )
 				.on( wheelType, function(e) {
+					mouseController = 'left';
+
 					// Pass horizontal scrolling through
 					var xDelta = e.type === 'wheel' ?
 						-e.originalEvent.deltaX :
@@ -589,7 +591,7 @@ $.extend( FixedColumns.prototype , {
 			// When scrolling the right column, scroll the body and the left column
 			$(that.dom.grid.right.liner)
 				.on( 'mouseover.DTFC touchstart.DTFC', function () {
-					if ( ! mouseDown ) {
+					if ( ! mouseDown && mouseController !== 'key' ) {
 						mouseController = 'right';
 					}
 				} )
@@ -606,6 +608,8 @@ $.extend( FixedColumns.prototype , {
 					}
 				} )
 				.on( wheelType, function(e) {
+					mouseController = 'left';
+
 					// Pass horizontal scrolling through
 					var xDelta = e.type === 'wheel' ?
 						-e.originalEvent.deltaX :
@@ -629,7 +633,7 @@ $.extend( FixedColumns.prototype , {
 			} )
 			.on('key-focus.dt.DTFC', function () {
 				// KeyTable navigation needs to be main focused
-				mouseController = 'main';
+				mouseController = 'key';
 			})
 			.on( 'column-sizing.dt.DTFC', function () {
 				that._fnColCalc();
