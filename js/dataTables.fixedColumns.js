@@ -585,6 +585,11 @@ $.extend( FixedColumns.prototype , {
 						e.originalEvent.wheelDeltaX;
 					that.dom.scroller.scrollLeft -= xDelta;
 				} );
+
+			// Header will not trigger scroll on left column, but might on `main` (sorting)
+			$(that.dom.grid.left.head).on( 'mouseover.DTFC touchstart.DTFC', function () {
+				mouseController = 'main';
+			});
 		}
 
 		if ( that.s.iRightColumns > 0 ) {
@@ -616,6 +621,10 @@ $.extend( FixedColumns.prototype , {
 						e.originalEvent.wheelDeltaX;
 					that.dom.scroller.scrollLeft -= xDelta;
 				} );
+
+			$(that.dom.grid.right.head).on( 'mouseover.DTFC touchstart.DTFC', function () {
+				mouseController = 'main';
+			});
 		}
 
 		$(window).on( 'resize.DTFC', function () {
@@ -996,6 +1005,8 @@ $.extend( FixedColumns.prototype , {
 		this._fnGridLayout();
 		this._fnCloneLeft( bAll );
 		this._fnCloneRight( bAll );
+
+		$(this.dom.scroller).trigger('scroll');
 
 		/* Draw callback function */
 		if ( this.s.fnDrawCallback !== null )
