@@ -613,7 +613,7 @@ $.extend( FixedColumns.prototype , {
 					}
 				} )
 				.on( wheelType, function(e) {
-					mouseController = 'left';
+					mouseController = 'right';
 
 					// Pass horizontal scrolling through
 					var xDelta = e.type === 'wheel' ?
