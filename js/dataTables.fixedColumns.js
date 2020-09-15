@@ -413,7 +413,7 @@ $.extend( FixedColumns.prototype , {
 	 * table, so you can pass in nodes from the master table, or the cloned
 	 * tables and get the index position for the data in the main table.
 	 *  @param {node} node TR, TH or TD element to get the information about
-	 *  @returns {int} If nNode is given as a TR, then a single index is 
+	 *  @returns {int} If nNode is given as a TR, then a single index is
 	 *    returned, or if given as a cell, an array of [row index, column index
 	 *    (visible), column index (all)] is given.
 	 */
@@ -778,28 +778,90 @@ $.extend( FixedColumns.prototype , {
 		this.dom.header.parentNode.parentNode.style.position = "relative";
 
 		var nSWrapper =
-			$('<div class="DTFC_ScrollWrapper" style="position:relative; clear:both;">'+
-				'<div class="DTFC_LeftWrapper" style="position:absolute; top:0; left:0;" aria-hidden="true">'+
-					'<div class="DTFC_LeftHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
-					'<div class="DTFC_LeftBodyWrapper" style="position:relative; top:0; left:0; height:0; overflow:hidden;">'+
-						'<div class="DTFC_LeftBodyLiner" style="position:relative; top:0; left:0; overflow-y:scroll;"></div>'+
+			$('<div class="DTFC_ScrollWrapper">'+
+				'<div class="DTFC_LeftWrapper" aria-hidden="true">'+
+					'<div class="DTFC_LeftHeadWrapper" ></div>'+
+					'<div class="DTFC_LeftBodyWrapper">'+
+						'<div class="DTFC_LeftBodyLiner"></div>'+
 					'</div>'+
-					'<div class="DTFC_LeftFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+					'<div class="DTFC_LeftFootWrapper"></div>'+
 				'</div>'+
-				'<div class="DTFC_RightWrapper" style="position:absolute; top:0; right:0;" aria-hidden="true">'+
-					'<div class="DTFC_RightHeadWrapper" style="position:relative; top:0; left:0;">'+
-						'<div class="DTFC_RightHeadBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div>'+
+				'<div class="DTFC_RightWrapper"aria-hidden="true">'+
+					'<div class="DTFC_RightHeadWrapper">'+
+						'<div class="DTFC_RightHeadBlocker DTFC_Blocker"></div>'+
 					'</div>'+
-					'<div class="DTFC_RightBodyWrapper" style="position:relative; top:0; left:0; height:0; overflow:hidden;">'+
-						'<div class="DTFC_RightBodyLiner" style="position:relative; top:0; left:0; overflow-y:scroll;"></div>'+
+					'<div class="DTFC_RightBodyWrapper">'+
+						'<div class="DTFC_RightBodyLiner"></div>'+
 					'</div>'+
-					'<div class="DTFC_RightFootWrapper" style="position:relative; top:0; left:0;">'+
-						'<div class="DTFC_RightFootBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div>'+
+					'<div class="DTFC_RightFootWrapper">'+
+						'<div class="DTFC_RightFootBlocker DTFC_Blocker"></div>'+
 					'</div>'+
 				'</div>'+
 			'</div>')[0];
 		var nLeft = nSWrapper.childNodes[0];
 		var nRight = nSWrapper.childNodes[1];
+
+		// Apply styles rather than using inline
+		//DTFC_ScrollWrapper
+		nSWrapper.style.position = 'relative';
+		nSWrapper.style.clear = 'both';
+		//DTFC_LeftWrapper
+		nLeft.style.position = 'absolute';
+		nLeft.style.top = 0;
+		nLeft.style.left = 0;
+		//DTFC_LeftHeadWrapper
+		nLeft.childNodes[0].style.position = 'relative';
+		nLeft.childNodes[0].style.top = 0;
+		nLeft.childNodes[0].style.left = 0;
+		nLeft.childNodes[0].style.overflow = 'hidden';
+		//DTFC_LeftBodyWrapper
+		nLeft.childNodes[1].style.position = 'absolute';
+		nLeft.childNodes[1].style.top = 0;
+		nLeft.childNodes[1].style.bottom = 0;
+		//DTFC_LeftBodyLiner
+		nLeft.childNodes[1].childNodes[0].style.position = 'relative';
+		nLeft.childNodes[1].childNodes[0].top = 0;
+		nLeft.childNodes[1].childNodes[0].left = 0;
+		nLeft.childNodes[1].childNodes[0]['overflow-y'] = 'scroll';
+		//DTFC_LeftFootWrapper
+		nLeft.childNodes[1].style.position = 'relative';
+		nLeft.childNodes[1].style.top = 0;
+		nLeft.childNodes[1].style.left = 0;
+		nLeft.childNodes[1].style.overflow = 'hidden';
+
+		//DTFC_RightWrapper
+		nRight.style.position = 'absolute';
+		nRight.style.top = 0;
+		nRight.style.right = 0;
+		//DTFC_RightHeadWrapper
+		nRight.childNodes[0].style.position = 'relative';
+		nRight.childNodes[0].style.top = 0;
+		nRight.childNodes[0].style.left = 0;
+		//DTFC_RightHeadBlocker
+		nRight.childNodes[0].childNodes[0].style.position = 'absolute';
+		nRight.childNodes[0].childNodes[0].style.top = 0;
+		nRight.childNodes[0].childNodes[0].style.bottom = 0;
+
+		//DTFC_RightBodyWrapper
+		nRight.childNodes[1].style.position = 'relative';
+		nRight.childNodes[1].style.top = 0;
+		nRight.childNodes[1].style.left = 0;
+		nRight.childNodes[1].style.height = 0;
+		nRight.childNodes[1].style.overflow = 'hidden';
+		//DTFC_RightBodyLiner
+		nRight.childNodes[1].childNodes[0].style.position = 'relative';
+		nRight.childNodes[1].childNodes[0].style.top = 0;
+		nRight.childNodes[1].childNodes[0].style.left = 0;
+		nRight.childNodes[1].childNodes[0].style['overflow-y'] = 'scroll';
+
+		//DTFC_RightFootWrapper
+		nRight.childNodes[2].style.position = 'relative';
+		nRight.childNodes[2].style.top = 0;
+		nRight.childNodes[2].style.left = 0;
+		//DTFC_RightFootBlocker
+		nRight.childNodes[2].childNodes[0].style.position = 'absolute';
+		nRight.childNodes[2].childNodes[0].style.top = 0;
+		nRight.childNodes[2].childNodes[0].style.bottom = 0;
 
 		this.dom.grid.dt.parentNode.insertBefore( nSWrapper, this.dom.grid.dt );
 		nSWrapper.appendChild( this.dom.grid.dt );
