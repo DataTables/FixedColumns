@@ -1,0 +1,8 @@
+
+@import 'fixedColumns.bootstrap.scss';
+
+// Bootstrap 4 uses rgba for the table row background colours, and as FixedColumns
+// layers the elements on top of each other, we need to block out the fixed area.
+table.dataTable.table-striped.DTFC_Cloned tbody {
+    background-color: white;
+}

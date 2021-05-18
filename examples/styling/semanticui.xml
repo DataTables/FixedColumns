@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" table-class="ui table nowrap" order="17" framework="semanticui">
+<dt-example table-type="html-wide" table-class="ui table nowrap" order="18" framework="semanticui">
 
 <css lib="datatables fixedcolumns">
 	/* force scrolling for demo */
