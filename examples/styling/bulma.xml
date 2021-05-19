@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="table nowrap" order="20" framework="bulma">
+
+<css lib="bulma datatables fixedcolumns"/>
+<js lib="jquery datatables fixedcolumns">
+<![CDATA[
+$(document).ready(function() {
+	var table = $('#example').DataTable( {
+		scrollY:        "300px",
+		scrollX:        true,
+		scrollCollapse: true,
+		paging:         false,
+		fixedColumns:   true
+	} );
+} );
+]]>
+</js>
+
+<title lib="FixedColumns">Bulma</title>
+
+<info><![CDATA[
+
+This example shows FixedColumns being used with the [Bulma](https://bulma.io/) CSS framework.
+
+]]></info>
+
+</dt-example>
