@@ -6,3 +6,18 @@
 table.dataTable.table-striped.DTFC_Cloned tbody {
     background-color: white;
 }
+
+table.dataTable {
+    th {
+        border-bottom-color: #DEE2E6;
+    }
+}
+
+div.dataTables_scrollBody,
+div.DTFC_LeftBodyLiner {
+    thead {
+        tr {
+            height: 0px !important;
+        }
+    }
+}
