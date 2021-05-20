@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" table-class="table nowrap" order="20" framework="bulma">
 
-<css lib="bulma datatables fixedcolumns"/>
+<css lib="bulma datatables fixedcolumns">
+div.container {
+	width: 960px;
+}
+</css>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
 $(document).ready(function() {
