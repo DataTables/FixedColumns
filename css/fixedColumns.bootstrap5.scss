@@ -14,7 +14,8 @@ table.dataTable {
 }
 
 div.dataTables_scrollBody,
-div.DTFC_LeftBodyLiner {
+div.DTFC_LeftBodyLiner,
+div.DTFC_RightBodyLiner {
     thead {
         tr {
             height: 0px !important;
