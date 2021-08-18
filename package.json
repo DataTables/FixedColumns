@@ -1,0 +1,43 @@
+{
+    "name": "datatables.net-fixedcolumns",
+    "version": "4.0.0",
+    "description": "FixedColumns for DataTables",
+    "main": "index.js",
+    "directories": {
+        "doc": "docs",
+        "example": "examples",
+        "test": "test"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "eslint ./src/*.ts --ext .ts",
+        "lintFix": "eslint ./src/*.ts --fix"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DataTables/FixedColumns.git"
+    },
+    "author": "SpryMedia ltd",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/DataTables/FxedColumns/issues"
+    },
+    "homepage": "https://github.com/DataTables/FixedColumns#readme",
+    "dependencies": {
+        "@rollup/plugin-node-resolve": "^13.0.0",
+        "rollup": "^2.52.0"
+    },
+    "devDependencies": {
+        "@types/jquery": "^3.3.31",
+        "@types/node": "^12.0.10",
+        "@typescript-eslint/eslint-plugin": "^4.24.0",
+        "@typescript-eslint/parser": "^4.24.0",
+        "eslint": "^7.26.0",
+        "eslint-plugin-import": "^2.23.2",
+        "eslint-plugin-jsdoc": "^34.7.0",
+        "eslint-plugin-typescript-sort-keys": "^1.6.0",
+        "tslint": "^5.20.1",
+        "tslint-eslint-rules": "^5.4.0",
+        "typescript": "^3.9.9"
+    }
+}

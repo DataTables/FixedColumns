@@ -1,37 +1,14 @@
+table.dataTable{
+	td, th {
+		background-color: white;
+	}
 
-
-div.DTFC_LeftHeadWrapper table,
-div.DTFC_LeftBodyWrapper table,
-div.DTFC_LeftFootWrapper table {
-	border-right-width: 0;
+	.dtfc-fixed-left,
+	.dtfc-fixed-right {
+		z-index: 1;
+	}
 }
 
-div.DTFC_RightHeadWrapper table,
-div.DTFC_RightBodyWrapper table,
-div.DTFC_RightFootWrapper table {
-	border-left-width: 0;
+div.dtfc-right-top-blocker {
+	border-bottom: none !important;
 }
-
-div.DTFC_LeftHeadWrapper table,
-div.DTFC_RightHeadWrapper table {
-	margin-bottom: 0 !important;
-}
-
-div.DTFC_LeftBodyWrapper table,
-div.DTFC_RightBodyWrapper table {
-	border-top: none;
-	margin: 0 !important;
-}
-
-div.DTFC_LeftFootWrapper table,
-div.DTFC_RightFootWrapper table {
-	margin-top: 0 !important;
-	z-index: 2;
-}
-
-// Block out the gap above the scrollbar on the right, when there is a fixed
-// right column
-div.DTFC_Blocker {
-	background-color: white;
-}
-

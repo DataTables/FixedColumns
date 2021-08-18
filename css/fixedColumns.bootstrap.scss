@@ -1,54 +1,49 @@
-table.DTFC_Cloned tr {
-	background-color: white;
-	margin-bottom: 0;
+tr.even td {
+    background-color: #ffffff;
 }
 
-div.DTFC_LeftHeadWrapper table,
-div.DTFC_RightHeadWrapper table {
-	border-bottom: none !important;
-	margin-bottom: 0 !important;
+tr.odd td {
+    background-color: rgb(249, 249, 249);
+}
+
+tr.selected td {
+    background-color: rgb(0, 136, 204);
+}
+
+thead th {
 	background-color: white;
 }
 
-div.DTFC_LeftBodyWrapper table,
-div.DTFC_RightBodyWrapper table {
-	border-top: none;
-	margin: 0 !important;
-	z-index: 2;
+tfoot th {
+	background-color: white;
+}
 
-	// Hide sorting icons
-	thead {
-		.sorting,
-		.sorting_asc,
-		.sorting_desc,
-		.sorting,
-		.sorting_asc,
-		.sorting_desc {
-			&:before,
-			&:after {
-				display: none;
+th.dtfc-fixed-left, 
+th.dtfc-fixed-right {
+	z-index: 1;
+}
+
+div.dtfc-right-top-blocker,
+div.dtfc-left-top-blocker {
+	margin-top: 6px;
+	border-bottom: 0px solid #ddd !important;
+}
+
+table.dataTable.table-bordered {
+	border-left: none;
+}
+
+div.dataTables_scrollBody {
+	border-left: 1px solid #ddd !important;
+}
+
+div.dataTables_scrollFootInner,
+div.dataTables_scrollHeadInner{
+	table.table-bordered {
+		tr{
+			th:first-child {
+				border-left: 1px solid #ddd !important;
 			}
 		}
 	}
-
-	// Header provides the border
-	tbody tr:first-child {
-		th,
-		td {
-			border-top: none;
-		}
-	}
-}
-
-div.DTFC_LeftFootWrapper table,
-div.DTFC_RightFootWrapper table {
-	border-top: none;
-	margin-top: 0 !important;
-	background-color: white;
-}
-
-// Block out the gap above the scrollbar on the right, when there is a fixed
-// right column
-div.DTFC_Blocker {
-	background-color: white;
 }

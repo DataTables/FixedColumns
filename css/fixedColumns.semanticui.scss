@@ -1,41 +1,27 @@
+table.dataTable {
+	border-left-width: 0px !important;
+	tr {
+		border-left-width: 0px;
 
-div.DTFC_LeftWrapper table.ui.table.dataTable {
-	border-right: none;
-}
+		th:first-child,
+		td:first-child {
+			border-left: 1px solid rgba(34, 36, 38, 0.15) !important;
+		}
 
-div.DTFC_RightWrapper table.ui.table.dataTable {
-	border-left: none;
-}
+		th{
+			background-color: rgb(249, 250, 251);
+		}
+		td {
+			background-color: white;
+		}
 
-// Block out the gap above the scrollbar on the right, when there is a fixed
-// right column
-div.DTFC_Blocker {
-	background-color: white;
-}
-
-div.DTFC_LeftWrapper table.dataTable,
-div.DTFC_RightWrapper table.dataTable {
-	z-index: 2;
-}
-
-div.DTFC_LeftHeadWrapper table.ui.table.dataTable,
-div.DTFC_RightHeadWrapper table.ui.table.dataTable {
-	border-bottom: none;
-}
-
-div.DTFC_LeftBodyWrapper table.ui.table.dataTable,
-div.DTFC_RightBodyWrapper table.ui.table.dataTable {
-	border-top: none;
-
-	// Hide sorting icons
-	thead {
-		.sorting:after,
-		.sorting_asc:after,
-		.sorting_desc:after,
-		.sorting:after,
-		.sorting_asc:after,
-		.sorting_desc:after {
-			display: none;
+		th.dtfc-fixed-left,
+		th.dtfc-fixed-right {
+			z-index: 1;
 		}
 	}
+}
+
+div.dtfc-right-top-blocker {
+	border-bottom: none !important;
 }

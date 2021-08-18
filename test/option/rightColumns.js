@@ -8,20 +8,18 @@ describe('fixedColumns - rightColumns', function() {
 	});
 
 	function _checkElements(side, expected) {
-		expect($('.DTFC_' + side + 'BodyWrapper td').length).toBe(expected * 10);
-		expect($('.DTFC_' + side + 'BodyWrapper td').length).toBe(expected * 10);
-		expect($('.DTFC_' + side + 'BodyWrapper td').length).toBe(expected * 10);
+		expect($('td.dtfc-fixed-' + side).length).toBe(expected * 10);
 	}
 
 	function checkElements(left, right) {
-		_checkElements('Left', left);
-		_checkElements('Right', right);
+		_checkElements('left', left);
+		_checkElements('right', right);
 	}
 
 	describe('Check the defaults', function() {
 		dt.html('basic');
 		it('No column set by default', function() {
-			expect($.fn.dataTable.FixedColumns.defaults.iRightColumns).toBe(0);
+			expect($.fn.dataTable.FixedColumns.defaults.rightColumns).toBe(0);
 		});
 
 		it('None specified', function() {

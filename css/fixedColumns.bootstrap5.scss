@@ -1,5 +1,5 @@
 
-@import 'fixedColumns.bootstrap.scss';
+@import 'fixedColumns.bootstrap4.scss';
 
 // Bootstrap 4 uses rgba for the table row background colours, and as FixedColumns
 // layers the elements on top of each other, we need to block out the fixed area.
@@ -10,6 +10,15 @@ table.dataTable.table-striped.DTFC_Cloned tbody {
 table.dataTable {
     th {
         border-bottom-color: #DEE2E6;
+        background-color: white;
+    }
+}
+
+table.dataTable.table-bordered {
+    tr{
+        td{
+            border-left: none;
+        }
     }
 }
 

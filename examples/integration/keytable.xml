@@ -10,7 +10,10 @@ $(document).ready(function() {
 		scrollX:        true,
 		scrollCollapse: true,
 		paging:         false,
-		fixedColumns:   true,
+		fixedColumns:   {
+			leftColumns: 1,
+			rightColumns: 1
+		},
 		keys:           true
 	} );
 } );

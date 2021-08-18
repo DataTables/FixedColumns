@@ -27,10 +27,30 @@ DT_BUILT="${DT_SRC}/built/DataTables"
 rsync -r css $OUT_DIR
 css_frameworks fixedColumns $OUT_DIR/css
 
+if [ ! -d "node_modules" ]; then
+    npm install
+fi
+
+# Copy images
+#rsync -r images $OUT_DIR
+
+node_modules/typescript/bin/tsc
+
 # Copy JS
-rsync -r js $OUT_DIR
-js_compress $OUT_DIR/js/dataTables.fixedColumns.js
+HEADER="$(head -n 3 src/index.ts)"
+
+rsync -r src/*.js $OUT_DIR/js
 js_frameworks fixedColumns $OUT_DIR/js
+
+OUT=$OUT_DIR ./node_modules/rollup/dist/bin/rollup \
+    --banner "$HEADER" \
+    --config rollup.config.js
+
+rm \
+    src/*.js \
+    # src/*.d.ts
+
+mv src/*.d.ts types/
 
 # Copy Types
 if [ -d $OUT_DIR/types ]; then
@@ -45,6 +65,8 @@ else
 		cp types.d.ts $OUT_DIR/types
 	fi
 fi
+
+js_compress $OUT_DIR/js/dataTables.fixedColumns.js
 
 # Copy and build examples
 rsync -r examples $OUT_DIR

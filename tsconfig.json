@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "target": "ES3",
+        "module": "ES6",
+        "lib": ["es2017", "es2016", "dom"],
+        "allowUnreachableCode": true,
+        "allowSyntheticDefaultImports": true,
+        "pretty": true,
+        "declaration": true
+    },
+    "exclude": [
+        "./node_modules/**/*"
+    ],
+    "files": [
+        "src/index.ts",
+        "src/fixedColumns.dataTables.ts",
+        "src/fixedColumns.bootstrap4.ts",
+        "src/fixedColumns.bootstrap5.ts",
+        "src/fixedColumns.bootstrap.ts",
+        "src/fixedColumns.bulma.ts",
+        "src/fixedColumns.foundation.ts",
+        "src/fixedColumns.jqueryui.ts",
+        "src/fixedColumns.semanticui.ts",
+    ]
+}

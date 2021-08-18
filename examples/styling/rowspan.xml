@@ -33,6 +33,8 @@ $(document).ready(function() {
 
 If you are using multiple rows in the table header, it can be useful to have a rowspanning cell on the column(s) you have fixed in place - equally at other times it can be useful to not and make use of the two or more cells per column. FixedColumns builds on the complex header support in DataTables to make this trivial to use in FixedColumns. Just initialise your FixedColumns instance as you normally would!
 
+It is worth noting that FixedColumns with complex headers is only applicable to columns that have a single `th` element. Stacked `th` elements are not supported.
+
 ]]></info>
 
 </dt-example>
