@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-api library="FixedColumns">
+	<name>fixedColumns().right()</name>
+	<summary>Get/Set the number of right FixedColumns</summary>
+	<since>4.0.0</since>
+
+	<type type="function">
+		<signature>fixedColumns().right()</signature>
+		<returns type="number">
+			The number of columns that are fixed to the right.
+		</returns>
+		<description>
+			Getter for the number of columns fixed to the right.
+		</description>
+	</type>
+
+	<type type="function">
+		<signature>fixedColumns().right(newVal)</signature>
+		<parameter type="integer" name="newVal">The new number of columns to fix to the right.</parameter>
+		<returns type="DataTables Api">
+			Datatables Api for chaining.
+		</returns>
+		<description>
+			Updates the DataTable to fix the new number of columns to the right.
+		</description>
+	</type>
+
+	<description>
+	This method is either a Getter or a Setter for the number of columns that are fixed to the right of the table. If no argument is supplied then the method acts as a Getter. If an argument is provided then that value is set as the new number of columns to be fixed to the right and the table is updated.
+	</description>
+
+</dt-api>

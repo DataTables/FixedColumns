@@ -34,6 +34,8 @@ export default class FixedColumns {
     dom: IDOM;
     s: IS;
     constructor(settings: any, opts: IDefaults);
+    left(newVal: any): number;
+    right(newVal: any): number;
     private _addStyles;
     private _setKeyTableListener;
 }

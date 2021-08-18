@@ -141,6 +141,28 @@ export default class FixedColumns {
 
 		this._addStyles();
 		this._setKeyTableListener();
+
+		table.settings()[0]._fixedColumns = this;
+
+		return this;
+	}
+
+	public left(newVal) {
+		if (newVal !== undefined) {
+			this.c.left = newVal;
+			this._addStyles();
+		}
+
+		return this.c.left;
+	}
+
+	public right(newVal) {
+		if (newVal !== undefined) {
+			this.c.right = newVal;
+			this._addStyles();
+		}
+
+		return this.c.right;
 	}
 
 	private _addStyles() {
@@ -163,9 +185,9 @@ export default class FixedColumns {
 
 		let numCols = this.s.dt.columns().data().toArray().length;
 
-		if(this.c.left > 0) {
-			let distLeft = 0;
-			for (let i = 0; i < this.c.left; i++) {
+		let distLeft = 0;
+		for (let i = 0; i < numCols; i++) {
+			if(i < this.c.left) {
 				if(i !== 0) {
 					distLeft += $(this.s.dt.column(i-1).nodes()[0]).outerWidth();
 				}
@@ -212,26 +234,94 @@ export default class FixedColumns {
 					)
 					.addClass(this.classes.fixedLeft);
 			}
-
-			if(header !== null && !header.hasClass('index') && this.s.rtl) {
-				this.dom.leftTopBlocker.outerHeight(headerHeight);
-				parentDiv.append(this.dom.leftTopBlocker);
-			}
-
-			if(footer !== null && !footer.hasClass('index') && this.s.rtl) {
-				this.dom.leftBottomBlocker.outerHeight(footerHeight);
-				parentDiv.append(this.dom.leftBottomBlocker);
+			else {
+				let rows = $(this.s.dt.table().node()).children('tbody').children('tr');
+				for(let row of rows) {
+					if (
+						(
+							!this.s.rtl && $($(row).children()[i]).css('left') ||
+							this.s.rtl && $($(row).children()[i]).css('right')
+						) &&
+						$($(row).children()[i]).css('position') === 'sticky'
+					) {
+						$($(row).children()[i])
+							.css(
+								!this.s.rtl ?
+									{
+										left: '',
+										position: ''
+									} :
+									{
+										position: '',
+										right: ''
+									}
+							)
+							.removeClass(this.classes.fixedLeft);
+					}
+				}
+				if (
+					(
+						!this.s.rtl && $(this.s.dt.column(i).header()).css('left') ||
+						this.s.rtl && $(this.s.dt.column(i).header()).css('right')
+					) &&
+					$(this.s.dt.column(i).header()).css('position') === 'sticky'
+				) {
+					$(this.s.dt.column(i).header())
+						.css(
+							!this.s.rtl ?
+								{
+									left: '',
+									position: ''
+								} :
+								{
+									position: '',
+									right: ''
+								}
+						)
+						.removeClass(this.classes.fixedLeft);
+				}
+				if (
+					(
+						!this.s.rtl && $(this.s.dt.column(i).footer()).css('left') ||
+						this.s.rtl && $(this.s.dt.column(i).footer()).css('right')
+					) &&
+					$(this.s.dt.column(i).footer()).css('position') === 'sticky'
+				) {
+					$(this.s.dt.column(i).footer())
+						.css(
+							!this.s.rtl ?
+								{
+									left: '',
+									position: ''
+								} :
+								{
+									position: '',
+									right: ''
+								}
+						)
+						.removeClass(this.classes.fixedLeft);
+				}
 			}
 		}
-		if(this.c.right > 0) {
-			let distRight = 0;
-			for (let i = 0; i < this.c.right; i++) {
-				if(i !== 0) {
-					distRight += $(this.s.dt.column(numCols - i).nodes()[0]).outerWidth();
+
+		if(header !== null && !header.hasClass('index') && this.s.rtl) {
+			this.dom.leftTopBlocker.outerHeight(headerHeight);
+			parentDiv.append(this.dom.leftTopBlocker);
+		}
+
+		if(footer !== null && !footer.hasClass('index') && this.s.rtl) {
+			this.dom.leftBottomBlocker.outerHeight(footerHeight);
+			parentDiv.append(this.dom.leftBottomBlocker);
+		}
+		let distRight = 0;
+		for (let i = numCols-1; i >= 0; i--) {
+			if(i >= numCols - this.c.right) {
+				if(i !== numCols-1) {
+					distRight += $(this.s.dt.column(i+1).nodes()[0]).outerWidth();
 				}
 				let rows = $(this.s.dt.table().node()).children('tbody').children('tr');
 				for(let row of rows) {
-					$($(row).children()[numCols - i-1])
+					$($(row).children()[i])
 						.css(
 							!this.s.rtl ?
 								{
@@ -245,7 +335,7 @@ export default class FixedColumns {
 						)
 						.addClass(this.classes.fixedRight);
 				}
-				$(this.s.dt.column(numCols - i-1).header())
+				$(this.s.dt.column(i).header())
 					.css(
 						!this.s.rtl ?
 							{
@@ -258,7 +348,7 @@ export default class FixedColumns {
 							}
 					)
 					.addClass(this.classes.fixedRight);
-				$(this.s.dt.column(numCols - i-1).footer())
+				$(this.s.dt.column(i).footer())
 					.css(
 						!this.s.rtl ?
 							{
@@ -271,6 +361,74 @@ export default class FixedColumns {
 							}
 					)
 					.addClass(this.classes.fixedRight);
+			}
+			else {
+				let rows = $(this.s.dt.table().node()).children('tbody').children('tr');
+				for(let row of rows) {
+					if (
+						(
+							!this.s.rtl && $($(row).children()[i]).css('right') ||
+							this.s.rtl && $($(row).children()[i]).css('left')
+						) &&
+						$($(row).children()[i]).css('position') === 'sticky'
+					) {
+						$($(row).children()[i])
+							.css(
+								!this.s.rtl ?
+									{
+										position: 'default',
+										right: 'none'
+									} :
+									{
+										left: 'none',
+										position: 'default'
+									}
+							)
+							.removeClass(this.classes.fixedRight);
+					}
+				}
+				if (
+					(
+						!this.s.rtl && $(this.s.dt.column(i).header()).css('right') ||
+						this.s.rtl && $(this.s.dt.column(i).header()).css('left')
+					) &&
+					$(this.s.dt.column(i).header()).css('position') === 'sticky'
+				) {
+					$(this.s.dt.column(i).header())
+						.css(
+							!this.s.rtl ?
+								{
+									position: 'default',
+									right: 'none'
+								} :
+								{
+									left: 'none',
+									position: 'default'
+								}
+						)
+						.removeClass(this.classes.fixedRight);
+				}
+				if (
+					(
+						!this.s.rtl && $(this.s.dt.column(i).footer()).css('right') ||
+						this.s.rtl && $(this.s.dt.column(i).footer()).css('left')
+					) &&
+					$(this.s.dt.column(i).footer()).css('position') === 'sticky'
+				) {
+					$(this.s.dt.column(i).footer())
+						.css(
+							!this.s.rtl ?
+								{
+									position: 'default',
+									right: 'none'
+								} :
+								{
+									left: 'default',
+									position: 'none'
+								}
+						)
+						.removeClass(this.classes.fixedRight);
+				}
 			}
 		}
 		if(!this.s.rtl) {

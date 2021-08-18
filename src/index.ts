@@ -68,6 +68,34 @@ import FixedColumns, {setJQuery as fixedColumnsJQuery} from './FixedColumns';
 	($.fn as any).dataTable.FixedColumns = FixedColumns;
 	($.fn as any).DataTable.FixedColumns = FixedColumns;
 
+	let apiRegister = ($.fn.dataTable.Api as any).register;
+
+	apiRegister('fixedColumns()', function() {
+		return this;
+	});
+
+	apiRegister('fixedColumns().left()', function(newVal) {
+		let ctx = this.context[0];
+		if (newVal !== undefined) {
+			ctx._fixedColumns.left(newVal);
+			return this;
+		}
+		else {
+			return ctx._fixedColumns.left();
+		}
+	});
+
+	apiRegister('fixedColumns().right()', function(newVal) {
+		let ctx = this.context[0];
+		if (newVal !== undefined) {
+			ctx._fixedColumns.right(newVal);
+			return this;
+		}
+		else {
+			return ctx._fixedColumns.right();
+		}
+	});
+
 	function _init(settings, options = null) {
 		let api = new dataTable.Api(settings);
 		let opts = options

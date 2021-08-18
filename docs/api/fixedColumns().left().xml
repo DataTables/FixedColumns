@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-api library="FixedColumns">
+	<name>fixedColumns().left()</name>
+	<summary>Get/Set the number of left FixedColumns</summary>
+	<since>4.0.0</since>
+
+	<type type="function">
+		<signature>fixedColumns().left()</signature>
+		<returns type="number">
+			The number of columns that are fixed to the left.
+		</returns>
+		<description>
+			Getter for the number of columns fixed to the left.
+		</description>
+	</type>
+
+	<type type="function">
+		<signature>fixedColumns().left(newVal)</signature>
+		<parameter type="integer" name="newVal">The new number of columns to fix to the left.</parameter>
+		<returns type="DataTables Api">
+			Datatables Api for chaining.
+		</returns>
+		<description>
+			Updates the DataTable to fix the new number of columns to the left.
+		</description>
+	</type>
+
+	<description>
+	This method is either a Getter or a Setter for the number of columns that are fixed to the left of the table. If no argument is supplied then the method acts as a Getter. If an argument is provided then that value is set as the new number of columns to be fixed to the left and the table is updated.
+	</description>
+
+</dt-api>
