@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="FixedColumns">
+	<name>language.fixedColumns.button</name>
+	<summary>Set FixedColumns button text</summary>
+	<since>4.0.0</since>
+
+
+	<type type="string">
+		<description>
+			The language string to be displayed within the FixedColumns button.
+	</type>
+
+	<default value="FixedColumns">
+	</default>
+	<description>
+		<![CDATA[
+			As standard, FixedColumns will set the FixedColumns Button to display a default text, in this case `FixedColumns`
+
+			The value of `-init language.fixedColumns.button` is passed into an `-api i18n()` function.
+		]]>
+	</description>
+
+		<example title="Change message for FixedColumns button"><![CDATA[
+$(document).ready(function() {
+	$('#example').DataTable( {
+		language: {
+			fixedColumns: {
+				button: 'Sticky Columns'
+			}
+		},
+		buttons:[
+			'fixedColumns'
+		],
+		dom: 'Bfrtip',
+	});
+});
+]]></example>
+
+<related type="api">i18n()</related>
+
+</dt-option>

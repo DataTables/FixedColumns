@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-button library="FixedColumns">
+	<name>fixedColumns</name>
+	<summary>A single button that initialises and allows FixedColumns to be toggled.</summary>
+	<since>1.0.0</since>
+
+	<description>
+		This button type initialises FixedColumns and then when pressed the columns are toggled between being fixed to the table and not fixed to the table.
+	</description>
+
+    <option name="config" type="object" default="{}">
+        This option allows for FixedColumns to be configured as it would in a normal initialisation. All of the `fixedColumns.*` options can be configured within this object.
+    </option>
+    <option name="text" type="string" default="FixedColumns">
+        This options allows the text within the button to be configured. This can also be configured with the `-init fixedColumns.i18n.button` option of the DataTables `-init language` option.
+    </option>
+    <option name="init" type="function">
+        For the FixedColumns button the init function sets up FixedColumns so that it is active and ready to be toggled immediately when the user presses the button.
+    </option>
+    <option name="action" type="function">
+        The action function for the FixedColumns button toggles whether FixedColumns is active on the table or not.
+    </option>
+
+	<example title="Basic FixedColumns button initialisation"><![CDATA[
+$('#myTable').DataTable( {
+	buttons: [
+		'fixedColumns'
+	],
+} );
+]]></example>
+
+	<example title="Fix two columns left and another right"><![CDATA[
+new $.fn.dataTable.Buttons( table, {
+	buttons: [
+		{
+			extend: 'fixedColumns',
+			config: {
+				left: 2,
+                right: 1
+			}
+		}
+	],
+} );
+]]></example>
+</dt-button>

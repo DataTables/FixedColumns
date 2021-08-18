@@ -7,6 +7,9 @@ export function setJQuery(jq) {
 }
 
 export interface IDefaults {
+	i18n: {
+		button: string;
+	};
 	left: number;
 	leftColumns?: number;
 	right: number;
@@ -48,6 +51,9 @@ export default class FixedColumns {
 	};
 
 	private static defaults: IDefaults = {
+		i18n: {
+			button: 'FixedColumns'
+		},
 		left: 1,
 		right: 0
 	};

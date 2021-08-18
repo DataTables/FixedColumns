@@ -96,6 +96,34 @@ import FixedColumns, {setJQuery as fixedColumnsJQuery} from './FixedColumns';
 		}
 	});
 
+	$.fn.dataTable.ext.buttons.fixedColumns = {
+		action(e, dt, node, config) {
+			if($(node).attr('active')) {
+				$(node).removeAttr('active').removeClass('active');
+				dt.fixedColumns().left(0);
+				dt.fixedColumns().right(0);
+			}
+			else {
+				$(node).attr('active', true).addClass('active');
+				dt.fixedColumns().left(config.config.left);
+				dt.fixedColumns().right(config.config.right);
+			}
+		},
+		config: {
+			left: 1,
+			right: 0
+		},
+		init(dt, node, config) {
+			if(dt.settings()[0]._fixedColumns === undefined) {
+				_init(dt.settings(), config);
+			}
+			$(node).attr('active', true).addClass('active');
+			let message = dt.i18n('fixedColumns.button', dt.settings()[0]._fixedColumns.c.i18n.button);
+			dt.button(node).text(message);
+		},
+		text: 'FixedColumns'
+	};
+
 	function _init(settings, options = null) {
 		let api = new dataTable.Api(settings);
 		let opts = options

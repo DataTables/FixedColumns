@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="stripe row-border order-column" order="1">
+
+<css lib="datatables fixedcolumns buttons">
+	/* Ensure that the demo table scrolls */
+	th, td { white-space: nowrap; }
+	div.dataTables_wrapper {
+		width: 800px;
+		margin: 0 auto;
+	}
+</css>
+<js lib="jquery datatables fixedcolumns buttons">
+<![CDATA[
+$(document).ready(function() {
+	$('#example').DataTable( {
+		dom: 			'Blfrtip',
+		scrollY:        300,
+		scrollX:        true,
+		scrollCollapse: true,
+		paging:         false,
+		buttons:		[{
+							extend: 'fixedColumns',
+							text: 'FixedColumns',
+							config: {
+								left: 1,
+								right: 0
+							}
+						}]
+	} );
+} );
+]]>
+</js>
+
+<title lib="FixedColumns">Buttons initialisation</title>
+
+<info><![CDATA[
+
+This example shows how to initialise and use FixedColumns via a button. This button can then be used to toggle between having the columns fixed on the table and not.
+
+The number of columns fixed to the right and left is set within that buttons `config` property. The values within that property are the same as `-init fixedColumns.left` and `-init fixedColumns.right`.
+
+]]></info>
+
+</dt-example>
