@@ -19,7 +19,7 @@ describe('fixedColumns - rightColumns', function() {
 	describe('Check the defaults', function() {
 		dt.html('basic');
 		it('No column set by default', function() {
-			expect($.fn.dataTable.FixedColumns.defaults.rightColumns).toBe(0);
+			expect($.fn.dataTable.FixedColumns.defaults.right).toBe(0);
 		});
 
 		it('None specified', function() {
@@ -55,6 +55,36 @@ describe('fixedColumns - rightColumns', function() {
 				fixedColumns: {
 					leftColumns: 0,
 					rightColumns: 2
+				}
+			});
+
+			checkElements(0, 2);
+		});
+	});
+
+	describe('Check the defaults', function() {
+		dt.html('basic');
+		it('Cycle through all columns', function() {
+			for (let i = 0; i <= 5; i++) {
+				table = $('#example').DataTable({
+					destroy: true,
+					scrollX: true,
+					fixedColumns: {
+						right: i
+					}
+				});
+
+				checkElements(1, i);
+			}
+		});
+
+		dt.html('basic');
+		it('Ensure sensible when left columns disabled', function() {
+			table = $('#example').DataTable({
+				scrollX: true,
+				fixedColumns: {
+					left: 0,
+					right: 2
 				}
 			});
 

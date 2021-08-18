@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="FixedColumns">
-	<name>fixedColumns.leftColumns</name>
+	<name>fixedColumns.left</name>
 	<summary>Number of columns to fix to the left of the table</summary>
-	<deprecated since="4.0.0">
-		<description>
-			As of FixedColumns 4.0.0 this option has been replaced by the `-init fixedColumns.left` option. There is no behaviour change here, but the naming is an improvement.
-
-			For now this option will continue to be supported, however it will be removed in the future. We encourage you to move instead to `-init fixedColumns.left`.
-		</description>
-	</deprecated>
+	<since>3.1.0</since>
 
 	<type type="integer">
 		<description>
@@ -23,14 +17,14 @@
 	<description>
 		FixedColumns, by default, will fix only the left most column in place, however it is also possible to fix two or more columns in place as required by your application. The number of columns to fix in place is defined by this parameter, which is simply an integer that indicates how many columns should be fixed.
 
-		This option is deprecated and is replaced by the `-init fixedColumns.left` option.
+		This option replaces the deprecated `-init fixedColumns.leftColumns`.
 	</description>
 
 	<example title="Fixed two columns to the left of the table"><![CDATA[
 
 $('#example').DataTable( {
 	fixedColumns: {
-		leftColumns: 2
+		left: 2
 	}
 } );
 
@@ -40,8 +34,8 @@ $('#example').DataTable( {
 
 $('#example').DataTable( {
 	fixedColumns: {
-		leftColumns: 0,
-		rightColumns: 1
+		left: 0,
+		right: 1
 	}
 } );
 

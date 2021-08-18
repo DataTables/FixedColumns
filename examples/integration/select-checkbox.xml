@@ -11,7 +11,7 @@ $(document).ready(function() {
 		scrollCollapse: true,
 		paging:         false,
 		fixedColumns:   {
-			leftColumns: 2
+			left: 2
 		},
 		columnDefs: [ {
 			orderable: false,

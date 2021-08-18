@@ -11,8 +11,8 @@ $(document).ready(function() {
 		scrollCollapse: true,
 		paging:         false,
 		fixedColumns:   {
-			leftColumns: 1,
-			rightColumns: 1
+			left: 1,
+			right: 1
 		},
 		keys:           true
 	} );

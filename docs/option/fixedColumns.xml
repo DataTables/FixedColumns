@@ -42,7 +42,7 @@ $('#example').DataTable( {
 
 $('#example').DataTable( {
 	fixedColumns: {
-		leftColumns: 2
+		left: 2
 	}
 } );
 

@@ -18,7 +18,7 @@ $(document).ready(function() {
 		scrollCollapse: true,
 		paging:         false,
 		fixedColumns:   {
-			leftColumns: 2
+			left: 2
 		}
 	} );
 } );
@@ -29,7 +29,7 @@ $(document).ready(function() {
 
 <info><![CDATA[
 
-FixedColumns allows more than one column to be frozen into place using the `fc-init fixedColumns.leftColumns` parameter. The example below shows two columns fixed.
+FixedColumns allows more than one column to be frozen into place using the `fc-init fixedColumns.left` parameter. The example below shows two columns fixed.
 
 ]]></info>
 

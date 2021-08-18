@@ -1,8 +1,10 @@
 /// <reference types="jquery" />
 export declare function setJQuery(jq: any): void;
 export interface IDefaults {
-    leftColumns: number;
-    rightColumns: number;
+    left: number;
+    leftColumns?: number;
+    right: number;
+    rightColumns?: number;
 }
 export interface IS {
     barWidth: number;

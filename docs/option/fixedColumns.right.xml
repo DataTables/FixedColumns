@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="FixedColumns">
-	<name>fixedColumns.rightColumns</name>
+	<name>fixedColumns.right</name>
 	<summary>Number of columns to fix to the right of the table</summary>
-	<deprecated since="4.0.0">
-		<description>
-			As of FixedColumns 4.0.0 this option has been replaced by the `-init fixedColumns.right` option. There is no behaviour change here, but the naming is an improvement.
-
-			For now this option will continue to be supported, however it will be removed in the future. We encourage you to move instead to `-init fixedColumns.right`.
-		</description>
-	</deprecated>
+	<since>3.1.0</since>
 
 	<type type="integer">
 		<description>
@@ -23,14 +17,14 @@
 	<description>
 		FixedColumns can fix columns to both the left and right hand sides of the DataTable. By default only a single left hand column is fixed in place, but this parameter provides the option to specify how many columns should be fixed on the right. This is a simple integer that indicates that number of columns.
 
-		This option is deprecated and is replaced by the `-init fixedColumns.right` option.
+		This option replaces the deprecated `-init fixedColumns.rightColumns`.
 	</description>
 
 	<example title="Left and right columns fixed"><![CDATA[
 
 $('#example').DataTable( {
 	fixedColumns: {
-		rightColumns: 1
+		right: 1
 	}
 } );
 
@@ -40,8 +34,8 @@ $('#example').DataTable( {
 
 $('#example').DataTable( {
 	fixedColumns: {
-		leftColumns: 0,
-		rightColumns: 1
+		left: 0,
+		right: 1
 	}
 } );
 

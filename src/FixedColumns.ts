@@ -7,8 +7,10 @@ export function setJQuery(jq) {
 }
 
 export interface IDefaults {
-	leftColumns: number;
-	rightColumns: number;
+	left: number;
+	leftColumns?: number;
+	right: number;
+	rightColumns?: number;
 }
 
 export interface IS {
@@ -46,8 +48,8 @@ export default class FixedColumns {
 	};
 
 	private static defaults: IDefaults = {
-		leftColumns: 1,
-		rightColumns: 0
+		left: 1,
+		right: 0
 	};
 
 	public classes: IClasses;
@@ -67,6 +69,16 @@ export default class FixedColumns {
 
 		// Get options from user
 		this.c = $.extend(true, {}, FixedColumns.defaults, opts);
+
+		// Backwards compatibility for deprecated leftColumns
+		if(opts.left === undefined && this.c.leftColumns !== undefined) {
+			this.c.left = this.c.leftColumns;
+		}
+
+		// Backwards compatibility for deprecated rightColumns
+		if(opts.right === undefined && this.c.rightColumns !== undefined) {
+			this.c.right = this.c.rightColumns;
+		}
 
 		this.s = {
 			barWidth: 0,
@@ -151,9 +163,9 @@ export default class FixedColumns {
 
 		let numCols = this.s.dt.columns().data().toArray().length;
 
-		if(this.c.leftColumns > 0) {
+		if(this.c.left > 0) {
 			let distLeft = 0;
-			for (let i = 0; i < this.c.leftColumns; i++) {
+			for (let i = 0; i < this.c.left; i++) {
 				if(i !== 0) {
 					distLeft += $(this.s.dt.column(i-1).nodes()[0]).outerWidth();
 				}
@@ -211,9 +223,9 @@ export default class FixedColumns {
 				parentDiv.append(this.dom.leftBottomBlocker);
 			}
 		}
-		if(this.c.rightColumns > 0) {
+		if(this.c.right > 0) {
 			let distRight = 0;
-			for (let i = 0; i < this.c.rightColumns; i++) {
+			for (let i = 0; i < this.c.right; i++) {
 				if(i !== 0) {
 					distRight += $(this.s.dt.column(numCols - i).nodes()[0]).outerWidth();
 				}
@@ -276,8 +288,8 @@ export default class FixedColumns {
 			let cellPos = $(cell.node()).offset();
 			let scroll = $($(this.s.dt.table().node()).closest('div.dataTables_scrollBody'));
 
-			if(this.c.leftColumns > 0) {
-				let leftMost = $(this.s.dt.column(this.c.leftColumns-1).header());
+			if(this.c.left > 0) {
+				let leftMost = $(this.s.dt.column(this.c.left-1).header());
 				let leftMostPos = leftMost.offset();
 				let leftMostWidth = leftMost.outerWidth();
 				if(cellPos.left < leftMostPos.left + leftMostWidth) {
@@ -286,10 +298,10 @@ export default class FixedColumns {
 				}
 			}
 
-			if(this.c.rightColumns > 0) {
+			if(this.c.right > 0) {
 				let numCols = this.s.dt.columns().data().toArray().length;
 				let cellWidth = $(cell.node()).outerWidth();
-				let rightMost = $(this.s.dt.column(numCols - this.c.rightColumns).header());
+				let rightMost = $(this.s.dt.column(numCols - this.c.right).header());
 				let rightMostPos = rightMost.offset();
 				if(cellPos.left + cellWidth > rightMostPos.left) {
 					let currScroll = scroll.scrollLeft();
