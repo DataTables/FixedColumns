@@ -8,6 +8,7 @@
 	<type type="string">
 		<description>
 			The language string to be displayed within the FixedColumns button.
+		</description>
 	</type>
 
 	<default value="FixedColumns">
