@@ -234,22 +234,32 @@ export default class FixedColumns {
 		// Get all of the row elements in the table
 		let rows = $(this.s.dt.table().node()).children('tbody').children('tr');
 
+		let invisibles = 0;
+
 		// Iterate over all of the columns
 		for (let i = 0; i < numCols; i++) {
-			// Get the columns header and footer element
-			let colHeader = $(this.s.dt.column(i).header());
-			let colFooter = $(this.s.dt.column(i).footer());
+			let column = this.s.dt.column(i);
 
+			if(!column.visible()) {
+				invisibles ++;
+				continue;
+			}
+			// Get the columns header and footer element
+			let colHeader = $(column.header());
+			let colFooter = $(column.footer());
 			// If i is less than the value of left then this column should be fixed left
 			if (i < this.c.left) {
 				// Add the width of the previous node - only if we are on atleast the second column
 				if (i !== 0) {
-					distLeft += $(this.s.dt.column(i-1).nodes()[0]).outerWidth();
+					let prevCol = this.s.dt.column(i-1);
+					if (prevCol.visible()) {
+						distLeft += $(prevCol.nodes()[0]).outerWidth();
+					}
 				}
 
 				// Iterate over all of the rows, fixing the cell to the left
 				for (let row of rows) {
-					$($(row).children()[i])
+					$($(row).children()[i-invisibles])
 						.css(this._getCellCSS(false, distLeft, 'left'))
 						.addClass(this.classes.fixedLeft);
 				}
@@ -265,7 +275,7 @@ export default class FixedColumns {
 			else {
 				// Iteriate through all of the rows, making sure they aren't currently trying to fix left
 				for (let row of rows) {
-					let cell = $($(row).children()[i]);
+					let cell = $($(row).children()[i-invisibles]);
 
 					// If the cell is trying to fix to the left, remove the class and the css
 					if (cell.hasClass(this.classes.fixedLeft)) {
@@ -314,20 +324,32 @@ export default class FixedColumns {
 		}
 
 		let distRight = 0;
+		invisibles = 0;
 		for (let i = numCols-1; i >= 0; i--) {
+			let column = this.s.dt.column(i);
+
+
 			// Get the columns header and footer element
-			let colHeader = $(this.s.dt.column(i).header());
-			let colFooter = $(this.s.dt.column(i).footer());
+			let colHeader = $(column.header());
+			let colFooter = $(column.footer());
+
+			if(!column.visible()) {
+				invisibles ++;
+				continue;
+			}
 
 			if(i >= numCols - this.c.right) {
 				// Add the widht of the previous node, only if we are on atleast the second column
 				if (i !== numCols-1) {
-					distRight += $(this.s.dt.column(i+1).nodes()[0]).outerWidth();
+					let prevCol = this.s.dt.column(i+1);
+					if(prevCol.visible()) {
+						distRight += $(prevCol.nodes()[0]).outerWidth();
+					}
 				}
 
 				// Iterate over all of the rows, fixing the cell to the right
 				for(let row of rows) {
-					$($(row).children()[i])
+					$($(row).children()[i + invisibles])
 						.css(this._getCellCSS(false, distRight, 'right'))
 						.addClass(this.classes.fixedRight);
 				}
@@ -343,7 +365,7 @@ export default class FixedColumns {
 			else {
 				// Iteriate through all of the rows, making sure they aren't currently trying to fix right
 				for (let row of rows) {
-					let cell = $($(row).children()[i]);
+					let cell = $($(row).children()[i+invisibles]);
 
 					// If the cell is trying to fix to the right, remove the class and the css
 					if (cell.hasClass(this.classes.fixedRight)) {
@@ -493,7 +515,12 @@ export default class FixedColumns {
 					scroll.scrollLeft(currScroll - (leftMostPos.left - (cellPos.left + cellWidth)));
 				}
 			}
+		});
 
+		// Whenever a draw occurs there is potential for the data to have changed and therefore also the column widths
+		// Therefore it is necessary to recalculate the values for the fixed columns
+		this.s.dt.on('draw', () => {
+			this._addStyles();
 		});
 	}
 }
