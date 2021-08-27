@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="stripe row-border order-column" order="1">
+
+<css lib="datatables fixedcolumns rowreorder">
+	/* Ensure that the demo table scrolls */
+	th, td { white-space: nowrap; }
+	div.dataTables_wrapper {
+		width: 600px;
+		margin: 0 auto;
+	}
+</css>
+<js lib="jquery datatables fixedcolumns rowreorder">
+<![CDATA[
+$(document).ready(function() {
+	$('#example').DataTable( {
+		scrollY:        300,
+		scrollX:        true,
+		scrollCollapse: true,
+		paging:         false,
+		rowReorder:     true,
+	} );
+} );
+]]>
+</js>
+
+<title lib="FixedColumns">RowReorder</title>
+
+<info><![CDATA[
+
+This example shows the [RowReorder extension](//datatables.net/extensions/rowreorder) for DataTables being used with FixedColumns. The integration between these extensions has been partially supported in the past, but it is now fully supported as of version 4.0.0 of FixedColumns.
+
+]]></info>
+
+</dt-example>

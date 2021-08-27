@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="stripe row-border order-column" order="1">
+
+<css lib="datatables fixedcolumns colreorder">
+	/* Ensure that the demo table scrolls */
+	th, td { white-space: nowrap; }
+	div.dataTables_wrapper {
+		width: 800px;
+		margin: 0 auto;
+	}
+</css>
+<js lib="jquery datatables fixedcolumns colreorder">
+<![CDATA[
+$(document).ready(function() {
+	$('#example').DataTable( {
+		scrollY:        300,
+		scrollX:        true,
+		scrollCollapse: true,
+		paging:         false,
+		fixedColumns:   true,
+		autoFill:		true
+	} );
+} );
+]]>
+</js>
+
+<title lib="FixedColumns">AutoFill</title>
+
+<info><![CDATA[
+
+This example shows the [AutoFill extension](//datatables.net/extensions/autofill) for DataTables being used with FixedColumns. The integration between these extensions has been partially supported in the past, but it is now fully supported as of version 4.0.0 of FixedColumns.
+
+]]></info>
+
+</dt-example>
