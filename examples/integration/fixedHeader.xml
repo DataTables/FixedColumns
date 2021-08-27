@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="stripe row-border order-column nowrap" order="4">
+
+<css lib="datatables fixedcolumns fixedheader"/>
+<js lib="jquery datatables fixedcolumns fixedheader">
+<![CDATA[
+$(document).ready(function() {
+	$('#example').DataTable( {
+		scrollY:        300,
+		scrollX:        true,
+		scrollCollapse: true,
+		paging:         false,
+		fixedColumns:   {
+			left: 1,
+			right: 1
+		},
+		fixedHeader:           {
+			header: true,
+			footer: true
+		}
+	} );
+} );
+]]>
+</js>
+
+<title lib="FixedColumns">FixedHeader</title>
+
+<info><![CDATA[
+
+This example shows the [FixedHeader extension](//datatables.net/extensions/fixedheader) for DataTables being used with FixedColumns. The integration between these extensions has been unsupported in the past, but it is now possible as of version 4.0.0 of FixedColumns.
+
+]]></info>
+
+</dt-example>

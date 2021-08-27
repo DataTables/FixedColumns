@@ -114,32 +114,24 @@ export default class FixedColumns {
 		this.dom = {
 			leftBottomBlocker: $('<div>')
 				.css(blockerCSS)
-				.css({
-					'border-top': '1px solid black',
-					'left': '0px',
-				})
+				.css('left', 0)
 				.addClass(this.classes.leftBottomBlocker),
 			leftTopBlocker: $('<div>')
 				.css(blockerCSS)
 				.css({
-					'border-bottom': '1px solid black',
-					'left': '0px',
-					'top': '0px',
+					left: 0,
+					top: 0,
 				})
 				.addClass(this.classes.leftTopBlocker),
 			rightBottomBlocker: $('<div>')
 				.css(blockerCSS)
-				.css({
-					'border-top': '1px solid black',
-					'right': '0px',
-				})
+				.css('right', 0)
 				.addClass(this.classes.rightBottomBlocker),
 			rightTopBlocker: $('<div>')
 				.css(blockerCSS)
 				.css({
-					'border-bottom': '1px solid black',
-					'right': '0px',
-					'top': '0px',
+					right: 0,
+					top: 0,
 				})
 				.addClass(this.classes.rightTopBlocker)
 		};
@@ -208,7 +200,7 @@ export default class FixedColumns {
 		let headerHeight = null;
 		if (header !== null) {
 			header = $(header);
-			headerHeight = header.outerHeight();
+			headerHeight = header.outerHeight() + 1;
 			parentDiv = $(header.closest('div.dataTables_scroll')).css({position: 'relative'});
 		}
 
