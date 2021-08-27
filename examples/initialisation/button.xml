@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" table-class="stripe row-border order-column" order="1">
+<dt-example table-type="html-wide" table-class="stripe row-border order-column" order="2">
 
 <css lib="datatables fixedcolumns buttons">
 	/* Ensure that the demo table scrolls */
@@ -13,19 +13,19 @@
 <![CDATA[
 $(document).ready(function() {
 	$('#example').DataTable( {
-		dom: 			'Blfrtip',
-		scrollY:        300,
-		scrollX:        true,
+		dom: 'Blfrtip',
+		scrollY: 300,
+		scrollX: true,
 		scrollCollapse: true,
-		paging:         false,
-		buttons:		[{
-							extend: 'fixedColumns',
-							text: 'FixedColumns',
-							config: {
-								left: 1,
-								right: 0
-							}
-						}]
+		paging: false,
+		buttons: [{
+			extend: 'fixedColumns',
+			text: 'FixedColumns',
+			config: {
+				left: 1,
+				right: 0
+			}
+		}]
 	} );
 } );
 ]]>
