@@ -10,13 +10,10 @@ $(document).ready(function() {
 		scrollX:        true,
 		scrollCollapse: true,
 		paging:         false,
+		fixedHeader:	true,
 		fixedColumns:   {
 			left: 1,
 			right: 1
-		},
-		fixedHeader:           {
-			header: true,
-			footer: true
 		}
 	} );
 } );
