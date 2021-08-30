@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" table-class="stripe row-border order-column" order="1">
 
-<css lib="datatables fixedcolumns colreorder">
+<css lib="datatables fixedcolumns autofill">
 	/* Ensure that the demo table scrolls */
 	th, td { white-space: nowrap; }
 	div.dataTables_wrapper {
@@ -9,7 +9,7 @@
 		margin: 0 auto;
 	}
 </css>
-<js lib="jquery datatables fixedcolumns colreorder">
+<js lib="jquery datatables fixedcolumns autofill">
 <![CDATA[
 $(document).ready(function() {
 	$('#example').DataTable( {
