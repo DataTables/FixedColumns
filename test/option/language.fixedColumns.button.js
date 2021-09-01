@@ -24,8 +24,8 @@ describe('fixedColumns - language.fixedColumns.button', function () {
 				dom: 'Blfrtip',
 				scrollX: true,
 				language: {
-					fixedColumns: {
-						button: 'test1'
+					buttons: {
+						fixedColumns: 'test1'
 					}
 				},
 				buttons: ['fixedColumns']
@@ -41,8 +41,8 @@ describe('fixedColumns - language.fixedColumns.button', function () {
 				dom: 'Blfrtip',
 				scrollX: true,
 				language: {
-					fixedColumns: {
-						button: 'language'
+					buttons: {
+						fixedColumns: 'language'
 					}
 				},
 				buttons: [{
@@ -51,7 +51,7 @@ describe('fixedColumns - language.fixedColumns.button', function () {
 				}]
 			});
 
-			expect($('.dt-buttons button').text()).toBe('language');
+			expect($('.dt-buttons button').text()).toBe('button');
 		});
 	});
 });
