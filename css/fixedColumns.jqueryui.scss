@@ -10,3 +10,17 @@ div.dtfc-right-top-blocker {
 	background-color: rgb(246, 246, 246) !important;
 	border-top: 1px solid #c5c5c5 !important;
 }
+
+tr.dt-rowReorder-moving {
+    td.dtfc-fixed-left,
+    td.dtfc-fixed-right {
+        border-top: 2px solid #555 !important;
+        border-bottom: 2px solid #555 !important;
+    }
+    td.dtfc-fixed-left:first-child {
+        border-left: 2px solid #555 !important;
+    }
+    td.dtfc-fixed-right:last-child {
+        border-right: 2px solid #555 !important;
+    }
+}

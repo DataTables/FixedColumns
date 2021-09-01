@@ -47,3 +47,17 @@ div.dataTables_scrollHeadInner{
 		}
 	}
 }
+
+tr.dt-rowReorder-moving {
+    td.dtfc-fixed-left,
+    td.dtfc-fixed-right {
+        border-top: 2px solid #888 !important;
+        border-bottom: 2px solid #888 !important;
+    }
+    td.dtfc-fixed-left:first-child {
+        border-left: 2px solid #888 !important;
+    }
+    td.dtfc-fixed-right:last-child {
+        border-right: 2px solid #888 !important;
+    }
+}
