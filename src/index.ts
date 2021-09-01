@@ -118,7 +118,13 @@ import FixedColumns, {setJQuery as fixedColumnsJQuery} from './FixedColumns';
 				_init(dt.settings(), config);
 			}
 			$(node).attr('active', true).addClass('active');
-			let message = dt.i18n('fixedColumns.button', dt.settings()[0]._fixedColumns.c.i18n.button);
+			let message = '';
+			if(config.text !== $.fn.dataTable.ext.buttons.fixedColumns.text) {
+				message = config.text;
+			}
+			else {
+				message = dt.i18n(config.text, dt.settings()[0]._fixedColumns.c.i18n.button);
+			}
 			dt.button(node).text(message);
 		},
 		text: 'FixedColumns'
