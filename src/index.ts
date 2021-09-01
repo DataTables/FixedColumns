@@ -119,7 +119,7 @@ import FixedColumns, {setJQuery as fixedColumnsJQuery} from './FixedColumns';
 			}
 			$(node).attr('active', true).addClass('active');
 			dt.button(node).text(
-				config.text || dt.i18n(config.text, dt.settings()[0]._fixedColumns.c.i18n.button)
+				config.text || dt.i18n('buttons.fixedColumns', dt.settings()[0]._fixedColumns.c.i18n.button)
 			);
 		},
 		text: null
