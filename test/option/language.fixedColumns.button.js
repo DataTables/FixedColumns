@@ -36,7 +36,7 @@ describe('fixedColumns - language.fixedColumns.button', function () {
 
 		// DD-2157
 		dt.html('basic');
-		it('TK COLIN - see who wins between language and button', function () {
+		it('Button customisation takes precedence', function () {
 			table = $('#example').DataTable({
 				dom: 'Blfrtip',
 				scrollX: true,
