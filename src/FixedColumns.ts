@@ -201,7 +201,7 @@ export default class FixedColumns {
 		if (header !== null) {
 			header = $(header);
 			headerHeight = header.outerHeight() + 1;
-			parentDiv = $(header.closest('div.dataTables_scroll')).css({position: 'relative'});
+			parentDiv = $(header.closest('div.dataTables_scroll')).css('position', 'relative');
 		}
 
 		// Get the footer and it's height
@@ -213,7 +213,7 @@ export default class FixedColumns {
 
 			// Only attempt to retrieve the parentDiv if it has not been retrieved already
 			if(parentDiv === null) {
-				parentDiv = $(footer.closest('div.dataTables_scroll')).css({position: 'relative'});
+				parentDiv = $(footer.closest('div.dataTables_scroll')).css('position', 'relative');
 			}
 		}
 
