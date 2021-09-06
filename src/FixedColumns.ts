@@ -471,7 +471,7 @@ export default class FixedColumns {
 	}
 
 	private _setKeyTableListener() {
-		this.s.dt.on('key-focus', (e, dt, cell, originalEvent) => {
+		this.s.dt.on('key-focus', (e, dt, cell) => {
 			let cellPos = $(cell.node()).offset();
 			let scroll = $($(this.s.dt.table().node()).closest('div.dataTables_scrollBody'));
 
