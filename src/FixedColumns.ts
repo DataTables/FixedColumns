@@ -98,7 +98,7 @@ export default class FixedColumns {
 		};
 
 		// Set the bar width if vertical scrolling is enabled
-		if (this.s.dt.init().scrollY !== false) {
+		if (this.s.dt.settings()[0].oInit.scrollY === true) {
 			this.s.barWidth = this.s.dt.settings()[0].oBrowser.barWidth;
 		}
 
