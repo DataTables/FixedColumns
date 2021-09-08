@@ -29,6 +29,8 @@ export interface IClasses {
 	leftTopBlocker: string;
 	rightBottomBlocker: string;
 	rightTopBlocker: string;
+	tableFixedLeft: string;
+	tableFixedRight: string;
 }
 
 export interface IDOM {
@@ -53,6 +55,8 @@ export default class FixedColumns {
 		leftTopBlocker: 'dtfc-left-top-blocker',
 		rightBottomBlocker: 'dtfc-right-bottom-blocker',
 		rightTopBlocker: 'dtfc-right-top-blocker',
+		tableFixedLeft: 'dtfc-has-left',
+		tableFixedRight: 'dtfc-has-right'
 	};
 
 	private static defaults: IDefaults = {
@@ -241,6 +245,8 @@ export default class FixedColumns {
 			let colFooter = $(column.footer());
 			// If i is less than the value of left then this column should be fixed left
 			if (i < this.c.left) {
+				$(this.s.dt.table().node()).addClass(this.classes.tableFixedLeft);
+				parentDiv.addClass(this.classes.tableFixedLeft);
 				// Add the width of the previous node - only if we are on atleast the second column
 				if (i !== 0) {
 					let prevCol = this.s.dt.column(i-1);
@@ -331,6 +337,8 @@ export default class FixedColumns {
 			}
 
 			if(i >= numCols - this.c.right) {
+				$(this.s.dt.table().node()).addClass(this.classes.tableFixedRight);
+				parentDiv.addClass(this.classes.tableFixedLeft);
 				// Add the widht of the previous node, only if we are on atleast the second column
 				if (i !== numCols-1) {
 					let prevCol = this.s.dt.column(i+1);

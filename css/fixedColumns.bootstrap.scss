@@ -29,8 +29,14 @@ div.dtfc-left-top-blocker {
 	border-bottom: 0px solid #ddd !important;
 }
 
-table.dataTable.table-bordered {
+table.dataTable.table-bordered.dtfc-has-left {
 	border-left: none;
+}
+
+div.dataTables_scroll.dtfc-has-left {
+    table.table-bordered {
+        border-left: none;
+    }   
 }
 
 div.dataTables_scrollBody {
