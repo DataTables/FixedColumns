@@ -22,3 +22,17 @@ thead th {
 tfoot th {
 	background-color: white;
 }
+
+tr.dt-rowReorder-moving {
+    td.dtfc-fixed-left,
+    td.dtfc-fixed-right {
+        border-top: 2px solid #555 !important;
+        border-bottom: 2px solid #555 !important;
+    }
+    td.dtfc-fixed-left:first-child {
+        border-left: 2px solid #555 !important;
+    }
+    td.dtfc-fixed-right:last-child {
+        border-right: 2px solid #555 !important;
+    }
+}

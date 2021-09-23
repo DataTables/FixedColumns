@@ -6,7 +6,7 @@
 	if (typeof define === 'function' && define.amd) {
 		// AMD
 		define(['jquery', 'datatables.net-se', 'datatables.net-fixedcolumns'], function($) {
-			return factory($, window, document);
+			return factory($);
 		});
 	}
 	else if (typeof exports === 'object') {
@@ -26,14 +26,14 @@
 				require('datatables.net-fixedcolumns')(root, $);
 			}
 
-			return factory($, root, root.document);
+			return factory($);
 		};
 	}
 	else {
 		// Browser
-		factory(jQuery, window, document);
+		factory(jQuery);
 	}
-}(function($, window, document) {
+}(function($) {
 	'use strict';
 	let dataTable = $.fn.dataTable;
 

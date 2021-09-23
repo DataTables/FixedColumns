@@ -118,10 +118,11 @@ import FixedColumns, {setJQuery as fixedColumnsJQuery} from './FixedColumns';
 				_init(dt.settings(), config);
 			}
 			$(node).attr('active', true).addClass('active');
-			let message = dt.i18n('fixedColumns.button', dt.settings()[0]._fixedColumns.c.i18n.button);
-			dt.button(node).text(message);
+			dt.button(node).text(
+				config.text || dt.i18n('buttons.fixedColumns', dt.settings()[0]._fixedColumns.c.i18n.button)
+			);
 		},
-		text: 'FixedColumns'
+		text: null
 	};
 
 	function _init(settings, options = null) {
@@ -137,7 +138,7 @@ import FixedColumns, {setJQuery as fixedColumnsJQuery} from './FixedColumns';
 
 	// Attach a listener to the document which listens for DataTables initialisation
 	// events so we can automatically initialise
-	$(document).on('init.dt.dtfc', function(e, settings, json) {
+	$(document).on('init.dt.dtfc', function(e, settings) {
 		if (e.namespace !== 'dt') {
 			return;
 		}

@@ -29,6 +29,8 @@ export interface IClasses {
 	leftTopBlocker: string;
 	rightBottomBlocker: string;
 	rightTopBlocker: string;
+	tableFixedLeft: string;
+	tableFixedRight: string;
 }
 
 export interface IDOM {
@@ -53,6 +55,8 @@ export default class FixedColumns {
 		leftTopBlocker: 'dtfc-left-top-blocker',
 		rightBottomBlocker: 'dtfc-right-bottom-blocker',
 		rightTopBlocker: 'dtfc-right-top-blocker',
+		tableFixedLeft: 'dtfc-has-left',
+		tableFixedRight: 'dtfc-has-right'
 	};
 
 	private static defaults: IDefaults = {
@@ -98,7 +102,7 @@ export default class FixedColumns {
 		};
 
 		// Set the bar width if vertical scrolling is enabled
-		if (this.s.dt.init().scrollY !== false) {
+		if (this.s.dt.settings()[0].oInit.scrollY === true) {
 			this.s.barWidth = this.s.dt.settings()[0].oBrowser.barWidth;
 		}
 
@@ -201,7 +205,7 @@ export default class FixedColumns {
 		if (header !== null) {
 			header = $(header);
 			headerHeight = header.outerHeight() + 1;
-			parentDiv = $(header.closest('div.dataTables_scroll')).css({position: 'relative'});
+			parentDiv = $(header.closest('div.dataTables_scroll')).css('position', 'relative');
 		}
 
 		// Get the footer and it's height
@@ -213,7 +217,7 @@ export default class FixedColumns {
 
 			// Only attempt to retrieve the parentDiv if it has not been retrieved already
 			if(parentDiv === null) {
-				parentDiv = $(footer.closest('div.dataTables_scroll')).css({position: 'relative'});
+				parentDiv = $(footer.closest('div.dataTables_scroll')).css('position', 'relative');
 			}
 		}
 
@@ -241,6 +245,8 @@ export default class FixedColumns {
 			let colFooter = $(column.footer());
 			// If i is less than the value of left then this column should be fixed left
 			if (i < this.c.left) {
+				$(this.s.dt.table().node()).addClass(this.classes.tableFixedLeft);
+				parentDiv.addClass(this.classes.tableFixedLeft);
 				// Add the width of the previous node - only if we are on atleast the second column
 				if (i !== 0) {
 					let prevCol = this.s.dt.column(i-1);
@@ -331,6 +337,8 @@ export default class FixedColumns {
 			}
 
 			if(i >= numCols - this.c.right) {
+				$(this.s.dt.table().node()).addClass(this.classes.tableFixedRight);
+				parentDiv.addClass(this.classes.tableFixedLeft);
 				// Add the widht of the previous node, only if we are on atleast the second column
 				if (i !== numCols-1) {
 					let prevCol = this.s.dt.column(i+1);
@@ -471,7 +479,7 @@ export default class FixedColumns {
 	}
 
 	private _setKeyTableListener() {
-		this.s.dt.on('key-focus', (e, dt, cell, originalEvent) => {
+		this.s.dt.on('key-focus', (e, dt, cell) => {
 			let cellPos = $(cell.node()).offset();
 			let scroll = $($(this.s.dt.table().node()).closest('div.dataTables_scrollBody'));
 
