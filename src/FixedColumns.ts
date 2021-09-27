@@ -101,11 +101,6 @@ export default class FixedColumns {
 			rtl: $(table.table().node()).css('direction') === 'rtl'
 		};
 
-		// Set the bar width if vertical scrolling is enabled
-		if (this.s.dt.settings()[0].oScroll.sY === true || this.s.dt.settings()[0].oScroll.sY.length > 0) {
-			this.s.barWidth = this.s.dt.settings()[0].oBrowser.barWidth;
-		}
-
 		// Common CSS for all blockers
 		let blockerCSS = {
 			'background-color': 'white',
@@ -197,6 +192,25 @@ export default class FixedColumns {
 	 * Iterates over the columns, fixing the appropriate ones to the left and right
 	 */
 	private _addStyles() {
+		// Set the bar width if vertical scrolling is enabled
+		if (this.s.dt.settings()[0].oScroll.sY) {
+			let scroll = $(this.s.dt.table().node()).closest('div.dataTables_scrollBody')[0];
+			let barWidth = this.s.dt.settings()[0].oBrowser.barWidth;
+
+
+			if (scroll.offsetWidth - scroll.clientWidth >= barWidth) {
+				this.s.barWidth = barWidth;
+			}
+			else {
+				this.s.barWidth = 0;
+			}
+
+			this.dom.rightTopBlocker.css('width', this.s.barWidth + 1);
+			this.dom.leftTopBlocker.css('width', this.s.barWidth + 1);
+			this.dom.rightBottomBlocker.css('width', this.s.barWidth + 1);
+			this.dom.leftBottomBlocker.css('width', this.s.barWidth + 1);
+		}
+
 		let parentDiv = null;
 
 		// Get the header and it's height
