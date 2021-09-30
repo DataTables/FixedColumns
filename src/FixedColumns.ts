@@ -336,7 +336,6 @@ export default class FixedColumns {
 		}
 
 		let distRight = 0;
-		invisibles = 0;
 		for (let i = numCols-1; i >= 0; i--) {
 			let column = this.s.dt.column(i);
 
@@ -344,11 +343,6 @@ export default class FixedColumns {
 			// Get the columns header and footer element
 			let colHeader = $(column.header());
 			let colFooter = $(column.footer());
-
-			if(!column.visible()) {
-				invisibles ++;
-				continue;
-			}
 
 			if(i >= numCols - this.c.right) {
 				$(this.s.dt.table().node()).addClass(this.classes.tableFixedRight);
@@ -363,7 +357,7 @@ export default class FixedColumns {
 
 				// Iterate over all of the rows, fixing the cell to the right
 				for(let row of rows) {
-					$($(row).children()[i + invisibles])
+					$($(row).children()[i - invisibles])
 						.css(this._getCellCSS(false, distRight, 'right'))
 						.addClass(this.classes.fixedRight);
 				}
@@ -379,7 +373,7 @@ export default class FixedColumns {
 			else {
 				// Iteriate through all of the rows, making sure they aren't currently trying to fix right
 				for (let row of rows) {
-					let cell = $($(row).children()[i+invisibles]);
+					let cell = $($(row).children()[i-invisibles]);
 
 					// If the cell is trying to fix to the right, remove the class and the css
 					if (cell.hasClass(this.classes.fixedRight)) {
