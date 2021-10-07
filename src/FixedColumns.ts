@@ -263,7 +263,7 @@ export default class FixedColumns {
 				parentDiv.addClass(this.classes.tableFixedLeft);
 				// Add the width of the previous node - only if we are on atleast the second column
 				if (i !== 0) {
-					let prevCol = this.s.dt.column(i-1);
+					let prevCol = this.s.dt.column(i-1, {page: 'current'});
 					if (prevCol.visible()) {
 						distLeft += $(prevCol.nodes()[0]).outerWidth();
 					}
@@ -349,7 +349,7 @@ export default class FixedColumns {
 				parentDiv.addClass(this.classes.tableFixedLeft);
 				// Add the widht of the previous node, only if we are on atleast the second column
 				if (i !== numCols-1) {
-					let prevCol = this.s.dt.column(i+1);
+					let prevCol = this.s.dt.column(i+1, {page: 'current'});
 					if(prevCol.visible()) {
 						distRight += $(prevCol.nodes()[0]).outerWidth();
 					}
