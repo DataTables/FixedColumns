@@ -155,7 +155,7 @@ export default class FixedColumns {
 	}
 
 	/**
-	 * Getter/Setter for the fixedColumns.left property
+	 * Getter/Setter for the `fixedColumns.left` property
 	 *
 	 * @param newVal Optional. If present this will be the new value for the number of left fixed columns
 	 * @returns The number of left fixed columns
