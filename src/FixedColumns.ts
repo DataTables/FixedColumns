@@ -257,10 +257,12 @@ export default class FixedColumns {
 			// Get the columns header and footer element
 			let colHeader = $(column.header());
 			let colFooter = $(column.footer());
+
 			// If i is less than the value of left then this column should be fixed left
 			if (i < this.c.left) {
 				$(this.s.dt.table().node()).addClass(this.classes.tableFixedLeft);
 				parentDiv.addClass(this.classes.tableFixedLeft);
+
 				// Add the width of the previous node - only if we are on atleast the second column
 				if (i !== 0) {
 					let prevCol = this.s.dt.column(i-1, {page: 'current'});
