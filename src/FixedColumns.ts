@@ -536,7 +536,9 @@ export default class FixedColumns {
 		});
 
 		this.s.dt.on('column-visibility', () => {
-			this._addStyles();
+			setTimeout(() => {
+				this._addStyles();
+			}, 50);
 		});
 	}
 }
