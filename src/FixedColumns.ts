@@ -46,7 +46,7 @@ export interface ICellCSS {
 	right?: string;
 }
 export default class FixedColumns {
-	private static version = '4.0.0';
+	private static version = '4.0.1-dev';
 
 	private static classes: IClasses = {
 		fixedLeft: 'dtfc-fixed-left',
@@ -155,7 +155,7 @@ export default class FixedColumns {
 	}
 
 	/**
-	 * Getter/Setter for the fixedColumns.left property
+	 * Getter/Setter for the `fixedColumns.left` property
 	 *
 	 * @param newVal Optional. If present this will be the new value for the number of left fixed columns
 	 * @returns The number of left fixed columns
@@ -172,7 +172,7 @@ export default class FixedColumns {
 	}
 
 	/**
-	 * Getter/Setter for the fixedColumns.left property
+	 * Getter/Setter for the `fixedColumns.left` property
 	 *
 	 * @param newVal Optional. If present this will be the new value for the number of right fixed columns
 	 * @returns The number of right fixed columns
@@ -265,10 +265,12 @@ export default class FixedColumns {
 			// Get the columns header and footer element
 			let colHeader = $(column.header());
 			let colFooter = $(column.footer());
+
 			// If i is less than the value of left then this column should be fixed left
 			if (i - invisibles < this.c.left) {
 				$(this.s.dt.table().node()).addClass(this.classes.tableFixedLeft);
 				parentDiv.addClass(this.classes.tableFixedLeft);
+
 				// Add the width of the previous node - only if we are on atleast the second column
 				if (i !== 0) {
 					let prevCol = this.s.dt.column(i-1-invisibles, {page: 'current'});
