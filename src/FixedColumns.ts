@@ -369,7 +369,7 @@ export default class FixedColumns {
 				prev = invisibles;
 			}
 
-			if(i + invisibles >= numCols - this.c.right) {
+			if(i + rightInvisibles >= numCols - this.c.right) {
 				$(this.s.dt.table().node()).addClass(this.classes.tableFixedRight);
 				parentDiv.addClass(this.classes.tableFixedRight);
 				// Add the widht of the previous node, only if we are on atleast the second column
