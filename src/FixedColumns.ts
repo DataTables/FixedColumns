@@ -246,9 +246,17 @@ export default class FixedColumns {
 
 		let invisibles = 0;
 
+		// When working from right to left we need to know how many are invisible before a point,
+		// without including those that are invisible after
+		let prevInvisible = new Map();
+
 		// Iterate over all of the columns
 		for (let i = 0; i < numCols; i++) {
 			let column = this.s.dt.column(i);
+			// Set the map for the previous column
+			if (i > 0) {
+				prevInvisible.set(i-1, invisibles);
+			}
 
 			if(!column.visible()) {
 				invisibles ++;
@@ -258,12 +266,12 @@ export default class FixedColumns {
 			let colHeader = $(column.header());
 			let colFooter = $(column.footer());
 			// If i is less than the value of left then this column should be fixed left
-			if (i < this.c.left) {
+			if (i - invisibles < this.c.left) {
 				$(this.s.dt.table().node()).addClass(this.classes.tableFixedLeft);
 				parentDiv.addClass(this.classes.tableFixedLeft);
 				// Add the width of the previous node - only if we are on atleast the second column
 				if (i !== 0) {
-					let prevCol = this.s.dt.column(i-1, {page: 'current'});
+					let prevCol = this.s.dt.column(i-1-invisibles, {page: 'current'});
 					if (prevCol.visible()) {
 						distLeft += $(prevCol.nodes()[0]).outerWidth();
 					}
@@ -336,20 +344,35 @@ export default class FixedColumns {
 		}
 
 		let distRight = 0;
+		// Counter for the number of invisible columns so far
+		let rightInvisibles = 0;
 		for (let i = numCols-1; i >= 0; i--) {
 			let column = this.s.dt.column(i);
+
+			// If a column is invisible just skip it
+			if(!column.visible()) {
+				rightInvisibles ++;
+				continue;
+			}
 
 
 			// Get the columns header and footer element
 			let colHeader = $(column.header());
 			let colFooter = $(column.footer());
 
-			if(i >= numCols - this.c.right) {
+			// Get the number of visible columns that came before this one
+			let prev = prevInvisible.get(i);
+			if (prev === undefined) {
+				// If it wasn't set then it was the last column so just use the final value
+				prev = invisibles;
+			}
+
+			if(i + invisibles >= numCols - this.c.right) {
 				$(this.s.dt.table().node()).addClass(this.classes.tableFixedRight);
-				parentDiv.addClass(this.classes.tableFixedLeft);
+				parentDiv.addClass(this.classes.tableFixedRight);
 				// Add the widht of the previous node, only if we are on atleast the second column
 				if (i !== numCols-1) {
-					let prevCol = this.s.dt.column(i+1, {page: 'current'});
+					let prevCol = this.s.dt.column(i+1+rightInvisibles, {page: 'current'});
 					if(prevCol.visible()) {
 						distRight += $(prevCol.nodes()[0]).outerWidth();
 					}
@@ -357,7 +380,7 @@ export default class FixedColumns {
 
 				// Iterate over all of the rows, fixing the cell to the right
 				for(let row of rows) {
-					$($(row).children()[i - invisibles])
+					$($(row).children()[i - prev])
 						.css(this._getCellCSS(false, distRight, 'right'))
 						.addClass(this.classes.fixedRight);
 				}
@@ -373,7 +396,7 @@ export default class FixedColumns {
 			else {
 				// Iteriate through all of the rows, making sure they aren't currently trying to fix right
 				for (let row of rows) {
-					let cell = $($(row).children()[i-invisibles]);
+					let cell = $($(row).children()[i-prev]);
 
 					// If the cell is trying to fix to the right, remove the class and the css
 					if (cell.hasClass(this.classes.fixedRight)) {
