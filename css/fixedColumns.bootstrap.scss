@@ -19,7 +19,9 @@ tfoot th {
 }
 
 th.dtfc-fixed-left, 
-th.dtfc-fixed-right {
+th.dtfc-fixed-right,
+td.dtfc-fixed-left,
+td.dtfc-fixed-right {
 	z-index: 1;
 }
 
