@@ -275,15 +275,22 @@ export default class FixedColumns {
 				parentDiv.addClass(this.classes.tableFixedLeft);
 
 				// Add the width of the previous node - only if we are on atleast the second column
-				if (i !== 0) {
-					let prevCol = this.s.dt.column(i-1-invisibles, {page: 'current'});
-					if (prevCol.visible()) {
-						distLeft += $(prevCol.nodes()[0]).outerWidth();
-						headLeft += headLeft += prevCol.header() ?
-							$(prevCol.header()).outerWidth() :
-							prevCol.footer() ?
+				if (i-invisibles > 0) {
+					let prevIdx = i;
+					// Simply using the number of hidden columns doesn't work here,
+					// if the first is hidden then this would be thrown off
+					while(prevIdx+1 < numCols) {
+						let prevCol = this.s.dt.column(prevIdx-1, {page: 'current'});
+						if(prevCol.visible()) {
+							distLeft += $(prevCol.nodes()[0]).outerWidth();
+							headLeft += prevCol.header() ?
 								$(prevCol.header()).outerWidth() :
-								0;
+								prevCol.footer() ?
+									$(prevCol.header()).outerWidth() :
+									0;
+							break;
+						}
+						prevIdx--;
 					}
 				}
 
@@ -378,19 +385,27 @@ export default class FixedColumns {
 				prev = invisibles;
 			}
 
-			if(i + rightInvisibles >= numCols - this.c.right) {
+			if (i + rightInvisibles >= numCols - this.c.right) {
 				$(this.s.dt.table().node()).addClass(this.classes.tableFixedRight);
 				parentDiv.addClass(this.classes.tableFixedRight);
 				// Add the widht of the previous node, only if we are on atleast the second column
 				if (i + 1 + rightInvisibles < numCols) {
-					let prevCol = this.s.dt.column(i+1+rightInvisibles, {page: 'current'});
-					if(prevCol.visible()) {
-						distRight += $(prevCol.nodes()[0]).outerWidth();
-						headRight += prevCol.header() ?
-							$(prevCol.header()).outerWidth() :
-							prevCol.footer() ?
+					let prevIdx = i;
+
+					// Simply using the number of hidden columns doesn't work here,
+					// if the first is hidden then this would be thrown off
+					while(prevIdx+1 < numCols) {
+						let prevCol = this.s.dt.column(prevIdx+1, {page: 'current'});
+						if(prevCol.visible()) {
+							distRight += $(prevCol.nodes()[0]).outerWidth();
+							headRight += prevCol.header() ?
 								$(prevCol.header()).outerWidth() :
-								0;
+								prevCol.footer() ?
+									$(prevCol.header()).outerWidth() :
+									0;
+							break;
+						}
+						prevIdx++;
 					}
 				}
 
