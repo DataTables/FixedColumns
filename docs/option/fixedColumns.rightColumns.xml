@@ -21,7 +21,7 @@
 	</default>
 
 	<description>
-		FixedColumns can fix columns to both the left and right hand sides of the DataTable. By default only a single left hand column is fixed in place, but this parameter provides the option to specify how many columns should be fixed on the right. This is a simple integer that indicates that number of columns.
+		FixedColumns can fix columns to both the left and right hand sides of the DataTable. By default only a single left hand column is fixed in place, but this parameter provides the option to specify how many columns should be fixed on the right. This is a simple integer that indicates that number of columns. FixedColumns will then use this value to fix that many _visible_ columns to the left side of the table. Columns that are not visible will be ignored.
 
 		This option is deprecated and is replaced by the `-init fixedColumns.right` option.
 	</description>
