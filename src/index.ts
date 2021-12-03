@@ -138,7 +138,7 @@ import FixedColumns, {setJQuery as fixedColumnsJQuery} from './FixedColumns';
 
 	// Attach a listener to the document which listens for DataTables initialisation
 	// events so we can automatically initialise
-	$(document).on('init.dt.dtfc', function(e, settings) {
+	$(document).on('plugin-init.dt', function(e, settings) {
 		if (e.namespace !== 'dt') {
 			return;
 		}
