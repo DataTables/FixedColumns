@@ -148,6 +148,8 @@ export default class FixedColumns {
 			});
 		}
 
+		table.on('column-sizing.dt', () => this._addStyles());
+
 		// Make class available through dt object
 		table.settings()[0]._fixedColumns = this;
 
