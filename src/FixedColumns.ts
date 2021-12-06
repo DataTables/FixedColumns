@@ -86,12 +86,12 @@ export default class FixedColumns {
 		this.c = $.extend(true, {}, FixedColumns.defaults, opts);
 
 		// Backwards compatibility for deprecated leftColumns
-		if(opts.left === undefined && this.c.leftColumns !== undefined) {
+		if((!opts || opts.left === undefined) && this.c.leftColumns !== undefined) {
 			this.c.left = this.c.leftColumns;
 		}
 
 		// Backwards compatibility for deprecated rightColumns
-		if(opts.right === undefined && this.c.rightColumns !== undefined) {
+		if((!opts || opts.right === undefined) && this.c.rightColumns !== undefined) {
 			this.c.right = this.c.rightColumns;
 		}
 
@@ -141,7 +141,7 @@ export default class FixedColumns {
 			this._setKeyTableListener();
 		}
 		else {
-			table.one('preInit.dt', () => {
+			table.one('init.dt', () => {
 				// Fixed Columns Initialisation
 				this._addStyles();
 				this._setKeyTableListener();
