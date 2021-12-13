@@ -11,11 +11,13 @@ tr.selected td {
 }
 
 thead th {
-	background-color: white;
+	background-color: white !important;
 }
 
-tfoot th {
-	background-color: white;
+tfoot {
+    th, td {
+        background-color: white !important;
+    }
 }
 
 th.dtfc-fixed-left, 
