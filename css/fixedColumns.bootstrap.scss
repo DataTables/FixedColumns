@@ -1,30 +1,33 @@
-tr.even td {
-    background-color: #ffffff;
-}
 
-tr.odd td {
-    background-color: rgb(249, 249, 249);
-}
-
-tr.selected td {
-    background-color: rgb(0, 136, 204);
-}
-
-thead th {
-	background-color: white !important;
-}
-
-tfoot {
-    th, td {
-        background-color: white !important;
+table.dataTable {
+    thead, tfoot {
+        th, td {
+            background-color: white;
+        }
     }
-}
 
-th.dtfc-fixed-left, 
-th.dtfc-fixed-right,
-td.dtfc-fixed-left,
-td.dtfc-fixed-right {
-	z-index: 1;
+    tbody {
+        tr td {
+            // Need to provide a background colour, otherwise the fixed elements are
+            // transparent and unreadable.
+            background-color: #ffffff;
+        }
+    }
+
+    &.table-striped {
+        tbody {
+            tr.odd td {
+                background-color: rgb(249, 249, 249);
+            }
+        }
+    }
+
+    th.dtfc-fixed-left, 
+    th.dtfc-fixed-right,
+    td.dtfc-fixed-left,
+    td.dtfc-fixed-right {
+        z-index: 1;
+    }
 }
 
 div.dtfc-right-top-blocker,
