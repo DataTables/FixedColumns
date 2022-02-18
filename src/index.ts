@@ -1,13 +1,13 @@
-/*! FixedColumns 4.0.1
- * 2019-2021 SpryMedia Ltd - datatables.net/license
+/*! FixedColumns 4.0.2
+ * 2019-2022 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     FixedColumns
  * @description FixedColumns extension for DataTables
- * @version     4.0.1
+ * @version     4.0.2
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
- * @copyright   Copyright 2019-2021 SpryMedia Ltd.
+ * @copyright   Copyright 2019-2022 SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
  * MIT license - http://datatables.net/license/mit
