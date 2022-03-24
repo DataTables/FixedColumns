@@ -12,6 +12,15 @@ table.dataTable {
         border-bottom-color: #DEE2E6;
         background-color: white;
     }
+
+    // As of 5.1.2 Bootstrap uses an inset box shadow for the row stripes
+    &.table-striped {
+        tbody {
+            tr.odd td:not(.dtfc-fixed-left, .dtfc-fixed-right) {
+                background-color: transparent;
+            }
+        }
+    }
 }
 
 table.dataTable.table-bordered.dtfc-has-left {

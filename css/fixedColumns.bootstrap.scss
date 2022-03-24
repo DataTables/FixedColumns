@@ -2,15 +2,21 @@
 table.dataTable {
     thead, tfoot {
         th, td {
-            background-color: white;
+            &.dtfc-fixed-left,
+            &.dtfc-fixed-right {
+                background-color: white !important;
+            }
         }
     }
 
     tbody {
         tr td {
-            // Need to provide a background colour, otherwise the fixed elements are
-            // transparent and unreadable.
-            background-color: #ffffff;
+            &.dtfc-fixed-left,
+            &.dtfc-fixed-right {
+                // Need to provide a background colour, otherwise the fixed elements are
+                // transparent and unreadable.
+                background-color: #ffffff;
+            }
         }
     }
 
