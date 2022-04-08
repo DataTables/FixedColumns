@@ -1,13 +1,6 @@
-table.dataTable{
-	td, th {
-		background-color: white;
-	}
 
-	.dtfc-fixed-left,
-	.dtfc-fixed-right {
-		z-index: 1;
-	}
-}
+
+@import 'fixedColumns.dataTables.scss';
 
 div.dtfc-right-top-blocker {
 	border-bottom: none !important;

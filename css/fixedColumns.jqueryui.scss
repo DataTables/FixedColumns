@@ -1,24 +1,5 @@
-table.dataTable{
-	thead,
-    tfoot {
-        th{
-            background-color: rgb(246, 246, 246) !important;
-            z-index: 1;
-        }
-    }
 
-    tr.even td {
-        background-color: #ffffff;
-    }
-
-    tr.odd td {
-        background-color: #f9f9f9;
-    }
-
-    tr.selected td {
-        background-color: #a6b4cd;
-    }
-}
+@import 'fixedColumns.dataTables.scss';
 
 div.dtfc-right-top-blocker {
 	border-bottom: none !important;

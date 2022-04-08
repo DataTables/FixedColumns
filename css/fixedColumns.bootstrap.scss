@@ -1,40 +1,5 @@
 
-table.dataTable {
-    thead, tfoot {
-        th, td {
-            &.dtfc-fixed-left,
-            &.dtfc-fixed-right {
-                background-color: white !important;
-            }
-        }
-    }
-
-    tbody {
-        tr td {
-            &.dtfc-fixed-left,
-            &.dtfc-fixed-right {
-                // Need to provide a background colour, otherwise the fixed elements are
-                // transparent and unreadable.
-                background-color: #ffffff;
-            }
-        }
-    }
-
-    &.table-striped {
-        tbody {
-            tr.odd td {
-                background-color: rgb(249, 249, 249);
-            }
-        }
-    }
-
-    th.dtfc-fixed-left, 
-    th.dtfc-fixed-right,
-    td.dtfc-fixed-left,
-    td.dtfc-fixed-right {
-        z-index: 1;
-    }
-}
+@import 'fixedColumns.dataTables.scss';
 
 div.dtfc-right-top-blocker,
 div.dtfc-left-top-blocker {
@@ -59,24 +24,10 @@ div.dataTables_scrollBody {
 div.dataTables_scrollFootInner,
 div.dataTables_scrollHeadInner{
 	table.table-bordered {
-		tr{
+		tr {
 			th:first-child {
 				border-left: 1px solid #ddd !important;
 			}
 		}
 	}
-}
-
-tr.dt-rowReorder-moving {
-    td.dtfc-fixed-left,
-    td.dtfc-fixed-right {
-        border-top: 2px solid #888 !important;
-        border-bottom: 2px solid #888 !important;
-    }
-    td.dtfc-fixed-left:first-child {
-        border-left: 2px solid #888 !important;
-    }
-    td.dtfc-fixed-right:last-child {
-        border-right: 2px solid #888 !important;
-    }
 }

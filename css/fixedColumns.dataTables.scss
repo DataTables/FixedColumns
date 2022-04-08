@@ -1,38 +1,9 @@
-// make the row transparent to make the message below visible
-table.dataTable.display tbody tr.DTFC_NoData {
-  background-color: transparent;
-}
 
-tr.even td {
-    background-color: #ffffff;
-}
-
-tr.odd td {
-    background-color: #f9f9f9;
-}
-
-tr.selected td {
-    background-color: #a6b4cd;
-}
-
-thead th {
-	background-color: white;
-}
-
-tfoot th {
-	background-color: white;
-}
-
-tr.dt-rowReorder-moving {
-    td.dtfc-fixed-left,
-    td.dtfc-fixed-right {
-        border-top: 2px solid #555 !important;
-        border-bottom: 2px solid #555 !important;
-    }
-    td.dtfc-fixed-left:first-child {
-        border-left: 2px solid #555 !important;
-    }
-    td.dtfc-fixed-right:last-child {
-        border-right: 2px solid #555 !important;
+// Make sure the fixed columns aren't tranparent
+table.dataTable {
+    tr > .dtfc-fixed-left,
+    tr > .dtfc-fixed-right {
+        z-index: 1;
+        background-color: white;
     }
 }

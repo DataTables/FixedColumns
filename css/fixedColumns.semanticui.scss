@@ -1,23 +1,15 @@
+
+@import 'fixedColumns.dataTables.scss';
+
 table.dataTable {
 	border-left-width: 0px !important;
+
 	tr {
 		border-left-width: 0px;
 
 		th:first-child,
 		td:first-child {
 			border-left: 1px solid rgba(34, 36, 38, 0.15) !important;
-		}
-
-		th{
-			background-color: rgb(249, 250, 251);
-		}
-		td {
-			background-color: white;
-		}
-
-		th.dtfc-fixed-left,
-		th.dtfc-fixed-right {
-			z-index: 1;
 		}
 	}
 }
