@@ -1,9 +1,27 @@
 
+$fixedcolumns-header-color: white !default;
+$fixedcolumns-body-color: white !default;
+
 // Make sure the fixed columns aren't tranparent
 table.dataTable {
-    tr > .dtfc-fixed-left,
-    tr > .dtfc-fixed-right {
-        z-index: 1;
-        background-color: white;
+    thead {
+        tr > .dtfc-fixed-left,
+        tr > .dtfc-fixed-right {
+            z-index: 1;
+            background-color: $fixedcolumns-header-color;
+        }
     }
+
+    tbody {
+        tr > .dtfc-fixed-left,
+        tr > .dtfc-fixed-right {
+            z-index: 1;
+            background-color: $fixedcolumns-body-color;
+        }
+    }
+}
+
+div.dtfc-left-top-blocker,
+div.dtfc-right-top-blocker {
+    background-color: $fixedcolumns-header-color;
 }

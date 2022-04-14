@@ -1,49 +1,10 @@
-table.dataTable.dtfc-has-left {
 
+$fixedcolumns-header-color: rgb(248, 248, 248) !default;
+
+@import 'fixedColumns.dataTables.scss';
+
+table.dataTable.dtfc-has-left {
 	tbody {
 		border-left: none;
 	}
-
-	th{
-		background-color: rgb(248, 248, 248);
-	}
-
-	tr.odd{
-		td {
-			background-color: white;
-		}
-
-	}
-
-	thead,
-	th:first-child,
-	td:first-child {
-		border-left: 0px solid rgb(241, 241, 241);
-	}
-
-	tr.even {
-		td {
-			background-color: #f1f1f1;
-		}
-	}
-}
-
-div.dtfc-right-top-blocker {
-	background-color: #f8f8f8 !important;
-	margin-top: 7px;
-	border-bottom: none !important;
-}
-
-tr.dt-rowReorder-moving {
-    td.dtfc-fixed-left,
-    td.dtfc-fixed-right {
-        border-top: 2px solid #888 !important;
-        border-bottom: 2px solid #888 !important;
-    }
-    td.dtfc-fixed-left:first-child {
-        border-left: 2px solid #888 !important;
-    }
-    td.dtfc-fixed-right:last-child {
-        border-right: 2px solid #888 !important;
-    }
 }

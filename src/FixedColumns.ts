@@ -103,7 +103,6 @@ export default class FixedColumns {
 
 		// Common CSS for all blockers
 		let blockerCSS = {
-			'background-color': 'white',
 			'bottom': '0px',
 			'display': 'block',
 			'position': 'absolute',
