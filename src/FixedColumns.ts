@@ -591,8 +591,8 @@ export default class FixedColumns {
 			this._addStyles();
 		});
 
-		this.s.dt.on('column-visibility', (e, s) => {
-			if (! s.bDestroying) {
+		this.s.dt.on('column-visibility', (e, settings, column, state, recalc) => {
+			if (recalc && ! settings.bDestroying) {
 				setTimeout(() => {
 					this._addStyles();
 				}, 50);
