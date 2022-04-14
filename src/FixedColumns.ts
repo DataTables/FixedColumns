@@ -98,7 +98,7 @@ export default class FixedColumns {
 		this.s = {
 			barWidth: 0,
 			dt: table,
-			rtl: $(table.table().node()).css('direction') === 'rtl'
+			rtl: $('body').css('direction') === 'rtl'
 		};
 
 		// Common CSS for all blockers
@@ -487,25 +487,25 @@ export default class FixedColumns {
 	 */
 	private _getCellCSS(header: boolean, dist: number, lr: 'left' | 'right'): ICellCSS {
 		if(lr === 'left') {
-			return !this.s.rtl ?
-				{
+			return this.s.rtl
+				? {
+					position: 'sticky',
+					right: dist + 'px'
+				}
+				: {
 					left: dist+'px',
 					position: 'sticky'
-				} :
-				{
-					position: 'sticky',
-					right: dist + (header ? this.s.barWidth : 0) + 'px'
 				};
 		}
 		else {
-			return !this.s.rtl ?
-				{
+			return this.s.rtl
+				? {
+					left: dist + (header ? this.s.barWidth : 0) + 'px',
+					position: 'sticky'
+				}
+				: {
 					position: 'sticky',
 					right: dist + (header ? this.s.barWidth : 0) + 'px'
-				} :
-				{
-					left: dist+'px',
-					position: 'sticky'
 				};
 		}
 	}

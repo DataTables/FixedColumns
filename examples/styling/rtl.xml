@@ -2,8 +2,16 @@
 <dt-example table-type="html-wide" table-class="stripe row-border order-column" order="11">
 
 <css lib="datatables fixedcolumns">
-	div.dataTables_wrapper {
+	body {
 		direction: rtl;
+	}
+
+	h1,
+	div.info,
+	ul.tabs,
+	div.tabs,
+	div.footer {
+		direction: ltr;
 	}
 
 	/* Ensure that the demo table scrolls */
@@ -21,7 +29,10 @@ $(document).ready(function() {
 		scrollX:        true,
 		scrollCollapse: true,
 		paging:         false,
-		fixedColumns:   true
+		fixedColumns:   {
+			left: 1,
+			right: 1
+		}
 	} );
 } );
 ]]>
@@ -31,7 +42,7 @@ $(document).ready(function() {
 
 <info><![CDATA[
 
-FixedColumns supports right to left text layout, which is automatically detected by the CSS `direction` parameter that has been applied to the table. In this case, `direction: rtl` has been set for the whole table container.
+FixedColumns supports right to left text layout, which is automatically detected by the CSS `direction` parameter that has been applied to the document.
 
 ]]></info>
 
