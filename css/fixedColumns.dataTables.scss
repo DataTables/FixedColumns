@@ -4,7 +4,8 @@ $fixedcolumns-body-color: white !default;
 
 // Make sure the fixed columns aren't tranparent
 table.dataTable {
-    thead {
+    thead,
+    tfoot {
         tr > .dtfc-fixed-left,
         tr > .dtfc-fixed-right {
             z-index: 1;
