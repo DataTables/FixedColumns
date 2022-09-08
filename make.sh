@@ -40,7 +40,7 @@ node_modules/typescript/bin/tsc
 HEADER="$(head -n 3 src/index.ts)"
 
 rsync -r src/*.js $OUT_DIR/js
-js_frameworks fixedColumns $OUT_DIR/js
+js_frameworks fixedColumns $OUT_DIR/js "jquery datatables.net-FW datatables.net-fixedcolumns"
 
 OUT=$OUT_DIR ./node_modules/rollup/dist/bin/rollup \
     --banner "$HEADER" \
@@ -66,7 +66,7 @@ else
 	fi
 fi
 
-js_compress $OUT_DIR/js/dataTables.fixedColumns.js
+js_wrap $OUT_DIR/js/dataTables.fixedColumns.js "jquery datatables.net"
 
 # Copy and build examples
 rsync -r examples $OUT_DIR

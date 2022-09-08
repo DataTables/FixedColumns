@@ -21,134 +21,96 @@
 
 /// <reference path = '../node_modules/@types/jquery/index.d.ts'
 
-// Hack to allow TypeScript to compile our UMD
-declare let define: {
-	amd: string;
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	(stringValue, Function): any;
-};
-
 import FixedColumns, {setJQuery as fixedColumnsJQuery} from './FixedColumns';
 
-// DataTables extensions common UMD. Note that this allows for AMD, CommonJS
-// (with window and jQuery being allowed as parameters to the returned
-// function) or just default browser loading.
-(function(factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD
-		define(['jquery', 'datatables.net'], function($) {
-			return factory($, window, document);
-		});
-	}
-	else if (typeof exports === 'object') {
-		// CommonJS
-		module.exports = function(root, $) {
-			if (! root) {
-				root = window;
-			}
+fixedColumnsJQuery($);
 
-			if (! $ || ! $.fn.dataTable) {
-				// eslint-disable-next-line @typescript-eslint/no-var-requires
-				$ = require('datatables.net')(root, $).$;
-			}
+// Defined by the loader
+declare var DataTable: any;
 
-			return factory($, root, root.document);
-		};
+($.fn as any).dataTable.FixedColumns = FixedColumns;
+($.fn as any).DataTable.FixedColumns = FixedColumns;
+
+let apiRegister = DataTable.Api.register;
+
+apiRegister('fixedColumns()', function() {
+	return this;
+});
+
+apiRegister('fixedColumns().left()', function(newVal) {
+	let ctx = this.context[0];
+	if (newVal !== undefined) {
+		ctx._fixedColumns.left(newVal);
+		return this;
 	}
 	else {
-		// Browser - assume jQuery has already been loaded
-		factory((window as any).jQuery, window, document);
+		return ctx._fixedColumns.left();
 	}
-}(function($, window, document) {
+});
 
-	fixedColumnsJQuery($);
-
-	let dataTable = $.fn.dataTable;
-
-	($.fn as any).dataTable.FixedColumns = FixedColumns;
-	($.fn as any).DataTable.FixedColumns = FixedColumns;
-
-	let apiRegister = ($.fn.dataTable.Api as any).register;
-
-	apiRegister('fixedColumns()', function() {
+apiRegister('fixedColumns().right()', function(newVal) {
+	let ctx = this.context[0];
+	if (newVal !== undefined) {
+		ctx._fixedColumns.right(newVal);
 		return this;
-	});
+	}
+	else {
+		return ctx._fixedColumns.right();
+	}
+});
 
-	apiRegister('fixedColumns().left()', function(newVal) {
-		let ctx = this.context[0];
-		if (newVal !== undefined) {
-			ctx._fixedColumns.left(newVal);
-			return this;
+DataTable.ext.buttons.fixedColumns = {
+	action(e, dt, node, config) {
+		if($(node).attr('active')) {
+			$(node).removeAttr('active').removeClass('active');
+			dt.fixedColumns().left(0);
+			dt.fixedColumns().right(0);
 		}
 		else {
-			return ctx._fixedColumns.left();
+			$(node).attr('active', 'true').addClass('active');
+			dt.fixedColumns().left(config.config.left);
+			dt.fixedColumns().right(config.config.right);
 		}
-	});
-
-	apiRegister('fixedColumns().right()', function(newVal) {
-		let ctx = this.context[0];
-		if (newVal !== undefined) {
-			ctx._fixedColumns.right(newVal);
-			return this;
+	},
+	config: {
+		left: 1,
+		right: 0
+	},
+	init(dt, node, config) {
+		if(dt.settings()[0]._fixedColumns === undefined) {
+			_init(dt.settings(), config);
 		}
-		else {
-			return ctx._fixedColumns.right();
-		}
-	});
+		$(node).attr('active', 'true').addClass('active');
+		dt.button(node).text(
+			config.text || dt.i18n('buttons.fixedColumns', dt.settings()[0]._fixedColumns.c.i18n.button)
+		);
+	},
+	text: null
+};
 
-	$.fn.dataTable.ext.buttons.fixedColumns = {
-		action(e, dt, node, config) {
-			if($(node).attr('active')) {
-				$(node).removeAttr('active').removeClass('active');
-				dt.fixedColumns().left(0);
-				dt.fixedColumns().right(0);
-			}
-			else {
-				$(node).attr('active', true).addClass('active');
-				dt.fixedColumns().left(config.config.left);
-				dt.fixedColumns().right(config.config.right);
-			}
-		},
-		config: {
-			left: 1,
-			right: 0
-		},
-		init(dt, node, config) {
-			if(dt.settings()[0]._fixedColumns === undefined) {
-				_init(dt.settings(), config);
-			}
-			$(node).attr('active', true).addClass('active');
-			dt.button(node).text(
-				config.text || dt.i18n('buttons.fixedColumns', dt.settings()[0]._fixedColumns.c.i18n.button)
-			);
-		},
-		text: null
-	};
+function _init(settings, options = null) {
+	let api = new DataTable.Api(settings);
+	let opts = options
+		? options
+		: api.init().fixedColumns || DataTable.defaults.fixedColumns;
 
-	function _init(settings, options = null) {
-		let api = new dataTable.Api(settings);
-		let opts = options
-			? options
-			: api.init().fixedColumns || dataTable.defaults.fixedColumns;
+	let fixedColumns = new FixedColumns(api, opts);
 
-		let fixedColumns = new FixedColumns(api, opts);
+	return fixedColumns;
+}
 
-		return fixedColumns;
+// Attach a listener to the document which listens for DataTables initialisation
+// events so we can automatically initialise
+$(document).on('plugin-init.dt', function(e, settings) {
+	if (e.namespace !== 'dt') {
+		return;
 	}
 
-	// Attach a listener to the document which listens for DataTables initialisation
-	// events so we can automatically initialise
-	$(document).on('plugin-init.dt', function(e, settings) {
-		if (e.namespace !== 'dt') {
-			return;
+	if (settings.oInit.fixedColumns ||
+		DataTable.defaults.fixedColumns
+	) {
+		if (!settings._fixedColumns) {
+			_init(settings, null);
 		}
-
-		if (settings.oInit.fixedColumns ||
-			dataTable.defaults.fixedColumns
-		) {
-			if (!settings._fixedColumns) {
-				_init(settings, null);
-			}
-		}
-	});
-}));
+	}
+});
