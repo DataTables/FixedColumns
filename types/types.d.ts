@@ -1,47 +1,98 @@
+// Type definitions for DataTables FixedColumns
+//
+// Project: https://datatables.net/extensions/fixedcolumns/, https://datatables.net
+
 /// <reference types="jquery" />
-/// <reference types="datatables.net"/>
+
+import DataTables, {Api} from 'datatables.net';
+import {IDefaults} from './FixedColumns';
+
+export default DataTables;
+
+type DeepPartial<T> = T extends object ? {
+    [P in keyof T]?: DeepPartial<T[P]>;
+} : T;
 
 
-import FixedColumns, * as fixedColumnType from './FixedColumns';
-
-declare namespace DataTables {
-
-	interface Settings {
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables' types integration
+ */
+declare module 'datatables.net' {
+	interface Config {
 		/**
 		 * FixedColumns extension options
 		 */
-		fixedColumns?: boolean | string[] | fixedColumnType.IDefaults | fixedColumnType.IDefaults[];
+		fixedColumns?: boolean | ConfigFixedColumns;
 	}
 
-	interface LanguageSettings {
-		fixedColumns?: {};
+	interface ConfigLanguage {
+		/**
+		 * StateRestore language options
+		 */
+		 fixedColumns?: ConfigFixedColumnsLanguage;
 	}
 
 	interface Api<T> {
 		/**
 		 * FixedColumns API Methods
 		 */
-		fixedColumns(): FixedColumnsGlobalApi;
+		fixedColumns(): ApiFixedColumns<T>;
 	}
 
-	interface FixedColumnsGlobalApi {
-
+	interface ApiStatic {
 		/**
-		 * Getter/Setter for the number of fixed columns to the left of the table
-		 *
-		 * @param newVal Optional. If a value is supplied this is used to set the number of columns
-		 * that are fixed to the left of the table. If no value is provided then the current number is returned
-		 * @returns DataTables Api for chaining if setting, number if getting
+		 * FixedColumns class
 		 */
-		left(newVal?: number): Api<any> | number;
+		FixedColumns: {
+			/**
+			 * Create a new FixedColumns instance for the target DataTable
+			 */
+			new (dt: Api<any>, settings: string[] | ConfigFixedColumns | ConfigFixedColumns[]);
 
-		/**
-		 * Getter/Setter for the number of fixed columns to the right of the table
-		 *
-		 * @param newVal Optional. If a value is supplied this is used to set the number of columns
-		 * that are fixed to the right of the table. If no value is provided then the current number is returned
-		 * @returns DataTables Api for chaining if setting, number if getting
-		 */
-		right(newVal?: number): Api<any> | number;
+			/**
+			 * FixedColumns version
+			 */
+			version: string;
+
+			/**
+			 * Default configuration values
+			 */
+			defaults: ConfigFixedColumns;
+		}
 	}
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Options
+ */
+interface ConfigFixedColumns extends DeepPartial<IDefaults> {}
+
+interface ConfigFixedColumnsLanguage extends DeepPartial<IDefaults['i18n']> {}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * API
+ */
+
+interface ApiFixedColumns<T> extends Api<T> {
+	/**
+	 * Get the number of fixed left columns
+	 */
+	left(): number;
+
+	/**
+	 * Set the number of fixed left columns
+	 */
+	left(val: number): Api<T>;
+
+	/**
+	 * Get the number of fixed right columns
+	 */
+	right(): number;
+
+	/**
+	 * Set the number of fixed right columns
+	 */
+	right(val: number): Api<T>;
 }
