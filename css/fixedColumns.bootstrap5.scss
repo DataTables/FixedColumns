@@ -2,8 +2,30 @@
 @import 'fixedColumns.bootstrap4.scss';
 
 html[data-bs-theme="dark"] {
+    table.dataTable {
+        thead,
+        tfoot {
+            tr > .dtfc-fixed-left,
+            tr > .dtfc-fixed-right {
+                background-color: var(--bs-body-bg);
+            }
+        }
+    
+        tbody {
+            tr > .dtfc-fixed-left,
+            tr > .dtfc-fixed-right {
+                background-color: var(--bs-body-bg);
+            }
+        }
+    }
+    
+    div.dtfc-left-top-blocker,
+    div.dtfc-right-top-blocker {
+        background-color: var(--bs-body-bg);
+    }
+
 	div.dataTables_scrollBody {
-		border-left-color: rgb(73, 80, 87) !important;
+		border-left-color: var(--bs-border-color) !important;
 	}
 	
 	div.dataTables_scrollFootInner,
@@ -11,7 +33,7 @@ html[data-bs-theme="dark"] {
 		table.table-bordered {
 			tr {
 				th:first-child {
-					border-left-color: rgb(73, 80, 87) !important;
+					border-left-color: var(--bs-border-color) !important;
 				}
 			}
 		}
