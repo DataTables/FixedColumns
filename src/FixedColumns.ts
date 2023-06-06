@@ -75,7 +75,7 @@ export default class FixedColumns {
 	public constructor(settings: any, opts: IDefaults) {
 		// Check that the required version of DataTables is included
 		if (! dataTable || ! dataTable.versionCheck || ! dataTable.versionCheck('1.10.0')) {
-			throw new Error('StateRestore requires DataTables 1.10 or newer');
+			throw new Error('FixedColumns requires DataTables 1.10 or newer');
 		}
 
 		let table = new dataTable.Api(settings);
@@ -140,17 +140,19 @@ export default class FixedColumns {
 			this._setKeyTableListener();
 		}
 		else {
-			table.one('init.dt', () => {
+			table.one('init.dt.dtfc', () => {
 				// Fixed Columns Initialisation
 				this._addStyles();
 				this._setKeyTableListener();
 			});
 		}
 
-		table.on('column-sizing.dt', () => this._addStyles());
+		table.on('column-sizing.dt.dtfc', () => this._addStyles());
 
 		// Make class available through dt object
 		table.settings()[0]._fixedColumns = this;
+
+		table.on('destroy', () => this._destroy());
 
 		return this;
 	}
@@ -454,6 +456,18 @@ export default class FixedColumns {
 	}
 
 	/**
+	 * Clean up
+	 */
+	private _destroy() {
+		this.s.dt.off('.dtfc');
+
+		this.dom.leftBottomBlocker.remove();
+		this.dom.leftTopBlocker.remove();
+		this.dom.rightBottomBlocker.remove();
+		this.dom.rightTopBlocker.remove();
+	}
+
+	/**
 	 * Gets the correct CSS for the cell, header or footer based on options provided
 	 *
 	 * @param header Whether this cell is a header or a footer
@@ -518,7 +532,7 @@ export default class FixedColumns {
 	}
 
 	private _setKeyTableListener() {
-		this.s.dt.on('key-focus', (e, dt, cell) => {
+		this.s.dt.on('key-focus.dt.dtfc', (e, dt, cell) => {
 			let cellPos = $(cell.node()).offset();
 			let scroll = $($(this.s.dt.table().node()).closest('div.dataTables_scrollBody'));
 
@@ -558,15 +572,15 @@ export default class FixedColumns {
 
 		// Whenever a draw occurs there is potential for the data to have changed and therefore also the column widths
 		// Therefore it is necessary to recalculate the values for the fixed columns
-		this.s.dt.on('draw', () => {
+		this.s.dt.on('draw.dt.dtfc', () => {
 			this._addStyles();
 		});
 
-		this.s.dt.on('column-reorder', () => {
+		this.s.dt.on('column-reorder.dt.dtfc', () => {
 			this._addStyles();
 		});
 
-		this.s.dt.on('column-visibility', (e, settings, column, state, recalc) => {
+		this.s.dt.on('column-visibility.dt.dtfc', (e, settings, column, state, recalc) => {
 			if (recalc && ! settings.bDestroying) {
 				setTimeout(() => {
 					this._addStyles();
