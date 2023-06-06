@@ -4,19 +4,29 @@
 <css lib="datatables fixedcolumns"/>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
-$(document).ready(function() {
-	$('#example').DataTable( {
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         true,
-		fixedColumns:   {
-			left: 1,
-			right: 1
-		}
-	} );
-} );
+$('#example').DataTable({
+	fixedColumns: {
+		left: 1,
+		right: 1
+	},
+	paging: true,
+	scrollX: true
+});
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	fixedColumns: {
+		left: 1,
+		right: 1
+	},
+	paging: true,
+	scrollX: true
+});
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">Only Horizontal Scrolling</title>
 

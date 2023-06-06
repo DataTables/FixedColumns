@@ -4,21 +4,29 @@
 <css lib="datatables fixedcolumns keytable"/>
 <js lib="jquery datatables fixedcolumns keytable">
 <![CDATA[
-$(document).ready(function() {
-	$('#example').DataTable( {
-		scrollY:        300,
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		fixedColumns:   {
-			left: 1,
-			right: 1
-		},
-		keys:           true
-	} );
-} );
+$('#example').DataTable({
+	fixedColumns: true,
+	keys: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	fixedColumns: true,
+	keys: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">KeyTable</title>
 

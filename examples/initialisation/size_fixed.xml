@@ -14,20 +14,29 @@
 </css>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
-$(document).ready(function() {
-	var table = $('#example').removeAttr('width').DataTable( {
-		scrollY:        "300px",
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		columnDefs: [
-			{ width: 200, targets: 0 }
-		],
-		fixedColumns: true
-	} );
-} );
+$('#example').DataTable({
+	columnDefs: [{ width: 200, targets: 0 }],
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	columnDefs: [{ width: 200, targets: 0 }],
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">Assigned column width</title>
 

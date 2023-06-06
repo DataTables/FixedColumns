@@ -48,7 +48,7 @@ export interface ICellCSS {
 	right?: string;
 }
 export default class FixedColumns {
-	private static version = '4.2.2';
+	private static version = '4.3.0-dev';
 
 	private static classes: IClasses = {
 		fixedLeft: 'dtfc-fixed-left',

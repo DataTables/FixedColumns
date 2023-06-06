@@ -4,29 +4,57 @@
 <css lib="datatables fixedcolumns select"/>
 <js lib="jquery datatables fixedcolumns select">
 <![CDATA[
-$(document).ready(function() {
-	$('#example').DataTable( {
-		scrollY:        300,
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		fixedColumns:   {
-			left: 2
-		},
-		columnDefs: [ {
+$('#example').DataTable({
+	columnDefs: [
+		{
 			orderable: false,
 			className: 'select-checkbox',
-			targets:   0
-		} ],
-		select: {
-			style:    'os',
-			selector: 'td:first-child'
-		},
-		order: [[ 1, 'asc' ]]
-	} );
-} );
+			targets: 0
+		}
+	],
+	fixedColumns: {
+		left: 2
+	},
+	order: [[1, 'asc']],
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300,
+	select: {
+		style: 'os',
+		selector: 'td:first-child'
+	}
+});
+
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	columnDefs: [
+		{
+			orderable: false,
+			className: 'select-checkbox',
+			targets: 0
+		}
+	],
+	fixedColumns: {
+		left: 2
+	},
+	order: [[1, 'asc']],
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300,
+	select: {
+		style: 'os',
+		selector: 'td:first-child'
+	}
+});
+
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">Select - checkboxes</title>
 

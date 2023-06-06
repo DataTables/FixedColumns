@@ -14,57 +14,101 @@
 </css>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		scrollY:        300,
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		fixedColumns:   true
-	} );
+var table = $('#example').DataTable({
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
 
-	$('button#increaseLeft').on('click', function() {
-		var currLeft = table.fixedColumns().left();
-        if(currLeft < 9) {
-            table.fixedColumns().left(currLeft + 1);
-            $('#click-output').prepend(
-                '<div>New Left: '+(+currLeft+1)+'</div>'
-            );
-        }
-	})
+$('#increaseLeft').on('click', function () {
+	let fc = table.fixedColumns();
 
-	$('button#decreaseLeft').on('click', function() {
-		var currLeft = table.fixedColumns().left();
-        if(currLeft > 0) {
-            table.fixedColumns().left(currLeft - 1);
-            $('#click-output').prepend(
-                '<div>New Left: '+(+currLeft-1)+'</div>'
-            );
-        }
-	})
+	fc.left(fc.left() + 1);
 
-	$('button#increaseRight').on('click', function() {
-		var currRight = table.fixedColumns().right();
-        if(currRight < 9) {
-            table.fixedColumns().right(currRight + 1);
-            $('#click-output').prepend(
-                '<div>New Right: '+(+currRight+1)+'</div>'
-            );
-        }
-	})
+	$('#click-output').prepend('<div>Set fixed columns left: ' + fc.left() + '</div>');
+});
 
-	$('button#decreaseRight').on('click', function() {
-		var currRight = table.fixedColumns().right();
-        if(currLeft > 0) {
-            table.fixedColumns().right(currRight - 1);
-            $('#click-output').prepend(
-                '<div>New Right: '+(+currRight-1)+'</div>'
-            );
-        }
-	})
-} );
+$('#decreaseLeft').on('click', function () {
+	let fc = table.fixedColumns();
+
+	fc.left(fc.left() - 1);
+
+	$('#click-output').prepend('<div>Set fixed columns left: ' + fc.left() + '</div>');
+});
+
+$('#increaseRight').on('click', function () {
+	let fc = table.fixedColumns();
+
+	fc.right(fc.right() + 1);
+
+	$('#click-output').prepend('<div>Set fixed columns right: ' + fc.right() + '</div>');
+});
+
+$('#decreaseRight').on('click', function () {
+	let fc = table.fixedColumns();
+
+	fc.right(fc.right() - 1);
+
+	$('#click-output').prepend('<div>Set fixed columns right: ' + fc.right() + '</div>');
+});
+
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+function addOutput(message) {
+	let el = document.querySelector('#click-output');
+	let div = document.createElement('div');
+
+	div.textContent = message;
+	el.prepend(div);
+}
+
+let table = new DataTable('#example', {
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+
+document.querySelector('#increaseLeft').addEventListener('click', function () {
+	let fc = table.fixedColumns();
+
+	fc.left(fc.left() + 1);
+
+	addOutput('Set fixed columns left: ' + fc.left());
+});
+
+document.querySelector('#decreaseLeft').addEventListener('click', function () {
+	let fc = table.fixedColumns();
+
+	fc.left(fc.left() - 1);
+
+	addOutput('Set fixed columns left: ' + fc.left());
+});
+
+document.querySelector('#increaseRight').addEventListener('click', function () {
+	let fc = table.fixedColumns();
+
+	fc.right(fc.right() + 1);
+
+	addOutput('Set fixed columns right: ' + fc.right());
+});
+
+document.querySelector('#decreaseRight').addEventListener('click', function () {
+	let fc = table.fixedColumns();
+
+	fc.right(fc.right() - 1);
+
+	addOutput('Set fixed columns right: ' + fc.right());
+});
+
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">DataTables API</title>
 

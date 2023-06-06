@@ -8,28 +8,41 @@
 		width: 800px;
 		margin: 0 auto;
 	}
-
-	div.ColVis {
-		float: left;
-	}
 </css>
 <js lib="jquery datatables fixedcolumns buttons buttons-colvis">
 <![CDATA[
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		dom:            "Bfrtip",
-		scrollY:        "300px",
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		buttons:        [ 'colvis' ],
-		fixedColumns:   {
-			left: 2
-		}
-	} );
-} );
+
+$('#example').DataTable({
+	buttons: ['colvis'],
+	dom: 'Bfrtip',
+	fixedColumns: {
+		left: 2
+	},
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	buttons: ['colvis'],
+	dom: 'Bfrtip',
+	fixedColumns: {
+		left: 2
+	},
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">Column visibility integration</title>
 

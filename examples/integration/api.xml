@@ -14,25 +14,45 @@
 </css>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		scrollY:        300,
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		fixedColumns:   true
-	} );
 
-	$(table.table().container()).on( 'click', 'td', function () {
-		var cell = table.cell( this );
-		
-		$('#click-output').prepend(
-			'<div>'+cell.data()+'</div>'
-		);
-	} );
-} );
+var table = $('#example').DataTable({
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+
+table.on('click', 'td', function () {
+	var cell = table.cell(this);
+
+	$('#click-output').prepend('<div>' + cell.data() + '</div>');
+});
+
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+let table = new DataTable('#example', {
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+
+table.on('click', 'td', function () {
+	let cell = table.cell(this);
+	let div = document.createElement('div');
+
+	div.textContent = cell.data();
+	document.querySelector('#click-output').prepend(div);
+});
+
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">DataTables API</title>
 

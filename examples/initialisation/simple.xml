@@ -11,17 +11,27 @@
 </css>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
-$(document).ready(function() {
-	$('#example').DataTable( {
-		scrollY:        300,
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		fixedColumns:   true
-	} );
-} );
+$('#example').DataTable({
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">Basic initialisation</title>
 

@@ -18,18 +18,29 @@
 </css>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		scrollY:        "300px",
-		scrollX:        true,
-		scrollCollapse: true,
-		ajax:           "../../../../examples/server_side/scripts/server_processing.php",
-		serverSide:     true,
-		fixedColumns:   true
-	} );
-} );
+$('#example').DataTable({
+	ajax: '../../../../examples/server_side/scripts/server_processing.php',
+	fixedColumns: true,
+	scrollCollapse: true,
+	scrollY: 300,
+	scrollX: true,
+	serverSide: true
+});
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	ajax: '../../../../examples/server_side/scripts/server_processing.php',
+	fixedColumns: true,
+	scrollCollapse: true,
+	scrollY: 300,
+	scrollX: true,
+	serverSide: true
+});
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">Server-side processing</title>
 

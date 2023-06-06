@@ -11,18 +11,29 @@
 </css>
 <js lib="jquery datatables fixedcolumns rowreorder">
 <![CDATA[
-$(document).ready(function() {
-	$('#example').DataTable( {
-		scrollY:        300,
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		rowReorder:     true,
-		fixedColumns: 	true
-	} );
-} );
+$('#example').DataTable({
+	fixedColumns: true,
+	paging: false,
+	rowReorder: true,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	fixedColumns: true,
+	paging: false,
+	rowReorder: true,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">RowReorder</title>
 

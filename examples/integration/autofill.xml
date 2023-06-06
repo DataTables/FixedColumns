@@ -11,18 +11,29 @@
 </css>
 <js lib="jquery datatables fixedcolumns autofill">
 <![CDATA[
-$(document).ready(function() {
-	$('#example').DataTable( {
-		scrollY:        300,
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		fixedColumns:   true,
-		autoFill:		true
-	} );
-} );
+$('#example').DataTable({
+	autoFill: true,
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	autoFill: true,
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">AutoFill</title>
 

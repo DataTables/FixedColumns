@@ -11,25 +11,47 @@
 </css>
 <js lib="jquery datatables fixedcolumns buttons">
 <![CDATA[
-$(document).ready(function() {
-	$('#example').DataTable( {
-		dom: 'Blfrtip',
-		scrollY: 300,
-		scrollX: true,
-		scrollCollapse: true,
-		paging: false,
-		buttons: [{
+$('#example').DataTable({
+	buttons: [
+		{
 			extend: 'fixedColumns',
 			text: 'FixedColumns',
 			config: {
 				left: 1,
 				right: 0
 			}
-		}]
-	} );
-} );
+		}
+	],
+	dom: 'Blfrtip',
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	buttons: [
+		{
+			extend: 'fixedColumns',
+			text: 'FixedColumns',
+			config: {
+				left: 1,
+				right: 0
+			}
+		}
+	],
+	dom: 'Blfrtip',
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">Buttons initialisation</title>
 

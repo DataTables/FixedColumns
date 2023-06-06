@@ -4,19 +4,27 @@
 <css lib="jqueryui datatables fixedcolumns"/>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		scrollY:        "300px",
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		fixedColumns:   true
-	} );
-
-	new $.fn.dataTable.FixedColumns( table );
-} );
+$('#example').DataTable({
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300
+});
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">jQuery UI</title>
 

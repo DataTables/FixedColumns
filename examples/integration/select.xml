@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" order="2">
 
-<css lib="datatables fixedcolumns select keytable"/>
-<js lib="jquery datatables fixedcolumns select keytable">
+<css lib="datatables fixedcolumns select"/>
+<js lib="jquery datatables fixedcolumns select">
 <![CDATA[
-$(document).ready(function() {
-	$('#example').DataTable( {
-		scrollY:        300,
-		scrollX:        true,
-		scrollCollapse: true,
-		paging:         false,
-		fixedColumns:   true,
-		select:         true
-	} );
-} );
+$('#example').DataTable({
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300,
+	select: true
+});
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	fixedColumns: true,
+	paging: false,
+	scrollCollapse: true,
+	scrollX: true,
+	scrollY: 300,
+	select: true
+});
+]]>
+</js-vanilla>
 
 <title lib="FixedColumns">Select - whole row</title>
 
