@@ -1,3 +1,5 @@
+
+
 let $;
 let dataTable;
 
@@ -158,34 +160,58 @@ export default class FixedColumns {
 	}
 
 	/**
-	 * Getter/Setter for the `fixedColumns.left` property
+	 * Getter for the `fixedColumns.left` property
 	 *
 	 * @param newVal Optional. If present this will be the new value for the number of left fixed columns
 	 * @returns The number of left fixed columns
 	 */
-	public left(newVal?: number): number {
+	public left(): number;
+	/**
+	 * Setter for the `fixedColumns.left` property
+	 *
+	 * @param newVal The new value for the number of left fixed columns
+	 * @returns DataTables API for chaining
+	 */
+	public left(newVal: number): any;
+	public left(newVal?: number): any {
 		// If the value is to change
 		if (newVal !== undefined) {
-			// Set the new values and redraw the columns
-			this.c.left = newVal;
-			this._addStyles();
+			if (newVal >= 0 && newVal <= this.s.dt.columns().count()) {
+				// Set the new values and redraw the columns
+				this.c.left = newVal;
+				this._addStyles();
+			}
+
+			return this;
 		}
 
 		return this.c.left;
 	}
 
 	/**
-	 * Getter/Setter for the `fixedColumns.left` property
+	 * Getter for the `fixedColumns.left` property
 	 *
-	 * @param newVal Optional. If present this will be the new value for the number of right fixed columns
-	 * @returns The number of right fixed columns
+	 * @param newVal Optional. If present this will be the new value for the number of left fixed columns
+	 * @returns The number of left fixed columns
 	 */
-	public right(newVal?: number): number {
+	public right(): number;
+	/**
+	 * Setter for the `fixedColumns.right` property
+	 *
+	 * @param newVal The new value for the number of right fixed columns
+	 * @returns DataTables API for chaining
+	 */
+	public right(newVal: number): any;
+	public right(newVal?: number): any {
 		// If the value is to change
 		if (newVal !== undefined) {
-			// Set the new values and redraw the columns
-			this.c.right = newVal;
-			this._addStyles();
+			if (newVal >= 0 && newVal <= this.s.dt.columns().count()) {
+				// Set the new values and redraw the columns
+				this.c.right = newVal;
+				this._addStyles();
+			}
+
+			return this;
 		}
 
 		return this.c.right;

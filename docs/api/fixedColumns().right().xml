@@ -15,8 +15,10 @@
 	</type>
 
 	<type type="function">
-		<signature>fixedColumns().right(newVal)</signature>
-		<parameter type="integer" name="newVal">The new number of columns to fix to the right.</parameter>
+		<signature>fixedColumns().right(val)</signature>
+		<parameter type="integer" name="val">
+			The new number of columns to fix to the right. As of FixedColumns 4.3 a check is made to make sure that the value given is with in the range of 0 to the number of columns in the table (inclusive).
+		</parameter>
 		<returns type="DataTables Api">
 			Datatables Api for chaining.
 		</returns>
@@ -26,7 +28,7 @@
 	</type>
 
 	<description>
-	This method is either a Getter or a Setter for the number of columns that are fixed to the right of the table. If no argument is supplied then the method acts as a Getter. If an argument is provided then that value is set as the new number of columns to be fixed to the right and the table is updated.
+		This method is either a getter or a setter for the number of columns that are fixed to the right of the table. If no argument is supplied then the method acts as a getter. If an argument is provided then that value is set as the new number of columns to be fixed to the right and the table is updated.
 	</description>
 
 </dt-api>
