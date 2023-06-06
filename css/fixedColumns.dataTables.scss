@@ -2,7 +2,10 @@
 $fixedcolumns-header-color: white !default;
 $fixedcolumns-body-color: white !default;
 
-// Make sure the fixed columns aren't tranparent
+$fixedcolumns-header-dark-color: rgb(33, 37, 41) !default;
+$fixedcolumns-body-dark-color: rgb(33, 37, 41) !default;
+
+// Make sure the fixed columns aren't transparent
 table.dataTable {
     thead,
     tfoot {
@@ -27,4 +30,28 @@ table.dataTable {
 div.dtfc-left-top-blocker,
 div.dtfc-right-top-blocker {
     background-color: $fixedcolumns-header-color;
+}
+
+html.dark {
+    table.dataTable {
+        thead,
+        tfoot {
+            tr > .dtfc-fixed-left,
+            tr > .dtfc-fixed-right {
+                background-color: $fixedcolumns-header-dark-color;
+            }
+        }
+    
+        tbody {
+            tr > .dtfc-fixed-left,
+            tr > .dtfc-fixed-right {
+                background-color: $fixedcolumns-body-dark-color;
+            }
+        }
+    }
+    
+    div.dtfc-left-top-blocker,
+    div.dtfc-right-top-blocker {
+        background-color: $fixedcolumns-header-dark-color;
+    }
 }

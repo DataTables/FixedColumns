@@ -1,2 +1,19 @@
 
 @import 'fixedColumns.bootstrap4.scss';
+
+html[data-bs-theme="dark"] {
+	div.dataTables_scrollBody {
+		border-left-color: rgb(73, 80, 87) !important;
+	}
+	
+	div.dataTables_scrollFootInner,
+	div.dataTables_scrollHeadInner{
+		table.table-bordered {
+			tr {
+				th:first-child {
+					border-left-color: rgb(73, 80, 87) !important;
+				}
+			}
+		}
+	}	
+}
