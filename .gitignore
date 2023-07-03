@@ -1,6 +1,5 @@
 node_modules
 package-lock.json
 
-types/fixedColumns.*.d.ts
 types/FixedColumns.d.ts
 types/index.d.ts
