@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" table-class="stripe row-border order-column nowrap" order="3">
 
-<css lib="datatables fixedcolumns">
-	#click-output {
-		margin-bottom: 1em;
-		padding: 1em;
-		background-color: #f6f6f6;
-		border: 1px solid #999;
-		border-radius: 3px;
-		height: 100px;
-		overflow: auto;
-	}
-</css>
+<css lib="datatables fixedcolumns"/>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
 var table = $('#example').DataTable({
@@ -129,7 +119,7 @@ In this example there are 4 buttons to inrease/decrease the number of left/right
 ]]></info>
 
 <demo-html>
-	<div id="click-output">Number of FixedColumns - new values added at the top</div>
+	<div id="click-output" class="box">Number of FixedColumns - new values added at the top</div>
 </demo-html>
 
 </dt-example>

@@ -24,9 +24,14 @@ table.dataTable {
     }
 }
 
-div.dtfc-left-top-blocker,
-div.dtfc-right-top-blocker {
-    background-color: $fixedcolumns-header-color;
+div.dt-scroll {
+    position: relative;
+
+    div.dtfc-top-blocker,
+    div.dtfc-bottom-blocker {
+        position: absolute;
+        background-color: $fixedcolumns-header-color;
+    }
 }
 
 html.dark {
@@ -47,8 +52,8 @@ html.dark {
         }
     }
     
-    div.dtfc-left-top-blocker,
-    div.dtfc-right-top-blocker {
+    div.dtfc-top-blocker,
+    div.dtfc-bottom-blocker {
         background-color: var(--dt-html-background);
     }
 }

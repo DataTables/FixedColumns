@@ -46,11 +46,7 @@ OUT=$OUT_DIR ./node_modules/rollup/dist/bin/rollup \
     --banner "$HEADER" \
     --config rollup.config.js
 
-rm \
-    src/*.js \
-    # src/*.d.ts
-
-mv src/*.d.ts types/
+rm src/*.d.ts
 
 # Copy Types
 if [ -d $OUT_DIR/types ]; then

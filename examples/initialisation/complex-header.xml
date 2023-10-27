@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" table-class="stripe row-border order-column" order="11">
+<dt-example table-type="html-complex-header-wide" table-class="stripe row-border order-column" order="11">
 
 <css lib="datatables fixedcolumns">
 	/* Ensure that the demo table scrolls */
@@ -11,12 +11,9 @@
 </css>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
-$('div.demo-html').attr('dir', 'rtl'); // Demo only
- 
 $('#example').DataTable({
 	fixedColumns: {
-		left: 1,
-		right: 1
+		left: 2
 	},
 	paging: false,
 	scrollCollapse: true,
@@ -28,13 +25,9 @@ $('#example').DataTable({
 
 <js-vanilla>
 <![CDATA[
-document.querySelector('div.demo-html')
-    .setAttribute('dir', 'rtl'); // Demo only
-
 new DataTable('#example', {
 	fixedColumns: {
-		left: 1,
-		right: 1
+		left: 2
 	},
 	paging: false,
 	scrollCollapse: true,
@@ -44,11 +37,13 @@ new DataTable('#example', {
 ]]>
 </js-vanilla>
 
-<title lib="FixedColumns">Right-to-left text direction</title>
+<title lib="FixedColumns">Complex headers</title>
 
 <info><![CDATA[
 
-FixedColumns supports right to left text layout, which is automatically detected by the CSS `direction` parameter that has been applied to the document.
+This example demonstrate's FixedColumns ability to operate with complex headers (`colspan` and `rowspan`) and multiple rows in the table header or footer.
+
+It should be noted that the fixed column delineation point should not have a `colspan` cell going through it. It will not automatically split the cell into fixed and non-fixed parts.
 
 ]]></info>
 
