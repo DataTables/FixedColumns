@@ -377,9 +377,9 @@ export default class FixedColumns {
 			);
 
 			// If there are fixed columns to the left
-			if (this.c.left > 0) {
+			if (this.c.start > 0) {
 				// Get the rightmost left fixed column header, it's position and it's width
-				let rightMost = $(this.s.dt.column(this.c.left - 1).header());
+				let rightMost = $(this.s.dt.column(this.c.start - 1).header());
 				let rightMostPos = rightMost.offset();
 				let rightMostWidth = rightMost.outerWidth();
 
@@ -395,14 +395,14 @@ export default class FixedColumns {
 			}
 
 			// If there are fixed columns to the right
-			if (this.c.right > 0) {
+			if (this.c.end > 0) {
 				// Get the number of columns and the width of the cell as doing right side calc
 				let numCols = this.s.dt.columns().data().toArray().length;
 				let cellWidth = $(cell.node()).outerWidth();
 
 				// Get the leftmost right fixed column header and it's position
 				let leftMost = $(
-					this.s.dt.column(numCols - this.c.right).header()
+					this.s.dt.column(numCols - this.c.end).header()
 				);
 				let leftMostPos = leftMost.offset();
 
