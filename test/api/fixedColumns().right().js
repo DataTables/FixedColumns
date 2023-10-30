@@ -58,7 +58,7 @@ describe('fixedColumns - fixedColumns().right())', function () {
 
 	describe('Setter', function () {
 		dt.html('basic');
-		it('Left', function () {
+		it('Right', function () {
 			table = $('#example').DataTable({
 				fixedColumns: true
 			});

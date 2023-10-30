@@ -17,5 +17,4 @@
 	<description>
 		This method does not perform any functions itself, but rather serves as a simple namespacing method to group the other methods that FixedColumns makes available. Please refer to the documentation for those methods for full details on how they can be used.
 	</description>
-
 </dt-api>

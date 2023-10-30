@@ -1,28 +1,28 @@
 
 @import 'fixedColumns.dataTables.scss';
 
-div.dtfc-right-top-blocker,
-div.dtfc-left-top-blocker {
+div.dtfc-top-blocker,
+div.dtfc-top-blocker {
 	margin-top: 6px;
 	border-bottom: 0px solid #ddd !important;
 }
 
-table.dataTable.table-bordered.dtfc-has-left {
+table.dataTable.table-bordered.dtfc-has-start {
 	border-left: none;
 }
 
-div.dataTables_scroll.dtfc-has-left {
+div.dt-scroll.dtfc-has-start {
     table.table-bordered {
         border-left: none;
     }   
 }
 
-div.dataTables_scrollBody {
+div.dt-scroll-body {
 	border-left: 1px solid #ddd !important;
 }
 
-div.dataTables_scrollFootInner,
-div.dataTables_scrollHeadInner{
+div.dt-scroll-headInner,
+div.dt-scroll-footInner {
 	table.table-bordered {
 		tr {
 			th:first-child {

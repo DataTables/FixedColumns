@@ -13,7 +13,7 @@ $('#example').DataTable({
 		}
 	],
 	fixedColumns: {
-		left: 2
+		start: 2
 	},
 	order: [[1, 'asc']],
 	paging: false,
@@ -40,7 +40,7 @@ new DataTable('#example', {
 		}
 	],
 	fixedColumns: {
-		left: 2
+		start: 2
 	},
 	order: [[1, 'asc']],
 	paging: false,

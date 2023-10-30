@@ -17,8 +17,8 @@ $('#example').DataTable({
 			extend: 'fixedColumns',
 			text: 'FixedColumns',
 			config: {
-				left: 1,
-				right: 0
+				start: 1,
+				end: 0
 			}
 		}
 	],
@@ -39,8 +39,8 @@ new DataTable('#example', {
 			extend: 'fixedColumns',
 			text: 'FixedColumns',
 			config: {
-				left: 1,
-				right: 0
+				start: 1,
+				end: 0
 			}
 		}
 	],
@@ -59,7 +59,7 @@ new DataTable('#example', {
 
 This example shows how to initialise and use FixedColumns via a button. This button can then be used to toggle between having the columns fixed on the table and not.
 
-The number of columns fixed to the right and left is set within that buttons `config` property. The values within that property are the same as `-init fixedColumns.left` and `-init fixedColumns.right`.
+The number of columns fixed to the start and end is set within that buttons `config` property. The values within that property are the same as `-init fixedColumns.start` and `-init fixedColumns.end`.
 
 ]]></info>
 

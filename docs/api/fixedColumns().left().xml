@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-api library="FixedColumns">
 	<name>fixedColumns().left()</name>
-	<summary>Get/Set the number of left FixedColumns</summary>
+	<summary>Get / set the number of fixed columns on the left side of a table</summary>
 	<since>4.0.0</since>
 
 	<type type="function">
@@ -29,6 +29,7 @@
 
 	<description>
 		This method is either a getter or a setter for the number of columns that are fixed to the left of the table. If no argument is supplied then the method acts as a getter. If an argument is provided then that value is set as the new number of columns to be fixed to the left and the table is updated.
-	</description>
 
+		As of FixedColumns 5 this method is text direction aware and will fix columns at the left hand side of the table regardless of text direction.
+	</description>
 </dt-api>

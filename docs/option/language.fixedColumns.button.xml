@@ -4,7 +4,6 @@
 	<summary>Set FixedColumns button text</summary>
 	<since>4.0.0</since>
 
-
 	<type type="string">
 		<description>
 			The language string to be displayed within the FixedColumns button.
@@ -29,10 +28,13 @@ $(document).ready(function() {
 				button: 'Sticky Columns'
 			}
 		},
-		buttons:[
-			'fixedColumns'
-		],
-		dom: 'Bfrtip',
+		layout: {
+			topLeft: {
+				buttons:[
+					'fixedColumns'
+				]
+			}
+		}
 	});
 });
 ]]></example>

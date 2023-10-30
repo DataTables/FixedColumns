@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" table-class="stripe row-border order-column nowrap" order="3">
 
-<css lib="datatables fixedcolumns"/>
+<css lib="datatables fixedcolumns">
+div.info button {
+	margin-bottom: 0.5em;
+}
+</css>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
+
 var table = $('#example').DataTable({
 	fixedColumns: true,
 	paging: false,
@@ -12,36 +17,36 @@ var table = $('#example').DataTable({
 	scrollY: 300
 });
 
-$('#increaseLeft').on('click', function () {
+$('#increaseStart').on('click', function () {
 	let fc = table.fixedColumns();
 
-	fc.left(fc.left() + 1);
+	fc.start(fc.start() + 1);
 
-	$('#click-output').prepend('<div>Set fixed columns left: ' + fc.left() + '</div>');
+	$('#click-output').prepend('<div>Set fixed columns start: ' + fc.start() + '</div>');
 });
 
-$('#decreaseLeft').on('click', function () {
+$('#decreaseStart').on('click', function () {
 	let fc = table.fixedColumns();
 
-	fc.left(fc.left() - 1);
+	fc.start(fc.start() - 1);
 
-	$('#click-output').prepend('<div>Set fixed columns left: ' + fc.left() + '</div>');
+	$('#click-output').prepend('<div>Set fixed columns start: ' + fc.start() + '</div>');
 });
 
-$('#increaseRight').on('click', function () {
+$('#increaseEnd').on('click', function () {
 	let fc = table.fixedColumns();
 
-	fc.right(fc.right() + 1);
+	fc.end(fc.end() + 1);
 
-	$('#click-output').prepend('<div>Set fixed columns right: ' + fc.right() + '</div>');
+	$('#click-output').prepend('<div>Set fixed columns end: ' + fc.end() + '</div>');
 });
 
-$('#decreaseRight').on('click', function () {
+$('#decreaseEnd').on('click', function () {
 	let fc = table.fixedColumns();
 
-	fc.right(fc.right() - 1);
+	fc.end(fc.end() - 1);
 
-	$('#click-output').prepend('<div>Set fixed columns right: ' + fc.right() + '</div>');
+	$('#click-output').prepend('<div>Set fixed columns end: ' + fc.end() + '</div>');
 });
 
 ]]>
@@ -65,36 +70,36 @@ let table = new DataTable('#example', {
 	scrollY: 300
 });
 
-document.querySelector('#increaseLeft').addEventListener('click', function () {
+document.querySelector('#increaseStart').addEventListener('click', function () {
 	let fc = table.fixedColumns();
 
-	fc.left(fc.left() + 1);
+	fc.start(fc.start() + 1);
 
-	addOutput('Set fixed columns left: ' + fc.left());
+	addOutput('Set fixed columns start: ' + fc.start());
 });
 
-document.querySelector('#decreaseLeft').addEventListener('click', function () {
+document.querySelector('#decreaseStart').addEventListener('click', function () {
 	let fc = table.fixedColumns();
 
-	fc.left(fc.left() - 1);
+	fc.start(fc.start() - 1);
 
-	addOutput('Set fixed columns left: ' + fc.left());
+	addOutput('Set fixed columns start: ' + fc.start());
 });
 
-document.querySelector('#increaseRight').addEventListener('click', function () {
+document.querySelector('#increaseEnd').addEventListener('click', function () {
 	let fc = table.fixedColumns();
 
-	fc.right(fc.right() + 1);
+	fc.end(fc.end() + 1);
 
-	addOutput('Set fixed columns right: ' + fc.right());
+	addOutput('Set fixed columns end: ' + fc.end());
 });
 
-document.querySelector('#decreaseRight').addEventListener('click', function () {
+document.querySelector('#decreaseEnd').addEventListener('click', function () {
 	let fc = table.fixedColumns();
 
-	fc.right(fc.right() - 1);
+	fc.end(fc.end() - 1);
 
-	addOutput('Set fixed columns right: ' + fc.right());
+	addOutput('Set fixed columns end: ' + fc.end());
 });
 
 ]]>
@@ -104,17 +109,17 @@ document.querySelector('#decreaseRight').addEventListener('click', function () {
 
 <info><![CDATA[
 
-This example shows a possible use of the API methods that were introduced in version 4.0.0. They are:
+This example shows a possible use of the FixedColumns API methods that can be used to control the fixed state of table columns. They are:
 
-* `-api fixedColumns().left()` - Getter/Setter for the number of left FixedColumns
-* `-api fixedColumns().right()` - Getter/Setter for the number of right FixedColumns
+* `-api fixedColumns().start()` - Getter/Setter for the number of fixed columns at the start of the table
+* `-api fixedColumns().end()` - Getter/Setter for the number of fixed columns and the end of the table.
 
-In this example there are 4 buttons to inrease/decrease the number of left/right columns. They do this by getting the current number of fixed columns, then making another call to increase or decrease that value. See the code below the table.
+In this example there are 4 buttons to increase / decrease the number of start / end fixed columns. They do this by getting the current number of fixed columns, then making another call to increase or decrease that value. See the code below the table.
 
-<button id="increaseLeft">Increase Number of Fixed Left Columns</button><br>
-<button id="decreaseLeft">Decrease Number of Fixed Left Columns</button><br>
-<button id="increaseRight">Increase Number of Fixed Right Columns</button><br>
-<button id="decreaseRight">Decrease Number of Fixed Right Columns</button><br>
+<button id="increaseStart">Increase number of fixed columns at start</button><br>
+<button id="decreaseStart">Decrease number of fixed columns at start</button><br>
+<button id="increaseEnd">Increase number of fixed columns at end</button><br>
+<button id="decreaseEnd">Decrease number of fixed columns at end</button><br>
 
 ]]></info>
 

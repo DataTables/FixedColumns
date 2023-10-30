@@ -6,8 +6,8 @@
 <![CDATA[
 $('#example').DataTable({
 	fixedColumns: {
-		left: 1,
-		right: 1
+		start: 1,
+		end: 1
 	},
 	paging: true,
 	scrollX: true
@@ -19,8 +19,8 @@ $('#example').DataTable({
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: {
-		left: 1,
-		right: 1
+		start: 1,
+		end: 1
 	},
 	paging: true,
 	scrollX: true

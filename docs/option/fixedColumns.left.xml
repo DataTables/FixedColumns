@@ -10,14 +10,14 @@
 		</description>
 	</type>
 
-	<default value="1">
-		The first column on the left of the table will be fixed in place.
-	</default>
+	<default value="undefined"></default>
 
 	<description>
-		FixedColumns, by default, will fix only the left most column in place, however it is also possible to fix two or more columns in place as required by your application. The number of columns to fix in place is defined by this parameter, which is simply an integer that indicates how many columns should be fixed. FixedColumns will then use this value to fix that many _visible_ columns to the left side of the table. Columns that are not visible will be ignored.
+		This option can be used to set the number of columns that will be fixed to the left hand-side of a table.
 
-		This option replaces the deprecated `-init fixedColumns.leftColumns`.
+		As of FixedColumns 5 it is text direction aware and will always fixed to the left of the table, regardless of the text direction.
+		
+		`-init fixedColumns.start` is generally preferred over this option as it is independent of text direction.
 	</description>
 
 	<example title="Fixed two columns to the left of the table"><![CDATA[

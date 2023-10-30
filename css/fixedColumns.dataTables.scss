@@ -6,8 +6,8 @@ $fixedcolumns-body-color: white !default;
 table.dataTable {
     thead,
     tfoot {
-        tr > .dtfc-fixed-left,
-        tr > .dtfc-fixed-right {
+        tr > .dtfc-fixed-start,
+        tr > .dtfc-fixed-end {
             top: 0;
             bottom: 0;
             z-index: 3;
@@ -16,8 +16,8 @@ table.dataTable {
     }
 
     tbody {
-        tr > .dtfc-fixed-left,
-        tr > .dtfc-fixed-right {
+        tr > .dtfc-fixed-start,
+        tr > .dtfc-fixed-end {
             z-index: 1;
             background-color: $fixedcolumns-body-color;
         }
@@ -38,15 +38,15 @@ html.dark {
     table.dataTable {
         thead,
         tfoot {
-            tr > .dtfc-fixed-left,
-            tr > .dtfc-fixed-right {
+            tr > .dtfc-fixed-start,
+            tr > .dtfc-fixed-end {
                 background-color: var(--dt-html-background);
             }
         }
     
         tbody {
-            tr > .dtfc-fixed-left,
-            tr > .dtfc-fixed-right {
+            tr > .dtfc-fixed-start,
+            tr > .dtfc-fixed-end {
                 background-color: var(--dt-html-background);
             }
         }

@@ -19,7 +19,7 @@ describe('fixedColumns - leftColumns', function() {
 	describe('Check the defaults', function() {
 		dt.html('basic');
 		it('Single column set by default', function() {
-			expect($.fn.dataTable.FixedColumns.defaults.left).toBe(undefined);
+			expect($.fn.dataTable.FixedColumns.defaults.start).toBe(1);
 		});
 
 		it('None specified', function() {
@@ -32,36 +32,6 @@ describe('fixedColumns - leftColumns', function() {
 		});
 	});
 
-	// deprecated options
-	describe('Check the defaults', function() {
-		dt.html('basic');
-		it('Cycle through all columns', function() {
-			for (let i = 1; i <= 6; i++) {
-				table = $('#example').DataTable({
-					destroy: true,
-					scrollX: true,
-					fixedColumns: {
-						leftColumns: i
-					}
-				});
-
-				checkElements(i, 0);
-			}
-		});
-
-		dt.html('basic');
-		it('Ensure sensible when right columns also used', function() {
-			table = $('#example').DataTable({
-				scrollX: true,
-				fixedColumns: {
-					leftColumns: 2,
-					rightColumns: 1
-				}
-			});
-
-			checkElements(2, 1);
-		});
-	});
 
 	describe('Check the defaults', function() {
 		dt.html('basic');
@@ -71,7 +41,7 @@ describe('fixedColumns - leftColumns', function() {
 					destroy: true,
 					scrollX: true,
 					fixedColumns: {
-						left: i
+						start: i
 					}
 				});
 
@@ -80,12 +50,12 @@ describe('fixedColumns - leftColumns', function() {
 		});
 
 		dt.html('basic');
-		it('Ensure sensible when right columns also used', function() {
+		it('Ensure sensible when end columns also used', function() {
 			table = $('#example').DataTable({
 				scrollX: true,
 				fixedColumns: {
-					left: 2,
-					right: 1
+					start: 2,
+					end: 1
 				}
 			});
 
@@ -96,11 +66,11 @@ describe('fixedColumns - leftColumns', function() {
 	describe('Direction check', function() {
 		dt.html('basic');
 
-		it('Left with ltr is left', function() {
+		it('Start with ltr is left', function() {
 			table = $('#example').DataTable({
 				scrollX: true,
 				fixedColumns: {
-					left: 1
+					start: 1
 				}
 			});
 
@@ -112,20 +82,20 @@ describe('fixedColumns - leftColumns', function() {
 
 		dt.html('basic');
 
-		it('Left with rtl is also left', function() {
+		it('Start with rtl is right', function() {
 			$('html').attr('dir', 'rtl');
 
 			table = $('#example').DataTable({
 				scrollX: true,
 				fixedColumns: {
-					left: 1
+					start: 1
 				}
 			});
 
-			let el = $('td.dtfc-fixed-end').eq(0);
+			let el = $('td.dtfc-fixed-start').eq(0);
 			
-			expect(el.css('left')).toBe('0px');
-			expect(el.css('right')).toBe('auto');
+			expect(el.css('left')).toBe('auto');
+			expect(el.css('right')).toBe('0px');
 
 			$('html').attr('dir', '');
 		});

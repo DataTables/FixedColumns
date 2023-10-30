@@ -10,23 +10,9 @@
 	}
 
 	/* Styling for the index columns */
-	th.index,
-	td.index {
-		background-color: white !important;
-		border-top: 1px solid white !important;
-		border-bottom: none !important;
-	}
-	div.DTFC_LeftHeadWrapper table {
-		border-bottom: 1px solid white !important;
-	}
-	div.DTFC_LeftHeadWrapper th {
-		border-bottom: 1px solid white !important;
-	}
-	div.DTFC_LeftBodyWrapper {
-		border-right: 1px solid black;
-	}
-	div.DTFC_LeftFootWrapper th {
-		border-top: 1px solid white !important;
+	td.dtfc-fixed-start {
+		background-color: rgb(255, 243, 207) !important;
+		border-right: 1px solid rgba(0, 0, 0, 0.5);
 	}
 </css>
 <js lib="jquery datatables fixedcolumns">
@@ -36,7 +22,6 @@ var table = $('#example').DataTable({
 	columnDefs: [
 		{
 			sortable: false,
-			class: 'index',
 			targets: 0
 		}
 	],
@@ -69,7 +54,6 @@ let table = new DataTable('#example', {
 	columnDefs: [
 		{
 			sortable: false,
-			class: 'index',
 			targets: 0
 		}
 	],

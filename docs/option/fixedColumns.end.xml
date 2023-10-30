@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="FixedColumns">
+	<name>fixedColumns.end</name>
+	<summary>Number of columns to fix to the end of the table</summary>
+	<since>5.0.0</since>
+
+	<type type="integer">
+		<description>
+			The number of columns on the end of the table to fix in place.
+		</description>
+	</type>
+
+	<default value="0">
+		No columns will be fixed to the end of the table.
+	</default>
+
+	<description>
+		Very similar to the `-init fixedColumns.start` option, but in this case the option defines the number of columns that will be fixed at the end of the table.
+
+		This option is text direction aware - it will fix columns on the left for tables which are displayed with right-to-left text layout.
+
+		Columns that are not visible will be ignored.
+	</description>
+
+	<example title="Start and end columns fixed"><![CDATA[
+
+$('#example').DataTable( {
+	fixedColumns: {
+		end: 1
+	}
+} );
+
+]]></example>
+
+	<example title="No fixed columns at the start of the table, one at the end"><![CDATA[
+
+$('#example').DataTable( {
+	fixedColumns: {
+		start: 0,
+		end: 1
+	}
+} );
+
+]]></example>
+
+</dt-option>

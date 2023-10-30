@@ -14,10 +14,7 @@
 $('div.demo-html').attr('dir', 'rtl'); // Demo only
  
 $('#example').DataTable({
-	fixedColumns: {
-		left: 1,
-		right: 1
-	},
+	fixedColumns: true,
 	paging: false,
 	scrollCollapse: true,
 	scrollX: true,
@@ -32,10 +29,7 @@ document.querySelector('div.demo-html')
     .setAttribute('dir', 'rtl'); // Demo only
 
 new DataTable('#example', {
-	fixedColumns: {
-		left: 1,
-		right: 1
-	},
+	fixedColumns: true,
 	paging: false,
 	scrollCollapse: true,
 	scrollX: true,
@@ -48,7 +42,9 @@ new DataTable('#example', {
 
 <info><![CDATA[
 
-FixedColumns supports right to left text layout, which is automatically detected by the CSS `direction` parameter that has been applied to the document.
+FixedColumns supports right-to-left text layout, which is automatically detected by the CSS `direction` parameter that has been applied to the document.
+
+This example shows FixedColumns with its default configuration. Note that the fixed column is still the first column in the table, which in this case is on the right hand side.
 
 ]]></info>
 

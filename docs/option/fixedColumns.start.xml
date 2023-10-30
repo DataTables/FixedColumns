@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="FixedColumns">
+	<name>fixedColumns.start</name>
+	<summary>Number of columns to fix to the start of the table</summary>
+	<since>5.0.0</since>
+
+	<type type="integer">
+		<description>
+			The number of columns on the start of the table to fix in place.
+		</description>
+	</type>
+
+	<default value="1">
+		Fix the first column of the table in place.
+	</default>
+
+	<description>
+		This option is used to define the number of fixed columns at the start of the table. By default this is a single column, but you can choose to fix two or more in place, as required by your table.
+
+		Please note that this option is independent of the text direction of the table - i.e. it will fix columns to the right of the table for right-to-left languages.
+		
+		Columns that are not visible will be ignored.
+	</description>
+
+	<example title="Fixed two columns to the start of the table"><![CDATA[
+
+$('#example').DataTable( {
+	fixedColumns: {
+		start: 2
+	}
+} );
+
+]]></example>
+
+	<example title="Fix no columns on the start of the table"><![CDATA[
+
+$('#example').DataTable( {
+	fixedColumns: {
+		start: 0,
+		end: 1
+	}
+} );
+
+]]></example>
+
+</dt-option>

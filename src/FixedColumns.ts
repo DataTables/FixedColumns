@@ -10,10 +10,12 @@ export interface IDefaults {
 	i18n: {
 		button: string;
 	};
-	left: number;
+	end: number;
+	left?: number;
 	leftColumns?: number;
-	right: number;
+	right?: number;
 	rightColumns?: number;
+	start: number;
 }
 
 export interface IS {
@@ -23,10 +25,10 @@ export interface IS {
 
 export interface IClasses {
 	bottomBlocker: string;
-	fixedLeft: string;
-	fixedRight: string;
-	tableFixedLeft: string;
-	tableFixedRight: string;
+	fixedStart: string;
+	fixedEnd: string;
+	tableFixedStart: string;
+	tableFixedEnd: string;
 	topBlocker: string;
 }
 
@@ -35,20 +37,15 @@ export interface IDOM {
 	topBlocker: JQuery<HTMLElement>;
 }
 
-export interface ICellCSS {
-	left?: string;
-	position: string;
-	right?: string;
-}
 export default class FixedColumns {
 	private static version = '5.0.0';
 
 	private static classes: IClasses = {
 		bottomBlocker: 'dtfc-bottom-blocker',
-		fixedLeft: 'dtfc-fixed-left',
-		fixedRight: 'dtfc-fixed-right',
-		tableFixedLeft: 'dtfc-has-left',
-		tableFixedRight: 'dtfc-has-right',
+		fixedStart: 'dtfc-fixed-start',
+		fixedEnd: 'dtfc-fixed-end',
+		tableFixedStart: 'dtfc-has-start',
+		tableFixedEnd: 'dtfc-has-end',
 		topBlocker: 'dtfc-top-blocker'
 	};
 
@@ -56,8 +53,8 @@ export default class FixedColumns {
 		i18n: {
 			button: 'FixedColumns'
 		},
-		left: 1,
-		right: 0
+		start: 1,
+		end: 0
 	};
 
 	public classes: IClasses;
@@ -82,26 +79,25 @@ export default class FixedColumns {
 		// Get options from user
 		this.c = $.extend(true, {}, FixedColumns.defaults, opts);
 
-		// Backwards compatibility for deprecated leftColumns
-		if (
-			(!opts || opts.left === undefined) &&
-			this.c.leftColumns !== undefined
-		) {
-			this.c.left = this.c.leftColumns;
-		}
-
-		// Backwards compatibility for deprecated rightColumns
-		if (
-			(!opts || opts.right === undefined) &&
-			this.c.rightColumns !== undefined
-		) {
-			this.c.right = this.c.rightColumns;
-		}
-
 		this.s = {
 			dt: table,
 			rtl: $(table.table().node()).css('direction') === 'rtl'
 		};
+
+		// Backwards compatibility for deprecated options
+		if (opts && opts.leftColumns !== undefined) {
+			opts.left = opts.leftColumns;
+		}
+		if (opts && opts.left !== undefined) {
+			this.c[this.s.rtl ? 'end' : 'start'] = opts.left;
+		}
+
+		if (opts && opts.rightColumns !== undefined) {
+			opts.right = opts.rightColumns;
+		}
+		if (opts && opts.right !== undefined) {
+			this.c[this.s.rtl ? 'start' : 'end'] = opts.right;
+		}
 
 		this.dom = {
 			bottomBlocker: $('<div>').addClass(this.classes.bottomBlocker),
@@ -132,61 +128,83 @@ export default class FixedColumns {
 	}
 
 	/**
-	 * Getter for the `fixedColumns.left` property
+	 * Getter for the `fixedColumns.end` property
 	 *
-	 * @param newVal Optional. If present this will be the new value for the number of left fixed columns
-	 * @returns The number of left fixed columns
+	 * @param newVal Optional. If present this will be the new value for the number of end fixed columns
+	 * @returns The number of end fixed columns
 	 */
-	public left(): number;
-	/**
-	 * Setter for the `fixedColumns.left` property
-	 *
-	 * @param newVal The new value for the number of left fixed columns
-	 * @returns DataTables API for chaining
-	 */
-	public left(newVal: number): any;
-	public left(newVal?: number): any {
-		// If the value is to change
-		if (newVal !== undefined) {
-			if (newVal >= 0 && newVal <= this.s.dt.columns().count()) {
-				// Set the new values and redraw the columns
-				this.c.left = newVal;
-				this._addStyles();
-			}
-
-			return this;
-		}
-
-		return this.c.left;
-	}
-
-	/**
-	 * Getter for the `fixedColumns.left` property
-	 *
-	 * @param newVal Optional. If present this will be the new value for the number of left fixed columns
-	 * @returns The number of left fixed columns
-	 */
-	public right(): number;
+	public end(): number;
 	/**
 	 * Setter for the `fixedColumns.right` property
 	 *
 	 * @param newVal The new value for the number of right fixed columns
 	 * @returns DataTables API for chaining
 	 */
-	public right(newVal: number): any;
-	public right(newVal?: number): any {
+	public end(newVal: number): any;
+	public end(newVal?: number): any {
 		// If the value is to change
 		if (newVal !== undefined) {
 			if (newVal >= 0 && newVal <= this.s.dt.columns().count()) {
 				// Set the new values and redraw the columns
-				this.c.right = newVal;
+				this.c.end = newVal;
 				this._addStyles();
 			}
 
 			return this;
 		}
 
-		return this.c.right;
+		return this.c.end;
+	}
+
+	/**
+	 * Left fix - accounting for RTL
+	 *
+	 * @param count Columns to fix, or undefined for getter
+	 */
+	public left(count?) {
+		return this.s.rtl
+			? this.end(count)
+			: this.start(count);
+	}
+
+	/**
+	 * Right fix - accounting for RTL
+	 *
+	 * @param count Columns to fix, or undefined for getter
+	 */
+	public right(count?) {
+		return this.s.rtl
+			? this.start(count)
+			: this.end(count);
+	}
+
+	/**
+	 * Getter for the `fixedColumns.start` property
+	 *
+	 * @param newVal Optional. If present this will be the new value for the number of start fixed columns
+	 * @returns The number of start fixed columns
+	 */
+	public start(): number;
+	/**
+	 * Setter for the `fixedColumns.start` property
+	 *
+	 * @param newVal The new value for the number of left fixed columns
+	 * @returns DataTables API for chaining
+	 */
+	public start(newVal: number): any;
+	public start(newVal?: number): any {
+		// If the value is to change
+		if (newVal !== undefined) {
+			if (newVal >= 0 && newVal <= this.s.dt.columns().count()) {
+				// Set the new values and redraw the columns
+				this.c.start = newVal;
+				this._addStyles();
+			}
+
+			return this;
+		}
+
+		return this.c.start;
 	}
 
 	/**
@@ -210,22 +228,23 @@ export default class FixedColumns {
 		// Loop over the visible columns, setting their state
 		dt.columns(':visible').every(function (colIdx) {
 			let visIdx = dt.column.index('toVisible', colIdx);
+			let offset;
 
-			if (visIdx < that.c.left) {
-				// Fix to the left
-				let offsetLeft = that._sum(widths, colIdx);
+			if (visIdx < that.c.start) {
+				// Fix to the start
+				offset = that._sum(widths, colIdx);
 
 				that._fixColumn(
 					colIdx,
-					offsetLeft,
-					'left',
+					offset,
+					'start',
 					headerStruct,
 					footerStruct
 				);
 			}
-			else if (visIdx >= colCount - that.c.right) {
-				// Fix to the right
-				let offsetRight = that._sum(
+			else if (visIdx >= colCount - that.c.end) {
+				// Fix to the end
+				offset = that._sum(
 					widths,
 					colCount - visIdx - 1,
 					true
@@ -233,8 +252,8 @@ export default class FixedColumns {
 
 				that._fixColumn(
 					colIdx,
-					offsetRight,
-					'right',
+					offset,
+					'end',
 					headerStruct,
 					footerStruct
 				);
@@ -247,8 +266,8 @@ export default class FixedColumns {
 
 		// Apply classes to table to indicate what state we are in
 		$(dt.table().node())
-			.toggleClass(that.classes.tableFixedLeft, this.c.left > 0)
-			.toggleClass(that.classes.tableFixedRight, this.c.right > 0);
+			.toggleClass(that.classes.tableFixedStart, this.c.start > 0)
+			.toggleClass(that.classes.tableFixedEnd, this.c.end > 0);
 
 		// Blocker elements for when scroll bars are always visible
 		let headerEl = dt.table().header();
@@ -294,14 +313,14 @@ export default class FixedColumns {
 	 *
 	 * @param idx Column data index to operate on
 	 * @param offset Offset from the start (pixels)
-	 * @param side left, right or none to unfix a column
+	 * @param side start, end or none to unfix a column
 	 * @param header DT header structure object
 	 * @param footer DT footer structure object
 	 */
 	private _fixColumn(
 		idx: number,
 		offset: number,
-		side: 'left' | 'right' | 'none',
+		side: 'start' | 'end' | 'none',
 		header,
 		footer
 	) {
@@ -312,22 +331,22 @@ export default class FixedColumns {
 					.css('left', '')
 					.css('right', '')
 					.removeClass(
-						this.classes.fixedLeft + ' ' + this.classes.fixedRight
+						this.classes.fixedStart + ' ' + this.classes.fixedEnd
 					);
 			}
 			else {
-				let positionSide = side;
+				let positionSide = side === 'start' ? 'left' : 'right';
 
 				if (this.s.rtl) {
-					positionSide = side === 'left' ? 'right' : 'left';
+					positionSide = side === 'start' ? 'right' : 'left';
 				}
 
 				jq.css('position', 'sticky')
 					.css(positionSide, offset)
 					.addClass(
-						side === 'left'
-							? this.classes.fixedLeft
-							: this.classes.fixedRight
+						side === 'start'
+							? this.classes.fixedStart
+							: this.classes.fixedEnd
 					);
 			}
 		};

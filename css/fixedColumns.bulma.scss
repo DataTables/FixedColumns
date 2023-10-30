@@ -2,20 +2,22 @@
 
 @import 'fixedColumns.dataTables.scss';
 
-div.dtfc-right-top-blocker {
+div.dtfc-top-blocker {
 	border-bottom: none !important;
 }
 
 tr.dt-rowReorder-moving {
-    td.dtfc-fixed-left,
-    td.dtfc-fixed-right {
+    td.dtfc-fixed-start,
+    td.dtfc-fixed-end {
         border-top: 2px solid #888 !important;
         border-bottom: 2px solid #888 !important;
     }
-    td.dtfc-fixed-left:first-child {
+
+    td.dtfc-fixed-start:first-child {
         border-left: 2px solid #888 !important;
     }
-    td.dtfc-fixed-right:last-child {
+
+    td.dtfc-fixed-end:last-child {
         border-right: 2px solid #888 !important;
     }
 }

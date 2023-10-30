@@ -47,6 +47,7 @@ OUT=$OUT_DIR ./node_modules/rollup/dist/bin/rollup \
     --config rollup.config.js
 
 rm src/*.d.ts
+rm src/*.js
 
 # Copy Types
 if [ -d $OUT_DIR/types ]; then
