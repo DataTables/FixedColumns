@@ -21,6 +21,46 @@ table.dataTable {
             z-index: 1;
             background-color: $fixedcolumns-body-color;
         }
+
+        tr > .dtfc-fixed-left::after,
+        tr > .dtfc-fixed-right::after {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 10px;
+            transition: box-shadow 0.3s;
+            content: "";
+            pointer-events: none;
+        }
+
+        tr > .dtfc-fixed-left::after {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        tr > .dtfc-fixed-right::after {
+            left: 0;
+            transform: translateX(-100%);
+        }
+    }
+
+    &.dtfc-scrolling-left {
+        tbody > tr > .dtfc-fixed-left::after {
+            box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    &.dtfc-scrolling-right {
+        tbody > tr > {
+            .dtfc-fixed-right::after {
+                box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.2);
+            }
+
+            // Blockout the stacking
+            .dtfc-fixed-right + .dtfc-fixed-right::after {
+                box-shadow: none;
+            }
+        }
     }
 }
 
@@ -48,6 +88,25 @@ html.dark {
             tr > .dtfc-fixed-start,
             tr > .dtfc-fixed-end {
                 background-color: var(--dt-html-background);
+            }
+        }
+
+        &.dtfc-scrolling-left {
+            tbody > tr > .dtfc-fixed-left::after {
+                box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.3);
+            }
+        }
+    
+        &.dtfc-scrolling-right {
+            tbody > tr > {
+                .dtfc-fixed-right::after {
+                    box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.3);
+                }
+    
+                // Blockout the stacking
+                .dtfc-fixed-right + .dtfc-fixed-right::after {
+                    box-shadow: none;
+                }
             }
         }
     }

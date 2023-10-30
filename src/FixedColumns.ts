@@ -25,16 +25,25 @@ export interface IS {
 
 export interface IClasses {
 	bottomBlocker: string;
-	fixedStart: string;
 	fixedEnd: string;
-	tableFixedStart: string;
+	fixedLeft: string;
+	fixedRight: string;
+	fixedStart: string;
 	tableFixedEnd: string;
+	tableFixedLeft: string;
+	tableFixedStart: string;
+	tableFixedRight: string;
 	topBlocker: string;
+	tableScrollingEnd: string;
+	tableScrollingLeft: string;
+	tableScrollingRight: string;
+	tableScrollingStart: string;
 }
 
 export interface IDOM {
 	bottomBlocker: JQuery<HTMLElement>;
 	topBlocker: JQuery<HTMLElement>;
+	scroller: JQuery<HTMLElement>;
 }
 
 export default class FixedColumns {
@@ -42,10 +51,18 @@ export default class FixedColumns {
 
 	private static classes: IClasses = {
 		bottomBlocker: 'dtfc-bottom-blocker',
-		fixedStart: 'dtfc-fixed-start',
 		fixedEnd: 'dtfc-fixed-end',
-		tableFixedStart: 'dtfc-has-start',
+		fixedLeft: 'dtfc-fixed-left',
+		fixedRight: 'dtfc-fixed-right',
+		fixedStart: 'dtfc-fixed-start',
 		tableFixedEnd: 'dtfc-has-end',
+		tableFixedLeft: 'dtfc-has-left',
+		tableFixedRight: 'dtfc-has-right',
+		tableFixedStart: 'dtfc-has-start',
+		tableScrollingEnd: 'dtfc-scrolling-end',
+		tableScrollingLeft: 'dtfc-scrolling-left',
+		tableScrollingRight: 'dtfc-scrolling-right',
+		tableScrollingStart: 'dtfc-scrolling-start',
 		topBlocker: 'dtfc-top-blocker'
 	};
 
@@ -101,7 +118,8 @@ export default class FixedColumns {
 
 		this.dom = {
 			bottomBlocker: $('<div>').addClass(this.classes.bottomBlocker),
-			topBlocker: $('<div>').addClass(this.classes.topBlocker)
+			topBlocker: $('<div>').addClass(this.classes.topBlocker),
+			scroller: $('div.dt-scroll-body', this.s.dt.table().container()),
 		};
 
 		if (this.s.dt.settings()[0]._bInitComplete) {
@@ -118,6 +136,10 @@ export default class FixedColumns {
 		}
 
 		table.on('column-sizing.dt.dtfc', () => this._addStyles());
+
+		// Add classes to indicate scrolling state for styling
+		this.dom.scroller.on('scroll.dtfc', () => this._scroll());
+		this._scroll();
 
 		// Make class available through dt object
 		table.settings()[0]._fixedColumns = this;
@@ -303,6 +325,15 @@ export default class FixedColumns {
 	 */
 	private _destroy() {
 		this.s.dt.off('.dtfc');
+		this.dom.scroller.off('.dtfc');
+
+		$(this.s.dt.table().node())
+			.removeClass(
+				this.classes.tableScrollingEnd + ' ' +
+				this.classes.tableScrollingLeft + ' ' +
+				this.classes.tableScrollingStart + ' ' +
+				this.classes.tableScrollingRight
+			);
 
 		this.dom.bottomBlocker.remove();
 		this.dom.topBlocker.remove();
@@ -331,7 +362,10 @@ export default class FixedColumns {
 					.css('left', '')
 					.css('right', '')
 					.removeClass(
-						this.classes.fixedStart + ' ' + this.classes.fixedEnd
+						this.classes.fixedEnd + ' ' +
+						this.classes.fixedLeft + ' ' +
+						this.classes.fixedRight + ' ' +
+						this.classes.fixedStart
 					);
 			}
 			else {
@@ -347,6 +381,11 @@ export default class FixedColumns {
 						side === 'start'
 							? this.classes.fixedStart
 							: this.classes.fixedEnd
+					)
+					.addClass(
+						positionSide === 'left'
+							? this.classes.fixedLeft
+							: this.classes.fixedRight
 					);
 			}
 		};
@@ -366,6 +405,23 @@ export default class FixedColumns {
 				}
 			});
 		}
+	}
+
+	/**
+	 * Update classes on the table to indicate if the table is scrolling or not
+	 */
+	private _scroll() {
+		let scroller = this.dom.scroller[0];
+		let scrollLeft = scroller.scrollLeft; // 0 when fully scrolled left
+		let table = $(this.s.dt.table().node());
+		let ltr = ! this.s.rtl;
+		let scrollStart = scrollLeft !== 0;
+		let scrollEnd = scroller.scrollWidth > (scroller.clientWidth + Math.abs(scrollLeft));
+
+		table.toggleClass(this.classes.tableScrollingStart, scrollStart);
+		table.toggleClass(this.classes.tableScrollingEnd, scrollEnd);
+		table.toggleClass(this.classes.tableScrollingLeft, (scrollStart && ltr) || (scrollEnd && ! ltr));
+		table.toggleClass(this.classes.tableScrollingRight, (scrollEnd && ltr) || (scrollStart && ! ltr));
 	}
 
 	private _setKeyTableListener() {
