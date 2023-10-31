@@ -7,6 +7,16 @@ div.dtfc-top-blocker {
 	border-top: 1px solid #c5c5c5 !important;
 }
 
+table.dataTable {
+    thead > tr > *.ui-state-default {
+        background: #f6f6f6;
+    }
+
+    thead > tr > .dtfc-fixed-right {
+        border-left: 1px solid #c5c5c5;
+    }
+}
+
 tr.dt-rowReorder-moving {
     td.dtfc-fixed-start,
     td.dtfc-fixed-end {

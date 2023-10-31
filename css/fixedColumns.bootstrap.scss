@@ -7,8 +7,14 @@ div.dtfc-top-blocker {
 	border-bottom: 0px solid #ddd !important;
 }
 
-table.dataTable.table-bordered.dtfc-has-start {
-	border-left: none;
+table.dataTable.table-bordered {
+	.dtfc-has-start {
+		border-left: none;
+	}
+
+    thead > tr > .dtfc-fixed-right {
+        border-left: 1px solid #ddd;
+    }
 }
 
 div.dt-scroll.dtfc-has-start {
