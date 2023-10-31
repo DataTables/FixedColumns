@@ -441,6 +441,7 @@ export default class FixedColumns {
 		this.s.dt.on('key-focus.dt.dtfc', (e, dt, cell) => {
 			let currScroll;
 			let cellPos = $(cell.node()).offset();
+			let scroller = this.dom.scroller[0];
 			let scroll = $(
 				$(this.s.dt.table().node()).closest('div.dt-scroll-body')
 			);
@@ -453,7 +454,11 @@ export default class FixedColumns {
 				let rightMostWidth = rightMost.outerWidth();
 
 				// If the current highlighted cell is left of the rightmost cell on the screen
-				if (cellPos.left < rightMostPos.left + rightMostWidth) {
+				if ($(cell.node()).hasClass(this.classes.fixedLeft)) {
+					// Fixed columns have the scrollbar at the start, always
+					scroll.scrollLeft(0);
+				}
+				else if (cellPos.left < rightMostPos.left + rightMostWidth) {
 					// Scroll it into view
 					currScroll = scroll.scrollLeft();
 					scroll.scrollLeft(
@@ -476,7 +481,10 @@ export default class FixedColumns {
 				let leftMostPos = leftMost.offset();
 
 				// If the current highlighted cell is right of the leftmost cell on the screen
-				if (cellPos.left + cellWidth > leftMostPos.left) {
+				if ($(cell.node()).hasClass(this.classes.fixedRight)) {
+					scroll.scrollLeft(scroller.scrollWidth - scroller.clientWidth);
+				}
+				else if (cellPos.left + cellWidth > leftMostPos.left) {
 					// Scroll it into view
 					currScroll = scroll.scrollLeft();
 					scroll.scrollLeft(
