@@ -241,6 +241,11 @@ export default class FixedColumns {
 		let widths = dt.columns(':visible').widths().toArray();
 		let wrapper = $(dt.table().node()).closest('div.dt-scroll');
 		let scroller = $(dt.table().node()).closest('div.dt-scroll-body')[0];
+		let rtl = this.s.rtl;
+		let start = this.c.start;
+		let end = this.c.end;
+		let left = rtl ? end : start;
+		let right = rtl ? start : end;
 
 		// Do nothing if no scrolling in the DataTable
 		if (wrapper.length === 0) {
@@ -252,7 +257,7 @@ export default class FixedColumns {
 			let visIdx = dt.column.index('toVisible', colIdx);
 			let offset;
 
-			if (visIdx < that.c.start) {
+			if (visIdx < start) {
 				// Fix to the start
 				offset = that._sum(widths, colIdx);
 
@@ -264,7 +269,7 @@ export default class FixedColumns {
 					footerStruct
 				);
 			}
-			else if (visIdx >= colCount - that.c.end) {
+			else if (visIdx >= colCount - end) {
 				// Fix to the end
 				offset = that._sum(
 					widths,
@@ -288,8 +293,10 @@ export default class FixedColumns {
 
 		// Apply classes to table to indicate what state we are in
 		$(dt.table().node())
-			.toggleClass(that.classes.tableFixedStart, this.c.start > 0)
-			.toggleClass(that.classes.tableFixedEnd, this.c.end > 0);
+			.toggleClass(that.classes.tableFixedStart, start > 0)
+			.toggleClass(that.classes.tableFixedEnd, end > 0)
+			.toggleClass(that.classes.tableFixedLeft, left > 0)
+			.toggleClass(that.classes.tableFixedRight, right > 0);
 
 		// Blocker elements for when scroll bars are always visible
 		let headerEl = dt.table().header();
@@ -412,6 +419,12 @@ export default class FixedColumns {
 	 */
 	private _scroll() {
 		let scroller = this.dom.scroller[0];
+
+		// Not a scrolling table
+		if (! scroller) {
+			return;
+		}
+
 		let scrollLeft = scroller.scrollLeft; // 0 when fully scrolled left
 		let table = $(this.s.dt.table().node());
 		let ltr = ! this.s.rtl;

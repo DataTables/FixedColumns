@@ -11,9 +11,11 @@ describe('fixedColumns - rightColumns', function() {
 		expect($('td.dtfc-fixed-' + side).length).toBe(expected * 10);
 	}
 
-	function checkElements(left, right) {
-		_checkElements('start', left);
-		_checkElements('end', right);
+	function checkElements(start, end, left, right) {
+		_checkElements('start', start);
+		_checkElements('end', end);
+		_checkElements('left', left);
+		_checkElements('right', right);
 	}
 
 	describe('Check the defaults', function() {
@@ -28,7 +30,7 @@ describe('fixedColumns - rightColumns', function() {
 				fixedColumns: true
 			});
 
-			checkElements(1, 0);
+			checkElements(1, 0, 1, 0);
 		});
 	});
 
@@ -44,7 +46,7 @@ describe('fixedColumns - rightColumns', function() {
 					}
 				});
 
-				checkElements(1, i);
+				checkElements(1, i, 1, i);
 			}
 		});
 
@@ -58,7 +60,7 @@ describe('fixedColumns - rightColumns', function() {
 				}
 			});
 
-			checkElements(0, 2);
+			checkElements(0, 2, 0, 2);
 		});
 	});
 
@@ -78,6 +80,8 @@ describe('fixedColumns - rightColumns', function() {
 			
 			expect(el.css('left')).toBe('auto');
 			expect(el.css('right')).toBe('0px');
+
+			checkElements(0, 1, 0, 1);
 		});
 
 		dt.html('basic');
@@ -98,7 +102,103 @@ describe('fixedColumns - rightColumns', function() {
 			expect(el.css('left')).toBe('0px');
 			expect(el.css('right')).toBe('auto');
 
+			checkElements(0, 1, 1, 0);
+
 			$('html').attr('dir', '');
+		});
+	});
+
+	describe('Table classes', function() {
+		dt.html('basic_wide');
+
+		it('Initialisation', function(done) {
+			table = $('#example').DataTable({
+				scrollX: true,
+				fixedColumns: {
+					start: 0,
+					end: 1
+				}
+			});
+
+			setTimeout(function () {
+				expect($('#example').hasClass('dtfc-has-start')).toBe(false);
+				expect($('#example').hasClass('dtfc-has-end')).toBe(true);
+				expect($('#example').hasClass('dtfc-has-left')).toBe(false);
+				expect($('#example').hasClass('dtfc-has-right')).toBe(true);
+
+				expect($('#example').hasClass('dtfc-scrolling-start')).toBe(false);
+				expect($('#example').hasClass('dtfc-scrolling-end')).toBe(true);
+				expect($('#example').hasClass('dtfc-scrolling-left')).toBe(false);
+				expect($('#example').hasClass('dtfc-scrolling-right')).toBe(true);
+
+				done();
+			});
+		});
+
+		it('Scrolling', function(done) {
+			$('div.dt-scroll-body').scrollLeft(10);
+
+			setTimeout(function () {
+				expect($('#example').hasClass('dtfc-has-start')).toBe(false);
+				expect($('#example').hasClass('dtfc-has-end')).toBe(true);
+				expect($('#example').hasClass('dtfc-has-left')).toBe(false);
+				expect($('#example').hasClass('dtfc-has-right')).toBe(true);
+
+				expect($('#example').hasClass('dtfc-scrolling-start')).toBe(true);
+				expect($('#example').hasClass('dtfc-scrolling-end')).toBe(true);
+				expect($('#example').hasClass('dtfc-scrolling-left')).toBe(true);
+				expect($('#example').hasClass('dtfc-scrolling-right')).toBe(true);
+
+				done();
+			}, 100);
+		});
+
+		dt.html('basic_wide');
+
+		it('RTL - Initialisation', function(done) {
+			$('html').attr('dir', 'rtl');
+
+			table = $('#example').DataTable({
+				scrollX: true,
+				fixedColumns: {
+					start: 0,
+					end: 1
+				}
+			});
+
+			setTimeout(function () {
+				expect($('#example').hasClass('dtfc-has-start')).toBe(false);
+				expect($('#example').hasClass('dtfc-has-end')).toBe(true);
+				expect($('#example').hasClass('dtfc-has-left')).toBe(true);
+				expect($('#example').hasClass('dtfc-has-right')).toBe(false);
+
+				expect($('#example').hasClass('dtfc-scrolling-start')).toBe(false);
+				expect($('#example').hasClass('dtfc-scrolling-end')).toBe(true);
+				expect($('#example').hasClass('dtfc-scrolling-left')).toBe(true);
+				expect($('#example').hasClass('dtfc-scrolling-right')).toBe(false);
+
+				done();
+			});
+		});
+
+		it('RTL - Scrolling', function(done) {
+			$('div.dt-scroll-body').scrollLeft(-10);
+
+			setTimeout(function () {
+				expect($('#example').hasClass('dtfc-has-start')).toBe(false);
+				expect($('#example').hasClass('dtfc-has-end')).toBe(true);
+				expect($('#example').hasClass('dtfc-has-left')).toBe(true);
+				expect($('#example').hasClass('dtfc-has-right')).toBe(false);
+
+				expect($('#example').hasClass('dtfc-scrolling-start')).toBe(true);
+				expect($('#example').hasClass('dtfc-scrolling-end')).toBe(true);
+				expect($('#example').hasClass('dtfc-scrolling-left')).toBe(true);
+				expect($('#example').hasClass('dtfc-scrolling-right')).toBe(true);
+
+				done();
+
+				$('html').attr('dir', '');
+			}, 100);
 		});
 	});
 });
