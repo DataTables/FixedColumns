@@ -48,7 +48,7 @@ export interface ICellCSS {
 	right?: string;
 }
 export default class FixedColumns {
-	private static version = '4.3.0';
+	private static version = '4.3.1-dev';
 
 	private static classes: IClasses = {
 		fixedLeft: 'dtfc-fixed-left',
@@ -570,7 +570,11 @@ export default class FixedColumns {
 				let rightMostWidth = rightMost.outerWidth();
 
 				// If the current highlighted cell is left of the rightmost cell on the screen
-				if (cellPos.left < rightMostPos.left + rightMostWidth) {
+				if ($(cell.node()).hasClass(this.classes.fixedLeft)) {
+					// Fixed columns have the scrollbar at the start, always
+					scroll.scrollLeft(0);
+				}
+				else if (cellPos.left < rightMostPos.left + rightMostWidth) {
 					// Scroll it into view
 					let currScroll = scroll.scrollLeft();
 					scroll.scrollLeft(currScroll - (rightMostPos.left + rightMostWidth - cellPos.left));
@@ -588,7 +592,10 @@ export default class FixedColumns {
 				let leftMostPos = leftMost.offset();
 
 				// If the current highlighted cell is right of the leftmost cell on the screen
-				if (cellPos.left + cellWidth > leftMostPos.left) {
+				if ($(cell.node()).hasClass(this.classes.fixedRight)) {
+					scroll.scrollLeft(scroll[0].scrollWidth - scroll[0].clientWidth);
+				}
+				else if (cellPos.left + cellWidth > leftMostPos.left) {
 					// Scroll it into view
 					let currScroll = scroll.scrollLeft();
 					scroll.scrollLeft(currScroll - (leftMostPos.left - (cellPos.left + cellWidth)));
