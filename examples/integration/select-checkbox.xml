@@ -8,7 +8,7 @@ $('#example').DataTable({
 	columnDefs: [
 		{
 			orderable: false,
-			render: DataTable.render.select(),
+			className: 'select-checkbox',
 			targets: 0
 		}
 	],
