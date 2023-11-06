@@ -135,7 +135,20 @@ export default class FixedColumns {
 			});
 		}
 
-		table.on('column-sizing.dt.dtfc', () => this._addStyles());
+		// Lots or reasons to redraw the column styles
+		table.on(
+			'column-sizing.dt.dtfc column-reorder.dt.dtfc draw.dt.dtfc',
+			() => this._addStyles()
+		);
+
+		// Column visibility can trigger a number of times quickly, so we debounce it
+		let debounced = DataTable.util.debounce(() => {
+			this._addStyles()
+		}, 50);
+
+		table.on('column-visibility.dt.dtfc', () => {
+			debounced();
+		});
 
 		// Add classes to indicate scrolling state for styling
 		this.dom.scroller.on('scroll.dtfc', () => this._scroll());
@@ -259,10 +272,10 @@ export default class FixedColumns {
 
 			if (visIdx < start) {
 				// Fix to the start
-				offset = that._sum(widths, colIdx);
+				offset = that._sum(widths, visIdx);
 
 				that._fixColumn(
-					colIdx,
+					visIdx,
 					offset,
 					'start',
 					headerStruct,
@@ -278,7 +291,7 @@ export default class FixedColumns {
 				);
 
 				that._fixColumn(
-					colIdx,
+					visIdx,
 					offset,
 					'end',
 					headerStruct,
@@ -287,7 +300,7 @@ export default class FixedColumns {
 			}
 			else {
 				// Release
-				that._fixColumn(colIdx, 0, 'none', headerStruct, footerStruct);
+				that._fixColumn(visIdx, 0, 'none', headerStruct, footerStruct);
 			}
 		});
 
@@ -349,7 +362,7 @@ export default class FixedColumns {
 	/**
 	 * Fix or unfix a column
 	 *
-	 * @param idx Column data index to operate on
+	 * @param idx Column visible index to operate on
 	 * @param offset Offset from the start (pixels)
 	 * @param side start, end or none to unfix a column
 	 * @param header DT header structure object
@@ -403,7 +416,7 @@ export default class FixedColumns {
 			}
 		});
 
-		applyStyles(dt.column(idx, { page: 'current' }).nodes().to$());
+		applyStyles(dt.column(idx + ':visible', { page: 'current' }).nodes().to$());
 
 		if (footer) {
 			footer.forEach((row) => {
@@ -494,27 +507,6 @@ export default class FixedColumns {
 				}
 			}
 		});
-
-		// Whenever a draw occurs there is potential for the data to have changed and therefore also the column widths
-		// Therefore it is necessary to recalculate the values for the fixed columns
-		this.s.dt.on('draw.dt.dtfc', () => {
-			this._addStyles();
-		});
-
-		this.s.dt.on('column-reorder.dt.dtfc', () => {
-			this._addStyles();
-		});
-
-		this.s.dt.on(
-			'column-visibility.dt.dtfc',
-			(e, settings, column, state, recalc) => {
-				if (recalc && !settings.bDestroying) {
-					setTimeout(() => {
-						this._addStyles();
-					}, 50);
-				}
-			}
-		);
 	}
 
 	/**
