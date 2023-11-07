@@ -309,7 +309,7 @@ export default class FixedColumns {
 			.toggleClass(that.classes.tableFixedStart, start > 0)
 			.toggleClass(that.classes.tableFixedEnd, end > 0)
 			.toggleClass(that.classes.tableFixedLeft, left > 0)
-			.toggleClass(that.classes.tableFixedRight, right > 1);
+			.toggleClass(that.classes.tableFixedRight, right > 0);
 
 		// Blocker elements for when scroll bars are always visible
 		let headerEl = dt.table().header();
@@ -442,7 +442,7 @@ export default class FixedColumns {
 		let table = $(this.s.dt.table().node());
 		let ltr = ! this.s.rtl;
 		let scrollStart = scrollLeft !== 0;
-		let scrollEnd = scroller.scrollWidth > (scroller.clientWidth + Math.abs(scrollLeft));
+		let scrollEnd = scroller.scrollWidth > (scroller.clientWidth + Math.abs(scrollLeft) + 1); // extra 1 for Chrome
 
 		table.toggleClass(this.classes.tableScrollingStart, scrollStart);
 		table.toggleClass(this.classes.tableScrollingEnd, scrollEnd);
