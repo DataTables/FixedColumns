@@ -23,24 +23,20 @@
 	</description>
 
 	<example title="Left and right columns fixed"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	fixedColumns: {
 		right: 1
 	}
-} );
-
+});
 ]]></example>
 
 	<example title="Fix no columns on the left of the table"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	fixedColumns: {
 		left: 0,
 		right: 1
 	}
-} );
-
+});
 ]]></example>
 
 </dt-option>

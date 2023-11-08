@@ -31,21 +31,17 @@
 	</description>
 
 	<example title="Enable FixedColumns for a table"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	fixedColumns: true
-} );
-
+});
 ]]></example>
 
 	<example title="Enable FixedColumns with configuration options"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	fixedColumns: {
 		start: 2
 	}
-} );
-
+});
 ]]></example>
 
 </dt-option>

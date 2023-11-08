@@ -27,24 +27,20 @@
 	</description>
 
 	<example title="Fixed two columns to the left of the table"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	fixedColumns: {
 		leftColumns: 2
 	}
-} );
-
+});
 ]]></example>
 
 	<example title="Fix no columns on the left of the table"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	fixedColumns: {
 		leftColumns: 0,
 		rightColumns: 1
 	}
-} );
-
+});
 ]]></example>
 
 </dt-option>

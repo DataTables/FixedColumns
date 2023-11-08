@@ -23,24 +23,20 @@
 	</description>
 
 	<example title="Fixed two columns to the start of the table"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	fixedColumns: {
 		start: 2
 	}
-} );
-
+});
 ]]></example>
 
 	<example title="Fix no columns on the start of the table"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	fixedColumns: {
 		start: 0,
 		end: 1
 	}
-} );
-
+});
 ]]></example>
 
 </dt-option>

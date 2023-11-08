@@ -13,7 +13,7 @@
 <![CDATA[
 $('#example').DataTable({
 	fixedColumns: {
-		start: 2
+		start: 3
 	},
 	paging: false,
 	scrollCollapse: true,

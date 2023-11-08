@@ -16,24 +16,22 @@
     </option>
 
 	<example title="Basic FixedColumns button initialisation"><![CDATA[
-$('#myTable').DataTable( {
-	buttons: [
-		'fixedColumns'
-	],
-} );
+new DataTable('#myTable', {
+	buttons: ['fixedColumns']
+});
 ]]></example>
 
 	<example title="Fix two columns start and another at the end of the table"><![CDATA[
-new DataTable.Buttons( table, {
+new DataTable.Buttons(table, {
 	buttons: [
 		{
 			extend: 'fixedColumns',
 			config: {
 				start: 2,
-                end: 1
+				end: 1
 			}
 		}
-	],
-} );
+	]
+});
 ]]></example>
 </dt-button>

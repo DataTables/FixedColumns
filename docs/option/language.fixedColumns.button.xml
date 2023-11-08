@@ -21,8 +21,8 @@
 	</description>
 
 		<example title="Change message for FixedColumns button"><![CDATA[
-$(document).ready(function() {
-	$('#example').DataTable( {
+$(document).ready(function () {
+	new DataTable('#myTable', {
 		language: {
 			fixedColumns: {
 				button: 'Sticky Columns'
@@ -30,9 +30,7 @@ $(document).ready(function() {
 		},
 		layout: {
 			topLeft: {
-				buttons:[
-					'fixedColumns'
-				]
+				buttons: ['fixedColumns']
 			}
 		}
 	});

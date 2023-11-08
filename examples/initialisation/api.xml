@@ -22,7 +22,9 @@ $('#increaseStart').on('click', function () {
 
 	fc.start(fc.start() + 1);
 
-	$('#click-output').prepend('<div>Set fixed columns start: ' + fc.start() + '</div>');
+	$('#click-output').prepend(
+		'<div>Set fixed columns start: ' + fc.start() + '</div>'
+	);
 });
 
 $('#decreaseStart').on('click', function () {
@@ -30,7 +32,9 @@ $('#decreaseStart').on('click', function () {
 
 	fc.start(fc.start() - 1);
 
-	$('#click-output').prepend('<div>Set fixed columns start: ' + fc.start() + '</div>');
+	$('#click-output').prepend(
+		'<div>Set fixed columns start: ' + fc.start() + '</div>'
+	);
 });
 
 $('#increaseEnd').on('click', function () {
@@ -38,7 +42,9 @@ $('#increaseEnd').on('click', function () {
 
 	fc.end(fc.end() + 1);
 
-	$('#click-output').prepend('<div>Set fixed columns end: ' + fc.end() + '</div>');
+	$('#click-output').prepend(
+		'<div>Set fixed columns end: ' + fc.end() + '</div>'
+	);
 });
 
 $('#decreaseEnd').on('click', function () {
@@ -46,7 +52,9 @@ $('#decreaseEnd').on('click', function () {
 
 	fc.end(fc.end() - 1);
 
-	$('#click-output').prepend('<div>Set fixed columns end: ' + fc.end() + '</div>');
+	$('#click-output').prepend(
+		'<div>Set fixed columns end: ' + fc.end() + '</div>'
+	);
 });
 
 ]]>

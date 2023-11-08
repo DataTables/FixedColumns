@@ -12,7 +12,7 @@
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
 $('div.demo-html').attr('dir', 'rtl'); // Demo only
- 
+
 $('#example').DataTable({
 	fixedColumns: true,
 	paging: false,
@@ -25,8 +25,7 @@ $('#example').DataTable({
 
 <js-vanilla>
 <![CDATA[
-document.querySelector('div.demo-html')
-    .setAttribute('dir', 'rtl'); // Demo only
+document.querySelector('div.demo-html').setAttribute('dir', 'rtl'); // Demo only
 
 new DataTable('#example', {
 	fixedColumns: true,

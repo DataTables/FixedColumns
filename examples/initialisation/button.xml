@@ -12,17 +12,20 @@
 <js lib="jquery datatables fixedcolumns buttons">
 <![CDATA[
 $('#example').DataTable({
-	buttons: [
-		{
-			extend: 'fixedColumns',
-			text: 'FixedColumns',
-			config: {
-				start: 1,
-				end: 0
-			}
+	layout: {
+		topStart: {
+			buttons: [
+				{
+					extend: 'fixedColumns',
+					text: 'FixedColumns',
+					config: {
+						start: 1,
+						end: 0
+					}
+				}
+			]
 		}
-	],
-	dom: 'Blfrtip',
+	},
 	paging: false,
 	scrollCollapse: true,
 	scrollX: true,
@@ -34,17 +37,20 @@ $('#example').DataTable({
 <js-vanilla>
 <![CDATA[
 new DataTable('#example', {
-	buttons: [
-		{
-			extend: 'fixedColumns',
-			text: 'FixedColumns',
-			config: {
-				start: 1,
-				end: 0
-			}
+	layout: {
+		topStart: {
+			buttons: [
+				{
+					extend: 'fixedColumns',
+					text: 'FixedColumns',
+					config: {
+						start: 1,
+						end: 0
+					}
+				}
+			]
 		}
-	],
-	dom: 'Blfrtip',
+	},
 	paging: false,
 	scrollCollapse: true,
 	scrollX: true,
