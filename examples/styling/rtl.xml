@@ -2,18 +2,6 @@
 <dt-example table-type="html-wide" table-class="stripe row-border order-column" order="11">
 
 <css lib="datatables fixedcolumns">
-	body {
-		direction: rtl;
-	}
-
-	h1,
-	div.info,
-	ul.tabs,
-	div.tabs,
-	div.footer {
-		direction: ltr;
-	}
-
 	/* Ensure that the demo table scrolls */
 	th, td { white-space: nowrap; }
 	div.dataTables_wrapper {
@@ -23,11 +11,10 @@
 </css>
 <js lib="jquery datatables fixedcolumns">
 <![CDATA[
+$('div.demo-html').attr('dir', 'rtl'); // Demo only
+
 $('#example').DataTable({
-	fixedColumns: {
-		left: 1,
-		right: 1
-	},
+	fixedColumns: true,
 	paging: false,
 	scrollCollapse: true,
 	scrollX: true,
@@ -38,11 +25,10 @@ $('#example').DataTable({
 
 <js-vanilla>
 <![CDATA[
+document.querySelector('div.demo-html').setAttribute('dir', 'rtl'); // Demo only
+
 new DataTable('#example', {
-	fixedColumns: {
-		left: 1,
-		right: 1
-	},
+	fixedColumns: true,
 	paging: false,
 	scrollCollapse: true,
 	scrollX: true,
@@ -55,7 +41,9 @@ new DataTable('#example', {
 
 <info><![CDATA[
 
-FixedColumns supports right to left text layout, which is automatically detected by the CSS `direction` parameter that has been applied to the document.
+FixedColumns supports right-to-left text layout, which is automatically detected by the CSS `direction` parameter that has been applied to the document.
+
+This example shows FixedColumns with its default configuration. Note that the fixed column is still the first column in the table, which in this case is on the right hand side.
 
 ]]></info>
 

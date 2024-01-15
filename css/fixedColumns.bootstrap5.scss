@@ -5,31 +5,31 @@ html[data-bs-theme="dark"] {
     table.dataTable {
         thead,
         tfoot {
-            tr > .dtfc-fixed-left,
-            tr > .dtfc-fixed-right {
+            tr > .dtfc-fixed-start,
+            tr > .dtfc-fixed-end {
                 background-color: var(--bs-body-bg);
             }
         }
-    
+
         tbody {
-            tr > .dtfc-fixed-left,
-            tr > .dtfc-fixed-right {
+            tr > .dtfc-fixed-start,
+            tr > .dtfc-fixed-end {
                 background-color: var(--bs-body-bg);
             }
         }
     }
-    
-    div.dtfc-left-top-blocker,
-    div.dtfc-right-top-blocker {
+
+    div.dtfc-top-blocker,
+    div.dtfc-bottom-blocker {
         background-color: var(--bs-body-bg);
     }
 
-	div.dataTables_scrollBody {
+	div.dt-scroll-body {
 		border-left-color: var(--bs-border-color) !important;
 	}
-	
-	div.dataTables_scrollFootInner,
-	div.dataTables_scrollHeadInner{
+
+    div.dt-scroll-headInner,
+    div.dt-scroll-footInner {
 		table.table-bordered {
 			tr {
 				th:first-child {

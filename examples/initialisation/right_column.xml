@@ -13,8 +13,8 @@
 <![CDATA[
 $('#example').DataTable({
 	fixedColumns: {
-		left: 0,
-		right: 1
+		start: 0,
+		end: 1
 	},
 	paging: false,
 	scrollCollapse: true,
@@ -28,8 +28,8 @@ $('#example').DataTable({
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: {
-		left: 0,
-		right: 1
+		start: 0,
+		end: 1
 	},
 	paging: false,
 	scrollCollapse: true,
@@ -39,11 +39,11 @@ new DataTable('#example', {
 ]]>
 </js-vanilla>
 
-<title lib="FixedColumns">Right column only</title>
+<title lib="FixedColumns">End column only</title>
 
 <info><![CDATA[
 
-FixedColumns has the ability to freeze columns on both the left and the right hand sides of the table. By default it will fix the first column on the left, but using the initialisation parameters `fc-init fixedColumns.left` and `fc-init fixedColumns.right` you can alter this to fix the columns on the right as well. This example shows a single column fixed in place, in this case the right most column.
+FixedColumns has the ability to freeze columns at both the start and the end of the table. By default it will fix the first column on the start, but using the initialisation parameters `fc-init fixedColumns.start` and `fc-init fixedColumns.end` you can alter this to fix the columns at the end as well. This example shows a single column fixed in place, in this case the last column in the table.
 
 ]]></info>
 

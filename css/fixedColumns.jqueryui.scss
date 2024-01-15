@@ -1,22 +1,34 @@
 
 @import 'fixedColumns.dataTables.scss';
 
-div.dtfc-right-top-blocker {
+div.dtfc-top-blocker {
 	border-bottom: none !important;
 	background-color: rgb(246, 246, 246) !important;
 	border-top: 1px solid #c5c5c5 !important;
 }
 
+table.dataTable {
+    thead > tr > *.ui-state-default {
+        background: #f6f6f6;
+    }
+
+    thead > tr > .dtfc-fixed-right {
+        border-left: 1px solid #c5c5c5;
+    }
+}
+
 tr.dt-rowReorder-moving {
-    td.dtfc-fixed-left,
-    td.dtfc-fixed-right {
+    td.dtfc-fixed-start,
+    td.dtfc-fixed-end {
         border-top: 2px solid #555 !important;
         border-bottom: 2px solid #555 !important;
     }
-    td.dtfc-fixed-left:first-child {
+
+    td.dtfc-fixed-start:first-child {
         border-left: 2px solid #555 !important;
     }
-    td.dtfc-fixed-right:last-child {
+
+    td.dtfc-fixed-end:last-child {
         border-right: 2px solid #555 !important;
     }
 }

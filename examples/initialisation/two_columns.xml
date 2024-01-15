@@ -13,7 +13,7 @@
 <![CDATA[
 $('#example').DataTable({
 	fixedColumns: {
-		left: 2
+		start: 2
 	},
 	paging: false,
 	scrollCollapse: true,
@@ -27,7 +27,7 @@ $('#example').DataTable({
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: {
-		left: 2
+		start: 2
 	},
 	paging: false,
 	scrollCollapse: true,
@@ -41,7 +41,7 @@ new DataTable('#example', {
 
 <info><![CDATA[
 
-FixedColumns allows more than one column to be frozen into place using the `fc-init fixedColumns.left` parameter. The example below shows two columns fixed.
+FixedColumns allows more than one column to be frozen into place using the `fc-init fixedColumns.start` parameter. The example below shows two columns fixed.
 
 ]]></info>
 

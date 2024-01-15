@@ -6,8 +6,8 @@ $fixedcolumns-body-color: white !default;
 table.dataTable {
     thead,
     tfoot {
-        tr > .dtfc-fixed-left,
-        tr > .dtfc-fixed-right {
+        tr > .dtfc-fixed-start,
+        tr > .dtfc-fixed-end {
             top: 0;
             bottom: 0;
             z-index: 3;
@@ -16,39 +16,103 @@ table.dataTable {
     }
 
     tbody {
-        tr > .dtfc-fixed-left,
-        tr > .dtfc-fixed-right {
+        tr > .dtfc-fixed-start,
+        tr > .dtfc-fixed-end {
             z-index: 1;
             background-color: $fixedcolumns-body-color;
+        }
+
+        tr > .dtfc-fixed-left::after,
+        tr > .dtfc-fixed-right::after {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 10px;
+            transition: box-shadow 0.3s;
+            content: "";
+            pointer-events: none;
+        }
+
+        tr > .dtfc-fixed-left::after {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        tr > .dtfc-fixed-right::after {
+            left: 0;
+            transform: translateX(-80%);
+        }
+    }
+
+    &.dtfc-scrolling-left {
+        tbody > tr > .dtfc-fixed-left::after {
+            box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    &.dtfc-scrolling-right {
+        tbody > tr > {
+            .dtfc-fixed-right::after {
+                box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.2);
+            }
+
+            // Blockout the stacking
+            .dtfc-fixed-right + .dtfc-fixed-right::after {
+                box-shadow: none;
+            }
         }
     }
 }
 
-div.dtfc-left-top-blocker,
-div.dtfc-right-top-blocker {
-    background-color: $fixedcolumns-header-color;
+div.dt-scroll {
+    position: relative;
+
+    div.dtfc-top-blocker,
+    div.dtfc-bottom-blocker {
+        position: absolute;
+        background-color: $fixedcolumns-header-color;
+    }
 }
 
 html.dark {
     table.dataTable {
         thead,
         tfoot {
-            tr > .dtfc-fixed-left,
-            tr > .dtfc-fixed-right {
+            tr > .dtfc-fixed-start,
+            tr > .dtfc-fixed-end {
                 background-color: var(--dt-html-background);
             }
         }
     
         tbody {
-            tr > .dtfc-fixed-left,
-            tr > .dtfc-fixed-right {
+            tr > .dtfc-fixed-start,
+            tr > .dtfc-fixed-end {
                 background-color: var(--dt-html-background);
+            }
+        }
+
+        &.dtfc-scrolling-left {
+            tbody > tr > .dtfc-fixed-left::after {
+                box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.3);
+            }
+        }
+    
+        &.dtfc-scrolling-right {
+            tbody > tr > {
+                .dtfc-fixed-right::after {
+                    box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.3);
+                }
+    
+                // Blockout the stacking
+                .dtfc-fixed-right + .dtfc-fixed-right::after {
+                    box-shadow: none;
+                }
             }
         }
     }
     
-    div.dtfc-left-top-blocker,
-    div.dtfc-right-top-blocker {
+    div.dtfc-top-blocker,
+    div.dtfc-bottom-blocker {
         background-color: var(--dt-html-background);
     }
 }

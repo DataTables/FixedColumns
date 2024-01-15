@@ -12,14 +12,14 @@ describe('fixedColumns - leftColumns', function() {
 	}
 
 	function checkElements(left, right) {
-		_checkElements('left', left);
-		_checkElements('right', right);
+		_checkElements('start', left);
+		_checkElements('end', right);
 	}
 
 	describe('Check the defaults', function() {
 		dt.html('basic');
 		it('Single column set by default', function() {
-			expect($.fn.dataTable.FixedColumns.defaults.left).toBe(1);
+			expect($.fn.dataTable.FixedColumns.defaults.left).toBe(undefined);
 		});
 
 		it('None specified', function() {
@@ -90,6 +90,44 @@ describe('fixedColumns - leftColumns', function() {
 			});
 
 			checkElements(2, 1);
+		});
+	});
+
+	describe('Direction check', function() {
+		dt.html('basic');
+
+		it('Left with ltr is left', function() {
+			table = $('#example').DataTable({
+				scrollX: true,
+				fixedColumns: {
+					left: 1
+				}
+			});
+
+			let el = $('td.dtfc-fixed-start').eq(0);
+			
+			expect(el.css('left')).toBe('0px');
+			expect(el.css('right')).toBe('auto');
+		});
+
+		dt.html('basic');
+
+		it('Left with rtl is also left', function() {
+			$('html').attr('dir', 'rtl');
+
+			table = $('#example').DataTable({
+				scrollX: true,
+				fixedColumns: {
+					left: 1
+				}
+			});
+
+			let el = $('td.dtfc-fixed-end').eq(0);
+			
+			expect(el.css('left')).toBe('0px');
+			expect(el.css('right')).toBe('auto');
+
+			$('html').attr('dir', '');
 		});
 	});
 });

@@ -13,7 +13,7 @@ $('#example').DataTable({
 		}
 	],
 	fixedColumns: {
-		left: 2
+		start: 2
 	},
 	order: [[1, 'asc']],
 	paging: false,
@@ -35,12 +35,12 @@ new DataTable('#example', {
 	columnDefs: [
 		{
 			orderable: false,
-			className: 'select-checkbox',
+			render: DataTable.render.select(),
 			targets: 0
 		}
 	],
 	fixedColumns: {
-		left: 2
+		start: 2
 	},
 	order: [[1, 'asc']],
 	paging: false,
@@ -62,7 +62,7 @@ new DataTable('#example', {
 
 The [Select extension](//datatables.net/extensions/select) for DataTables has the ability to show a checkbox column to allow row selection and this is a natural fit for FixedColumns where you can have the checkbox column fixed and easily accessible.
 
-The [Select extension's documentation](//datatables.net/extensions/select/examples/initialisation/checkbox.html) details the checkbox selection options in detail, but note that support is automatic for FixedColumns. No additional configuration is required in order to be able use both together.
+The [Select extension's documentation](//datatables.net/extensions/select/examples/ckeckbox) describes the checkbox selection options in detail, but please note that support is automatic for FixedColumns. No additional configuration is required in order to be able use both together.
 
 ]]></info>
 

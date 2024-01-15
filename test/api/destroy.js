@@ -13,7 +13,7 @@ describe('fixedColumns - destroy', function () {
 				fixedColumns: true,
 				scrollX: true
 			});
-			expect($('div.dtfc-right-top-blocker').length).toBe(1);
+			expect($('div.dtfc-top-blocker').length).toBe(1);
 		});
 		it('After re-init has just one still', function () {
 			table = $('#example').DataTable({
@@ -21,7 +21,7 @@ describe('fixedColumns - destroy', function () {
 				scrollX: true,
 				destroy: true
 			});
-			expect($('div.dtfc-right-top-blocker').length).toBe(1);
+			expect($('div.dtfc-top-blocker').length).toBe(1);
 		});
 		it('And a third init still has one', function () {
 			$('#example').DataTable().destroy();
@@ -29,7 +29,7 @@ describe('fixedColumns - destroy', function () {
 				fixedColumns: true,
 				scrollX: true
 			});
-			expect($('div.dtfc-right-top-blocker').length).toBe(1);
+			expect($('div.dtfc-top-blocker').length).toBe(1);
 		});
 	});
 });

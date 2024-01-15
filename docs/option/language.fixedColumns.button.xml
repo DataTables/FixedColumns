@@ -4,7 +4,6 @@
 	<summary>Set FixedColumns button text</summary>
 	<since>4.0.0</since>
 
-
 	<type type="string">
 		<description>
 			The language string to be displayed within the FixedColumns button.
@@ -22,17 +21,18 @@
 	</description>
 
 		<example title="Change message for FixedColumns button"><![CDATA[
-$(document).ready(function() {
-	$('#example').DataTable( {
+$(document).ready(function () {
+	new DataTable('#myTable', {
 		language: {
 			fixedColumns: {
 				button: 'Sticky Columns'
 			}
 		},
-		buttons:[
-			'fixedColumns'
-		],
-		dom: 'Bfrtip',
+		layout: {
+			topLeft: {
+				buttons: ['fixedColumns']
+			}
+		}
 	});
 });
 ]]></example>

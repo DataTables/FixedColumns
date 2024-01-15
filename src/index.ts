@@ -1,11 +1,11 @@
-/*! FixedColumns 4.3.1-dev
+/*! FixedColumns 5.0.0
  * © SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     FixedColumns
  * @description FixedColumns extension for DataTables
- * @version     4.3.1-dev
+ * @version     5.0.0
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @copyright   SpryMedia Ltd.
  *
@@ -37,8 +37,33 @@ apiRegister('fixedColumns()', function() {
 	return this;
 });
 
+apiRegister('fixedColumns().start()', function(newVal) {
+	let ctx = this.context[0];
+
+	if (newVal !== undefined) {
+		ctx._fixedColumns.start(newVal);
+		return this;
+	}
+	else {
+		return ctx._fixedColumns.start();
+	}
+});
+
+apiRegister('fixedColumns().end()', function(newVal) {
+	let ctx = this.context[0];
+
+	if (newVal !== undefined) {
+		ctx._fixedColumns.end(newVal);
+		return this;
+	}
+	else {
+		return ctx._fixedColumns.end();
+	}
+});
+
 apiRegister('fixedColumns().left()', function(newVal) {
 	let ctx = this.context[0];
+
 	if (newVal !== undefined) {
 		ctx._fixedColumns.left(newVal);
 		return this;
@@ -50,6 +75,7 @@ apiRegister('fixedColumns().left()', function(newVal) {
 
 apiRegister('fixedColumns().right()', function(newVal) {
 	let ctx = this.context[0];
+
 	if (newVal !== undefined) {
 		ctx._fixedColumns.right(newVal);
 		return this;
@@ -63,18 +89,18 @@ DataTable.ext.buttons.fixedColumns = {
 	action(e, dt, node, config) {
 		if($(node).attr('active')) {
 			$(node).removeAttr('active').removeClass('active');
-			dt.fixedColumns().left(0);
-			dt.fixedColumns().right(0);
+			dt.fixedColumns().start(0);
+			dt.fixedColumns().end(0);
 		}
 		else {
 			$(node).attr('active', 'true').addClass('active');
-			dt.fixedColumns().left(config.config.left);
-			dt.fixedColumns().right(config.config.right);
+			dt.fixedColumns().start(config.config.start);
+			dt.fixedColumns().end(config.config.end);
 		}
 	},
 	config: {
-		left: 1,
-		right: 0
+		start: 1,
+		end: 0
 	},
 	init(dt, node, config) {
 		if(dt.settings()[0]._fixedColumns === undefined) {

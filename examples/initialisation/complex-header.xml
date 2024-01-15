@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" table-class="stripe row-border order-column" order="4">
+<dt-example table-type="html-complex-header-wide" table-class="stripe row-border order-column" order="11">
 
 <css lib="datatables fixedcolumns">
 	/* Ensure that the demo table scrolls */
@@ -13,8 +13,7 @@
 <![CDATA[
 $('#example').DataTable({
 	fixedColumns: {
-		start: 1,
-		end: 1
+		start: 3
 	},
 	paging: false,
 	scrollCollapse: true,
@@ -28,8 +27,7 @@ $('#example').DataTable({
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: {
-		start: 1,
-		end: 1
+		start: 2
 	},
 	paging: false,
 	scrollCollapse: true,
@@ -39,11 +37,13 @@ new DataTable('#example', {
 ]]>
 </js-vanilla>
 
-<title lib="FixedColumns">Start and end fixed columns</title>
+<title lib="FixedColumns">Complex headers</title>
 
 <info><![CDATA[
 
-FixedColumns allows columns to be fixed at both the start and the end of the table. Fixing end columns is done by using the `fc-init fixedColumns.end` initialisation parameter, which works just the same as `fc-init fixedColumns.start` does for the start of the table. This example shows both the start and end columns being fixed in place.
+This example demonstrate's FixedColumns ability to operate with complex headers (`colspan` and `rowspan`) and multiple rows in the table header or footer.
+
+It should be noted that the fixed column delineation point should not have a `colspan` cell going through it. It will not automatically split the cell into fixed and non-fixed parts.
 
 ]]></info>
 
