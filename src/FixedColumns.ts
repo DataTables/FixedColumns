@@ -261,14 +261,14 @@ export default class FixedColumns {
 		let right = rtl ? start : end;
 		let barWidth = dt.settings()[0].oBrowser.barWidth; // dt internal
 
-		// Bar not needed - no vertical scrolling
-		if (scroller.offsetWidth === scroller.clientWidth) {
-			barWidth = 0;
-		}
-
 		// Do nothing if no scrolling in the DataTable
 		if (wrapper.length === 0) {
 			return this;
+		}
+
+		// Bar not needed - no vertical scrolling
+		if (scroller.offsetWidth === scroller.clientWidth) {
+			barWidth = 0;
 		}
 
 		// Loop over the visible columns, setting their state
