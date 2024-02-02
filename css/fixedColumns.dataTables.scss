@@ -21,37 +21,37 @@ table.dataTable {
             z-index: 1;
             background-color: $fixedcolumns-body-color;
         }
+    }
 
-        tr > .dtfc-fixed-left::after,
-        tr > .dtfc-fixed-right::after {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 10px;
-            transition: box-shadow 0.3s;
-            content: "";
-            pointer-events: none;
-        }
+    tr > .dtfc-fixed-left::after,
+    tr > .dtfc-fixed-right::after {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 10px;
+        transition: box-shadow 0.3s;
+        content: "";
+        pointer-events: none;
+    }
 
-        tr > .dtfc-fixed-left::after {
-            right: 0;
-            transform: translateX(100%);
-        }
+    tr > .dtfc-fixed-left::after {
+        right: 0;
+        transform: translateX(100%);
+    }
 
-        tr > .dtfc-fixed-right::after {
-            left: 0;
-            transform: translateX(-80%);
-        }
+    tr > .dtfc-fixed-right::after {
+        left: 0;
+        transform: translateX(-80%);
     }
 
     &.dtfc-scrolling-left {
-        tbody > tr > .dtfc-fixed-left::after {
+        tr > .dtfc-fixed-left::after {
             box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.2);
         }
     }
 
     &.dtfc-scrolling-right {
-        tbody > tr > {
+        tr > {
             .dtfc-fixed-right::after {
                 box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.2);
             }

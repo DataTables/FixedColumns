@@ -259,6 +259,12 @@ export default class FixedColumns {
 		let end = this.c.end;
 		let left = rtl ? end : start;
 		let right = rtl ? start : end;
+		let barWidth = dt.settings()[0].oBrowser.barWidth; // dt internal
+
+		// Bar not needed - no vertical scrolling
+		if (scroller.offsetWidth === scroller.clientWidth) {
+			barWidth = 0;
+		}
 
 		// Do nothing if no scrolling in the DataTable
 		if (wrapper.length === 0) {
@@ -279,7 +285,8 @@ export default class FixedColumns {
 					offset,
 					'start',
 					headerStruct,
-					footerStruct
+					footerStruct,
+					barWidth
 				);
 			}
 			else if (visIdx >= colCount - end) {
@@ -295,12 +302,13 @@ export default class FixedColumns {
 					offset,
 					'end',
 					headerStruct,
-					footerStruct
+					footerStruct,
+					barWidth
 				);
 			}
 			else {
 				// Release
-				that._fixColumn(visIdx, 0, 'none', headerStruct, footerStruct);
+				that._fixColumn(visIdx, 0, 'none', headerStruct, footerStruct, barWidth);
 			}
 		});
 
@@ -316,19 +324,14 @@ export default class FixedColumns {
 		let footerEl = dt.table().footer();
 		let headerHeight = $(headerEl).outerHeight();
 		let footerHeight = $(footerEl).outerHeight();
-		let barWidth = dt.settings()[0].oBrowser.barWidth; // dt internal
-
-		// Bar not needed - no vertical scrolling
-		if (scroller.offsetWidth === scroller.clientWidth) {
-			barWidth = 0;
-		}
 
 		this.dom.topBlocker
 			.appendTo(wrapper)
 			.css('top', 0)
 			.css(this.s.rtl ? 'left' : 'right', 0)
 			.css('height', headerHeight)
-			.css('width', barWidth + 1);
+			.css('width', barWidth + 1)
+			.css('display', barWidth ?  'block' : 'none');
 
 		if (footerEl) {
 			this.dom.bottomBlocker
@@ -336,7 +339,8 @@ export default class FixedColumns {
 				.css('bottom', 0)
 				.css(this.s.rtl ? 'left' : 'right', 0)
 				.css('height', footerHeight)
-				.css('width', barWidth + 1);
+				.css('width', barWidth + 1)
+				.css('display', barWidth ?  'block' : 'none');
 		}
 	}
 
@@ -373,10 +377,11 @@ export default class FixedColumns {
 		offset: number,
 		side: 'start' | 'end' | 'none',
 		header,
-		footer
+		footer,
+		barWidth
 	) {
 		let dt = this.s.dt;
-		let applyStyles = (jq) => {
+		let applyStyles = (jq, part) => {
 			if (side === 'none') {
 				jq.css('position', '')
 					.css('left', '')
@@ -395,8 +400,14 @@ export default class FixedColumns {
 					positionSide = side === 'start' ? 'right' : 'left';
 				}
 
+				var off = offset;
+
+				if (side === 'end' && (part === 'header' || part === 'footer')) {
+					off += barWidth;
+				}
+
 				jq.css('position', 'sticky')
-					.css(positionSide, offset)
+					.css(positionSide, off)
 					.addClass(
 						side === 'start'
 							? this.classes.fixedStart
@@ -412,16 +423,16 @@ export default class FixedColumns {
 
 		header.forEach((row) => {
 			if (row[idx]) {
-				applyStyles($(row[idx].cell));
+				applyStyles($(row[idx].cell), 'header');
 			}
 		});
 
-		applyStyles(dt.column(idx + ':visible', { page: 'current' }).nodes().to$());
+		applyStyles(dt.column(idx + ':visible', { page: 'current' }).nodes().to$(), 'body');
 
 		if (footer) {
 			footer.forEach((row) => {
 				if (row[idx]) {
-					applyStyles($(row[idx].cell));
+					applyStyles($(row[idx].cell), 'footer');
 				}
 			});
 		}
@@ -439,7 +450,9 @@ export default class FixedColumns {
 		}
 
 		let scrollLeft = scroller.scrollLeft; // 0 when fully scrolled left
-		let table = $(this.s.dt.table().node());
+		let table = $(this.s.dt.table().node())
+			.add(this.s.dt.table().header().parentNode)
+			.add(this.s.dt.table().footer().parentNode);
 		let ltr = ! this.s.rtl;
 		let scrollStart = scrollLeft !== 0;
 		let scrollEnd = scroller.scrollWidth > (scroller.clientWidth + Math.abs(scrollLeft) + 1); // extra 1 for Chrome

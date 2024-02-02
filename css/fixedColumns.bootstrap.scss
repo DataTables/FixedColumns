@@ -3,32 +3,35 @@
 
 div.dtfc-top-blocker,
 div.dtfc-top-blocker {
-	margin-top: 6px;
 	border-bottom: 0px solid #ddd !important;
 }
 
-table.dataTable.table-bordered {
-	.dtfc-has-start {
-		border-left: none;
-	}
+table.dataTable {
+	// Due to Chrome https://bugs.chromium.org/p/chromium/issues/detail?id=712847
+	// And Firefox https://bugzilla.mozilla.org/show_bug.cgi?id=1450584
+	// It isn't possible to use border-collapse with FixedColumns, which
+	// make use of position: sticky
+	border-collapse: separate;
 
-    thead > tr > .dtfc-fixed-right {
-        border-left: 1px solid #ddd;
-    }
-}
+	&.table-bordered {
+		border-left-width: 0;
+		border-right-width: 0;
 
-div.dt-scroll.dtfc-has-start {
-    table.table-bordered {
-        border-left: none;
-    }   
-}
+		th,
+		td {
+			border-right-width: 0;
+			border-top-width: 0;
+		}
 
-div.dt-scroll-headInner,
-div.dt-scroll-footInner {
-	table.table-bordered {
-		tr {
-			th:first-child {
-				border-left: 1px solid #ddd !important;
+		th:last-child,
+		td:last-child {
+			border-right: 1px solid #dee2e6;;
+		}
+
+		tr:last-child {
+			th,
+			td {
+				border-bottom-width: 0;
 			}
 		}
 	}

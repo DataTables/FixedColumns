@@ -3,8 +3,21 @@ $fixedcolumns-header-color: rgb(248, 248, 248) !default;
 
 @import 'fixedColumns.dataTables.scss';
 
-table.dataTable.dtfc-has-start {
-	tbody {
-		border-left: none;
+table.dataTable {
+	// Due to Chrome https://bugs.chromium.org/p/chromium/issues/detail?id=712847
+	// And Firefox https://bugzilla.mozilla.org/show_bug.cgi?id=1450584
+	// It isn't possible to use border-collapse with FixedColumns, which
+	// make use of position: sticky
+	border-collapse: separate;
+	border-spacing: inherit;
+
+	&.table-bordered {
+		border-left-width: 0;
+		border-bottom-width: 0;
+
+		th, td {
+			border-right-width: 0;
+			border-top-width: 0;
+		}
 	}
 }

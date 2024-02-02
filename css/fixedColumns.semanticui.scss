@@ -1,8 +1,11 @@
 
+$fixedcolumns-header-color: #f9fafb !default;
+
 @import 'fixedColumns.dataTables.scss';
 
 table.dataTable {
-	border-left-width: 0px !important;
+	border-left: none !important;
+	border-right: none !important;
 
 	tr {
 		border-left-width: 0px;
@@ -11,6 +14,11 @@ table.dataTable {
 		td:first-child {
 			border-left: 1px solid rgba(34, 36, 38, 0.15) !important;
 		}
+
+        th:last-child,
+        td:last-child {
+			border-right: 1px solid rgba(34, 36, 38, 0.15);
+        }
 	}
 }
 
