@@ -64,7 +64,8 @@ table.dataTable {
     }
 }
 
-div.dt-scroll {
+div.dt-scroll,
+div.dtfh-floatingparent {
     position: relative;
 
     div.dtfc-top-blocker,
