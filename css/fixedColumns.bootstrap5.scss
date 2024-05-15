@@ -1,41 +1,39 @@
 
 @import 'fixedColumns.bootstrap4.scss';
 
-html[data-bs-theme="dark"] {
-    table.dataTable {
-        thead,
-        tfoot {
-            tr > .dtfc-fixed-start,
-            tr > .dtfc-fixed-end {
-                background-color: var(--bs-body-bg);
-            }
-        }
-
-        tbody {
-            tr > .dtfc-fixed-start,
-            tr > .dtfc-fixed-end {
-                background-color: var(--bs-body-bg);
-            }
+table.dataTable {
+    thead,
+    tfoot {
+        tr > .dtfc-fixed-start,
+        tr > .dtfc-fixed-end {
+            background-color: var(--bs-table-bg);
         }
     }
 
-    div.dtfc-top-blocker,
-    div.dtfc-bottom-blocker {
-        background-color: var(--bs-body-bg);
+    tbody {
+        tr > .dtfc-fixed-start,
+        tr > .dtfc-fixed-end {
+            background-color: var(--bs-table-bg);
+        }
     }
+}
 
-	div.dt-scroll-body {
-		border-left-color: var(--bs-border-color) !important;
-	}
+div.dtfc-top-blocker,
+div.dtfc-bottom-blocker {
+    background-color: var(--bs-body-bg);
+}
 
-    div.dt-scroll-headInner,
-    div.dt-scroll-footInner {
-		table.table-bordered {
-			tr {
-				th:first-child {
-					border-left-color: var(--bs-border-color) !important;
-				}
-			}
-		}
-	}	
+div.dt-scroll-body {
+    border-left-color: var(--bs-table-color) !important;
+}
+
+div.dt-scroll-headInner,
+div.dt-scroll-footInner {
+    table.table-bordered {
+        tr {
+            th:first-child {
+                border-left-color: var(--bs-border-color) !important;
+            }
+        }
+    }
 }
