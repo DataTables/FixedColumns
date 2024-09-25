@@ -47,7 +47,7 @@ export interface IDOM {
 }
 
 export default class FixedColumns {
-	private static version = '5.0.1';
+	private static version = '5.0.2';
 
 	private static classes: IClasses = {
 		bottomBlocker: 'dtfc-bottom-blocker',
