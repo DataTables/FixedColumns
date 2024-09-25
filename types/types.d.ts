@@ -1,11 +1,13 @@
-// Type definitions for datatables.net-fixedcolumns 3.2
-// Project: https://datatables.net
-// Definitions by: Konstantin Kuznetsov <https://github.com/Arik-neKrol>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// TypeScript Version: 2.4
+// Type definitions for datatables.net-fixedcolumns
+// Definitions by:
+//   SpryMedia
+//   Konstantin Kuznetsov
 
 /// <reference types="jquery" />
-/// <reference types="datatables.net"/>
+
+import DataTables, {Api} from 'datatables.net';
+
+export default DataTables;
 
 declare namespace DataTables {
     interface Settings {
