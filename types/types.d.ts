@@ -10,31 +10,50 @@ import DataTables, {Api} from 'datatables.net';
 export default DataTables;
 
 declare namespace DataTables {
-    interface Settings {
+    interface Config {
         /*
          * FixedColumns extension options
          */
-        fixedColumns?: boolean | FixedColumnsSettings;
+        fixedColumns?: boolean | FixedColumnsConfig;
     }
 
-    interface FixedColumnsSettings {
-        /*
-         * Row height matching algorithm to use
-         *
-         * The algorithm to use. This can be one of (see below for full description):
-         * 'none' | 'semiauto' | 'auto'
+    interface FixedColumnsConfig {
+        /**
+         * The number of columns to fix at the end of the table (ltr and rtl aware)
          */
-        heightMatch?: 'none' | 'semiauto' | 'auto';
+        end?: number;
 
-        /*
+        i18n?: {
+            /** Text for `fixedColumns` button */
+            button?: string;
+        };
+
+        /**
          * The number of columns on the left hand side of the table to fix in place.
+         */
+        left?: number;
+
+        /**
+         * The number of columns on the left hand side of the table to fix in place.
+         * @deprecated Use `start`
          */
         leftColumns?: number;
 
-        /*
+        /**
          * The number of columns on the right hand side of the table to fix in place.
          */
+        right?: number;
+
+        /**
+         * The number of columns on the right hand side of the table to fix in place.
+         * @deprecated Use `end`
+         */
         rightColumns?: number;
+
+        /**
+         * The number of columns to fix at the start of the table (ltr and rtl aware)
+         */
+        start?: number;
     }
 
     interface Api {
@@ -48,50 +67,59 @@ declare namespace DataTables {
 
     interface FixedColumnsMethods extends Api {
         /**
-        * @Deprecated(use dt.cell(this).index())
-        * Get the cell index of a cell in a fixed column
+        * Get the number of columns fixed at the end of the table
         * 
-        * @param row The cell (td or th) to get the cell index of. This can be either a cell in the fixed columns or in the host DataTable.
-        * @returns The cell index for the given cell.
+        * @returns Count
         */
-        cellIndex(row: JQuery | Node): CellIndex;
-        
-        /**
-         * Redraw the fixed columns based on new table size
-         * 
-         * @returns DataTables API instance
-         */
-        relayout(): Api;
-        
-        /**
-         * @Deprecated(use dt.row(this).index())
-         * Get the row index of a row in a fixed column
-         * 
-         * @param row The row (tr) to get the row index of. This can be either a row in the fixed columns or in the host DataTable.
-         * @returns The row index for the given row
-         */
-        rowIndex(row: JQuery | Node): number;
+        end(): number;
 
         /**
-        * Update the data shown in the FixedColumns
+        * Set the number of columns fixed at the end of the table
         * 
         * @returns DataTables API instance
         */
-        update(): Api;
-    }
+        end(count: number): Api;
 
-    /*
-    */
-    interface CellIndex {
-        row: number;
-        column: number;
-        columnVisible: number;
-    }
+        /**
+        * Get the number of columns fixed at the left of the table
+        * 
+        * @returns Count
+        */
+        left(): number;
 
-    interface RowsMethods {
-        /*
-         * Recalculate the height of one or more rows after a data change
-         */
-        recalcHeight(): Api;
+        /**
+        * Set the number of columns fixed at the left of the table
+        * 
+        * @returns DataTables API instance
+        */
+        left(count: number): Api;
+
+        /**
+        * Get the number of columns fixed at the right of the table
+        * 
+        * @returns Count
+        */
+        right(): number;
+
+        /**
+        * Set the number of columns fixed at the right of the table
+        * 
+        * @returns DataTables API instance
+        */
+        right(count: number): Api;
+    
+        /**
+        * Get the number of columns fixed at the start of the table
+        * 
+        * @returns Count
+        */
+        start(): number;
+
+        /**
+        * Set the number of columns fixed at the start of the table
+        * 
+        * @returns DataTables API instance
+        */
+        start(count: number): Api;
     }
 }
