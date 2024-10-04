@@ -1,11 +1,11 @@
-/*! FixedColumns 5.0.2
+/*! FixedColumns 5.0.3
  * © SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     FixedColumns
  * @description FixedColumns extension for DataTables
- * @version     5.0.2
+ * @version     5.0.3
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @copyright   SpryMedia Ltd.
  *
