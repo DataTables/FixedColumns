@@ -9,7 +9,7 @@ import DataTables, {Api} from 'datatables.net';
 
 export default DataTables;
 
-declare namespace DataTables {
+declare module 'datatables.net' {
     interface Config {
         /*
          * FixedColumns extension options
@@ -56,16 +56,16 @@ declare namespace DataTables {
         start?: number;
     }
 
-    interface Api {
+    interface Api<T> {
         /**
         * Namespacing for FixedColumns methods - FixedColumns' methods are available on the returned API instance.
         * 
         * @returns DataTables API instance with the FixedColumns methods available.
         */
-        fixedColumns(): FixedColumnsMethods | Api;
+        fixedColumns(): FixedColumnsMethods<T>;
     }
 
-    interface FixedColumnsMethods extends Api {
+    interface FixedColumnsMethods<T> extends Api<T> {
         /**
         * Get the number of columns fixed at the end of the table
         * 
@@ -78,7 +78,7 @@ declare namespace DataTables {
         * 
         * @returns DataTables API instance
         */
-        end(count: number): Api;
+        end(count: number): Api<T>;
 
         /**
         * Get the number of columns fixed at the left of the table
@@ -92,7 +92,7 @@ declare namespace DataTables {
         * 
         * @returns DataTables API instance
         */
-        left(count: number): Api;
+        left(count: number): Api<T>;
 
         /**
         * Get the number of columns fixed at the right of the table
@@ -106,7 +106,7 @@ declare namespace DataTables {
         * 
         * @returns DataTables API instance
         */
-        right(count: number): Api;
+        right(count: number): Api<T>;
     
         /**
         * Get the number of columns fixed at the start of the table
@@ -120,6 +120,6 @@ declare namespace DataTables {
         * 
         * @returns DataTables API instance
         */
-        start(count: number): Api;
+        start(count: number): Api<T>;
     }
 }
