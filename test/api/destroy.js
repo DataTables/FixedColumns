@@ -8,7 +8,7 @@ describe('fixedColumns - destroy', function () {
 
 	describe('Check the defaults', function () {
 		dt.html('basic');
-		it('Initalisation inserts a blocker', function () {
+		it('Initialisation inserts a blocker', function () {
 			table = $('#example').DataTable({
 				fixedColumns: true,
 				scrollX: true

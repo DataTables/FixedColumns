@@ -101,7 +101,7 @@ This example demonstrates FixedColumns when only scrolling on the X axis. This i
 						<tr>
 							<td>Cedric</td>
 							<td>Kelly</td>
-							<td>Senior Javascript Developer</td>
+							<td>Senior JavaScript Developer</td>
 							<td>Edinburgh</td>
 							<td>22</td>
 							<td>2012/03/29</td>
@@ -156,7 +156,7 @@ This example demonstrates FixedColumns when only scrolling on the X axis. This i
 						<tr>
 							<td>Colleen</td>
 							<td>Hurst</td>
-							<td>Javascript Developer</td>
+							<td>JavaScript Developer</td>
 							<td>San Francisco</td>
 							<td>39</td>
 							<td>2009/09/15</td>
@@ -607,7 +607,7 @@ This example demonstrates FixedColumns when only scrolling on the X axis. This i
 						<tr>
 							<td>Jennifer</td>
 							<td>Acosta</td>
-							<td>Junior Javascript Developer</td>
+							<td>Junior JavaScript Developer</td>
 							<td>Edinburgh</td>
 							<td>43</td>
 							<td>2013/02/01</td>
@@ -673,7 +673,7 @@ This example demonstrates FixedColumns when only scrolling on the X axis. This i
 						<tr>
 							<td>Michael</td>
 							<td>Bruce</td>
-							<td>Javascript Developer</td>
+							<td>JavaScript Developer</td>
 							<td>Singapore</td>
 							<td>29</td>
 							<td>2011/06/27</td>
