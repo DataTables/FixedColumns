@@ -20,7 +20,7 @@
 			The new number of columns to fix to the right. As of FixedColumns 4.3 a check is made to make sure that the value given is with in the range of 0 to the number of columns in the table (inclusive).
 		</parameter>
 		<returns type="DataTables Api">
-			Datatables Api for chaining.
+			DataTables Api for chaining.
 		</returns>
 		<description>
 			Updates the DataTable to fix the new number of columns to the right.
