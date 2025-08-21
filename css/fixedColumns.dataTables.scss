@@ -1,6 +1,14 @@
 
-$fixedcolumns-header-color: white !default;
-$fixedcolumns-body-color: white !default;
+:root {
+    --dtfc_background: white;
+    --dtfc-thead-cell_background: var(--dtfc_background);
+    --dtfc-tbody-cell_background: var(--dtfc_background);
+}
+
+
+:root.dark {
+    --dtfc_background: rgb(33, 37, 41);
+}
 
 // Make sure the fixed columns aren't transparent
 table.dataTable {
@@ -11,7 +19,7 @@ table.dataTable {
             top: 0;
             bottom: 0;
             z-index: 3;
-            background-color: $fixedcolumns-header-color;
+            background-color: var(--dtfc-thead-cell_background);
         }
     }
 
@@ -19,7 +27,7 @@ table.dataTable {
         tr > .dtfc-fixed-start,
         tr > .dtfc-fixed-end {
             z-index: 1;
-            background-color: $fixedcolumns-body-color;
+            background-color: var(--dtfc-tbody-cell_background);
         }
     }
 
@@ -71,27 +79,12 @@ div.dtfh-floatingparent {
     div.dtfc-top-blocker,
     div.dtfc-bottom-blocker {
         position: absolute;
-        background-color: $fixedcolumns-header-color;
+        background-color: var(--dtfc-thead-cell_background);
     }
 }
 
 html.dark {
     table.dataTable {
-        thead,
-        tfoot {
-            tr > .dtfc-fixed-start,
-            tr > .dtfc-fixed-end {
-                background-color: var(--dt-html-background);
-            }
-        }
-    
-        tbody {
-            tr > .dtfc-fixed-start,
-            tr > .dtfc-fixed-end {
-                background-color: var(--dt-html-background);
-            }
-        }
-
         &.dtfc-scrolling-left {
             tbody > tr > .dtfc-fixed-left::after {
                 box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.3);
@@ -110,10 +103,5 @@ html.dark {
                 }
             }
         }
-    }
-    
-    div.dtfc-top-blocker,
-    div.dtfc-bottom-blocker {
-        background-color: var(--dt-html-background);
     }
 }

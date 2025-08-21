@@ -1,7 +1,9 @@
 
-$fixedcolumns-header-color: #f9fafb !default;
-
 @import 'fixedColumns.dataTables.scss';
+
+:root {
+    --dtfc-thead-cell_background: #f9fafb;
+}
 
 table.dataTable {
 	border-left: none !important;
@@ -15,10 +17,10 @@ table.dataTable {
 			border-left: 1px solid rgba(34, 36, 38, 0.15) !important;
 		}
 
-        th:last-child,
-        td:last-child {
+		th:last-child,
+		td:last-child {
 			border-right: 1px solid rgba(34, 36, 38, 0.15);
-        }
+		}
 	}
 }
 
@@ -27,17 +29,17 @@ div.dtfc-top-blocker {
 }
 
 tr.dt-rowReorder-moving {
-    td.dtfc-fixed-start,
-    td.dtfc-fixed-end {
-        border-top: 2px solid #888 !important;
-        border-bottom: 2px solid #888 !important;
-    }
+	td.dtfc-fixed-start,
+	td.dtfc-fixed-end {
+		border-top: 2px solid #888 !important;
+		border-bottom: 2px solid #888 !important;
+	}
 
-    td.dtfc-fixed-start:first-child {
-        border-left: 2px solid #888 !important;
-    }
+	td.dtfc-fixed-start:first-child {
+		border-left: 2px solid #888 !important;
+	}
 
-    td.dtfc-fixed-end:last-child {
-        border-right: 2px solid #888 !important;
-    }
+	td.dtfc-fixed-end:last-child {
+		border-right: 2px solid #888 !important;
+	}
 }
