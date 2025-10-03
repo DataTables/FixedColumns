@@ -1,5 +1,5 @@
 
-@import 'fixedColumns.dataTables.scss';
+@use 'fixedColumns.dataTables.scss';
 
 :root {
     --dtfc-thead-cell_background: rgb(248, 248, 248);

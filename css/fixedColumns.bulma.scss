@@ -1,6 +1,6 @@
 
 
-@import 'fixedColumns.dataTables.scss';
+@use 'fixedColumns.dataTables.scss';
 
 table.dataTable {
 	// Due to Chrome https://bugs.chromium.org/p/chromium/issues/detail?id=712847
