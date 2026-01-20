@@ -5,7 +5,8 @@
 
 /// <reference types="jquery" />
 
-import DataTables, {Api} from 'datatables.net';
+import DataTables from 'datatables.net';
+import FixedColumns from './FixedColumns';
 
 export default DataTables;
 
@@ -15,6 +16,17 @@ declare module 'datatables.net' {
          * FixedColumns extension options
          */
         fixedColumns?: boolean | FixedColumnsConfig;
+    }
+
+    interface Defaults {
+        /*
+         * FixedColumns extension options
+         */
+        fixedColumns?: boolean | FixedColumnsConfig;
+    }
+
+    interface Context {
+        _fixedColumns: FixedColumns;
     }
 
     interface FixedColumnsConfig {
@@ -63,6 +75,10 @@ declare module 'datatables.net' {
         * @returns DataTables API instance with the FixedColumns methods available.
         */
         fixedColumns(): FixedColumnsMethods<T>;
+    }
+
+    interface DataTablesStatic {
+        FixedColumns: typeof FixedColumns;
     }
 
     interface FixedColumnsMethods<T> extends Api<T> {

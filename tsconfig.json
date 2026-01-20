@@ -1,25 +1,26 @@
 {
     "compilerOptions": {
-        "target": "ES3",
+        "target": "ES5",
         "module": "ES6",
+		"moduleResolution": "node10",
         "lib": ["es2017", "es2016", "dom"],
         "allowUnreachableCode": true,
         "allowSyntheticDefaultImports": true,
         "pretty": true,
-        "declaration": true
+        "declaration": true,
+		"skipLibCheck": true,
+		"outDir": "dist",
+        "types": []
     },
-    "exclude": [
-        "./node_modules/**/*"
-    ],
     "files": [
-        "src/index.ts",
-        "src/fixedColumns.dataTables.ts",
-        "src/fixedColumns.bootstrap4.ts",
-        "src/fixedColumns.bootstrap5.ts",
-        "src/fixedColumns.bootstrap.ts",
-        "src/fixedColumns.bulma.ts",
-        "src/fixedColumns.foundation.ts",
-        "src/fixedColumns.jqueryui.ts",
-        "src/fixedColumns.semanticui.ts",
+        "src/dataTables.fixedColumns.ts",
+        "src/integrations/fixedColumns.dataTables.ts",
+        "src/integrations/fixedColumns.bootstrap4.ts",
+        "src/integrations/fixedColumns.bootstrap5.ts",
+        "src/integrations/fixedColumns.bootstrap.ts",
+        "src/integrations/fixedColumns.bulma.ts",
+        "src/integrations/fixedColumns.foundation.ts",
+        "src/integrations/fixedColumns.jqueryui.ts",
+        "src/integrations/fixedColumns.semanticui.ts",
     ]
 }
