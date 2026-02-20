@@ -1,3 +1,4 @@
+$set-header-background: true !default;
 
 :root {
     --dtfc_background: white;
@@ -19,7 +20,10 @@ table.dataTable {
             top: 0;
             bottom: 0;
             z-index: 3;
-            background-color: var(--dtfc-thead-cell_background);
+
+            @if $set-header-background {
+                background-color: var(--dtfc-thead-cell_background);
+            }
         }
     }
 
