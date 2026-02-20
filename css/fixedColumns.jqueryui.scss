@@ -1,5 +1,5 @@
 
-@use 'fixedColumns.dataTables.scss';
+@use 'fixedColumns.dataTables.scss' with ($set-header-background: false);
 
 div.dtfc-top-blocker {
 	border-bottom: none !important;
