@@ -3,7 +3,7 @@
 
 <title lib="FixedColumns">FixedColumns examples</title>
 
-<js lib="jquery" />
+<js lib="datatables" />
 <info><![CDATA[
 
 When making use of DataTables' x-axis scrolling feature (`dt-init scrollX`), you may wish to fix the left or right most columns in place. This extension for DataTables provides exactly this option (for non-scrolling tables, please use the [FixedHeader extension](//datatables.net/extensions/fixedheader), which can fix headers and footer). Key features include:

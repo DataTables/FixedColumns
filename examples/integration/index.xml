@@ -3,7 +3,7 @@
 
 <title lib="FixedColumns">Integration</title>
 
-<js lib="jquery" />
+<js lib="datatables" />
 <info><![CDATA[
 
 The examples in this section show FixedColumns being used with other DataTables extensions.
