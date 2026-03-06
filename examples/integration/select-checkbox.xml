@@ -2,34 +2,7 @@
 <dt-example table-type="html-wide-index" table-class="stripe row-border order-column nowrap" order="2">
 
 <css lib="datatables fixedcolumns select"/>
-<js lib="jquery datatables fixedcolumns select">
-<![CDATA[
-$('#example').DataTable({
-	columnDefs: [
-		{
-			orderable: false,
-			className: 'select-checkbox',
-			targets: 0
-		}
-	],
-	fixedColumns: {
-		start: 2
-	},
-	order: [[1, 'asc']],
-	paging: false,
-	scrollCollapse: true,
-	scrollX: true,
-	scrollY: 300,
-	select: {
-		style: 'os',
-		selector: 'td:first-child'
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns select">
 <![CDATA[
 new DataTable('#example', {
 	columnDefs: [
@@ -54,7 +27,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">Select - checkboxes</title>
 

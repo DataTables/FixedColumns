@@ -2,19 +2,7 @@
 <dt-example table-type="html-wide" table-class="display nowrap" order="20" framework="jqueryui">
 
 <css lib="jqueryui datatables fixedcolumns"/>
-<js lib="jquery datatables fixedcolumns">
-<![CDATA[
-$('#example').DataTable({
-	fixedColumns: true,
-	paging: false,
-	scrollCollapse: true,
-	scrollX: true,
-	scrollY: 300
-});
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns">
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: true,
@@ -24,7 +12,7 @@ new DataTable('#example', {
 	scrollY: 300
 });
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">jQuery UI</title>
 

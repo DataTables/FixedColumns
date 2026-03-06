@@ -9,21 +9,7 @@
 		margin: 0 auto;
 	}
 </css>
-<js lib="jquery datatables fixedcolumns">
-<![CDATA[
-$('#example').DataTable({
-	fixedColumns: {
-		start: 2
-	},
-	paging: false,
-	scrollCollapse: true,
-	scrollY: '300px',
-	scrollX: true
-});
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns">
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: {
@@ -35,7 +21,7 @@ new DataTable('#example', {
 	scrollX: true
 });
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">Multiple fixed columns</title>
 

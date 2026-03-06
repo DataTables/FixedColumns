@@ -9,20 +9,7 @@
 		margin: 0 auto;
 	}
 </css>
-<js lib="jquery datatables fixedcolumns rowreorder">
-<![CDATA[
-$('#example').DataTable({
-	fixedColumns: true,
-	paging: false,
-	rowReorder: true,
-	scrollCollapse: true,
-	scrollX: true,
-	scrollY: 300
-});
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns rowreorder">
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: true,
@@ -33,7 +20,7 @@ new DataTable('#example', {
 	scrollY: 300
 });
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">RowReorder</title>
 

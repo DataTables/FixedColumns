@@ -2,20 +2,7 @@
 <dt-example table-type="html-wide" order="2">
 
 <css lib="datatables fixedcolumns select"/>
-<js lib="jquery datatables fixedcolumns select">
-<![CDATA[
-$('#example').DataTable({
-	fixedColumns: true,
-	paging: false,
-	scrollCollapse: true,
-	scrollX: true,
-	scrollY: 300,
-	select: true
-});
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns select">
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: true,
@@ -26,7 +13,7 @@ new DataTable('#example', {
 	select: true
 });
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">Select - whole row</title>
 

@@ -9,28 +9,7 @@
 		margin: 0 auto;
 	}
 </css>
-<js lib="jquery datatables fixedcolumns buttons buttons-colvis">
-<![CDATA[
-
-$('#example').DataTable({
-	fixedColumns: {
-		start: 2
-	},
-	layout: {
-		topStart: {
-			buttons: ['colvis']
-		}
-	},
-	paging: false,
-	scrollCollapse: true,
-	scrollX: true,
-	scrollY: 300
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns buttons buttons-colvis">
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: {
@@ -48,7 +27,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">Column visibility integration</title>
 

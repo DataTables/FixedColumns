@@ -2,20 +2,7 @@
 <dt-example table-type="html-wide" table-class="stripe row-border order-column nowrap" order="4">
 
 <css lib="datatables fixedcolumns"/>
-<js lib="jquery datatables fixedcolumns">
-<![CDATA[
-$('#example').DataTable({
-	fixedColumns: {
-		start: 1,
-		end: 1
-	},
-	paging: true,
-	scrollX: true
-});
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns">
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: {
@@ -26,7 +13,7 @@ new DataTable('#example', {
 	scrollX: true
 });
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">Only Horizontal Scrolling</title>
 

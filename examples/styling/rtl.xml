@@ -9,21 +9,7 @@
 		margin: 0 auto;
 	}
 </css>
-<js lib="jquery datatables fixedcolumns">
-<![CDATA[
-$('div.demo-html').attr('dir', 'rtl'); // Demo only
-
-$('#example').DataTable({
-	fixedColumns: true,
-	paging: false,
-	scrollCollapse: true,
-	scrollX: true,
-	scrollY: 300
-});
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns">
 <![CDATA[
 document.querySelector('div.demo-html').setAttribute('dir', 'rtl'); // Demo only
 
@@ -35,7 +21,7 @@ new DataTable('#example', {
 	scrollY: 300
 });
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">Right-to-left text direction</title>
 

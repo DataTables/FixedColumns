@@ -9,32 +9,7 @@
 		margin: 0 auto;
 	}
 </css>
-<js lib="jquery datatables fixedcolumns buttons">
-<![CDATA[
-$('#example').DataTable({
-	layout: {
-		topStart: {
-			buttons: [
-				{
-					extend: 'fixedColumns',
-					text: 'FixedColumns',
-					config: {
-						start: 1,
-						end: 0
-					}
-				}
-			]
-		}
-	},
-	paging: false,
-	scrollCollapse: true,
-	scrollX: true,
-	scrollY: 300
-});
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns buttons">
 <![CDATA[
 new DataTable('#example', {
 	layout: {
@@ -57,7 +32,7 @@ new DataTable('#example', {
 	scrollY: 300
 });
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">Buttons initialisation</title>
 

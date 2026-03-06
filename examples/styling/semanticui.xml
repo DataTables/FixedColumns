@@ -8,19 +8,7 @@
 		margin: 0 auto;
 	}
 </css>
-<js lib="jquery semanticui datatables fixedcolumns">
-<![CDATA[
-$('#example').DataTable({
-	fixedColumns: true,
-	paging: false,
-	scrollCollapse: true,
-	scrollX: true,
-	scrollY: 300
-});
-]]>
-</js>
-
-<js-vanilla>
+<js lib="semanticui datatables fixedcolumns">
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: true,
@@ -30,7 +18,7 @@ new DataTable('#example', {
 	scrollY: 300
 });
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">Fomantic-UI (formally Semantic-UI) styling</title>
 

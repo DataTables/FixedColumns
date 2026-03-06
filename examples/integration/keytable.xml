@@ -2,20 +2,7 @@
 <dt-example table-type="html-wide" table-class="stripe row-border order-column nowrap" order="4">
 
 <css lib="datatables fixedcolumns keytable"/>
-<js lib="jquery datatables fixedcolumns keytable">
-<![CDATA[
-$('#example').DataTable({
-	fixedColumns: true,
-	keys: true,
-	paging: false,
-	scrollCollapse: true,
-	scrollX: true,
-	scrollY: 300
-});
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns keytable">
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: true,
@@ -26,7 +13,7 @@ new DataTable('#example', {
 	scrollY: 300
 });
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">KeyTable</title>
 

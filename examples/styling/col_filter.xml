@@ -13,7 +13,7 @@
 		width: 90%;
 	}
 </css>
-<js lib="jquery datatables fixedcolumns">
+<js lib="datatables fixedcolumns">
 <![CDATA[
 $(document).ready(function () {
 	// Setup - add a text input to each footer cell

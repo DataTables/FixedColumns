@@ -2,27 +2,7 @@
 <dt-example table-type="html-wide" table-class="stripe row-border order-column nowrap" order="3">
 
 <css lib="datatables fixedcolumns"/>
-<js lib="jquery datatables fixedcolumns">
-<![CDATA[
-
-var table = $('#example').DataTable({
-	fixedColumns: true,
-	paging: false,
-	scrollCollapse: true,
-	scrollX: true,
-	scrollY: 300
-});
-
-table.on('click', 'td', function () {
-	var cell = table.cell(this);
-
-	$('#click-output').prepend('<div>' + cell.data() + '</div>');
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables fixedcolumns">
 <![CDATA[
 
 let table = new DataTable('#example', {
@@ -42,7 +22,7 @@ table.on('click', 'td', function () {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="FixedColumns">DataTables API</title>
 
