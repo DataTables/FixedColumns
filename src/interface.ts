@@ -1,10 +1,3 @@
-// Type definitions for datatables.net-fixedcolumns
-// Definitions by:
-//   SpryMedia
-//   Konstantin Kuznetsov
-
-/// <reference types="jquery" />
-
 import DataTables, { Api } from 'datatables.net';
 import FixedColumns from './FixedColumns';
 

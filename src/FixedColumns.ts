@@ -1,8 +1,5 @@
-import DataTable, { Api, Dom, HeaderStructure } from 'datatables.net';
+import DataTable, { Api, Dom, HeaderStructure, util } from 'datatables.net';
 import './interface';
-
-const dom = DataTable.dom;
-const util = DataTable.util;
 
 export interface IDefaults {
 	i18n: {
@@ -96,7 +93,7 @@ export default class FixedColumns {
 
 		this.s = {
 			dt: table,
-			rtl: dom.s(table.table().node()).css('direction') === 'rtl'
+			rtl: Dom.s(table.table().node()).css('direction') === 'rtl'
 		};
 
 		// Backwards compatibility for deprecated options
@@ -115,9 +112,9 @@ export default class FixedColumns {
 		}
 
 		this.dom = {
-			bottomBlocker: dom.c('div').classAdd(this.classes.bottomBlocker),
-			topBlocker: dom.c('div').classAdd(this.classes.topBlocker),
-			scroller: dom
+			bottomBlocker: Dom.c('div').classAdd(this.classes.bottomBlocker),
+			topBlocker: Dom.c('div').classAdd(this.classes.topBlocker),
+			scroller: Dom
 				.s(this.s.dt.table().container())
 				.find('div.dt-scroll-body')
 		};
@@ -248,8 +245,8 @@ export default class FixedColumns {
 		let headerStruct = dt.table().header.structure(':visible');
 		let footerStruct = dt.table().footer.structure(':visible');
 		let widths = dt.columns(':visible').widths().toArray();
-		let wrapper = dom.s(dt.table().node()).closest('div.dt-scroll');
-		let scroller = dom
+		let wrapper = Dom.s(dt.table().node()).closest('div.dt-scroll');
+		let scroller = Dom
 			.s(dt.table().node())
 			.closest('div.dt-scroll-body')
 			.get(0);
@@ -320,7 +317,7 @@ export default class FixedColumns {
 		});
 
 		// Apply classes to table to indicate what state we are in
-		dom.s(dt.table().node())
+		Dom.s(dt.table().node())
 			.classToggle(that.classes.tableFixedStart, start > 0)
 			.classToggle(that.classes.tableFixedEnd, end > 0)
 			.classToggle(that.classes.tableFixedLeft, left > 0)
@@ -329,8 +326,8 @@ export default class FixedColumns {
 		// Blocker elements for when scroll bars are always visible
 		let headerEl = dt.table().header();
 		let footerEl = dt.table().footer();
-		let headerHeight = dom.s(headerEl).height('outer');
-		let footerHeight = dom.s(footerEl).height('outer');
+		let headerHeight = Dom.s(headerEl).height('outer');
+		let footerHeight = Dom.s(footerEl).height('outer');
 
 		this.dom.topBlocker
 			.appendTo(wrapper)
@@ -358,7 +355,7 @@ export default class FixedColumns {
 		this.s.dt.off('.dtfc');
 		this.dom.scroller.off('.dtfc');
 
-		dom.s(this.s.dt.table().node()).classRemove(
+		Dom.s(this.s.dt.table().node()).classRemove(
 			this.classes.tableScrollingEnd +
 				' ' +
 				this.classes.tableScrollingLeft +
@@ -438,12 +435,12 @@ export default class FixedColumns {
 
 		header.forEach(row => {
 			if (row[idx]) {
-				applyStyles(dom.s(row[idx].cell), 'header');
+				applyStyles(Dom.s(row[idx].cell), 'header');
 			}
 		});
 
 		applyStyles(
-			dom.s(
+			Dom.s(
 				dt
 					.column(idx + ':visible', { page: 'current' })
 					.nodes()
@@ -455,7 +452,7 @@ export default class FixedColumns {
 		if (footer) {
 			footer.forEach(row => {
 				if (row[idx]) {
-					applyStyles(dom.s(row[idx].cell), 'footer');
+					applyStyles(Dom.s(row[idx].cell), 'footer');
 				}
 			});
 		}
@@ -475,18 +472,18 @@ export default class FixedColumns {
 		// Need to update the classes on potentially multiple table tags. There is the
 		// main one, the scrolling ones and if FixedHeader is active, the holding
 		// position ones! jQuery will deduplicate for us.
-		let table = dom
+		let table = Dom
 			.s(this.s.dt.table().node())
 			.add(this.s.dt.table().header().parentNode as HTMLElement)
 			.add(this.s.dt.table().footer().parentNode as HTMLElement)
 			.add(
-				dom
+				Dom
 					.s(this.s.dt.table().container())
 					.find('div.dt-scroll-headInner table')
 					.get(0)
 			)
 			.add(
-				dom
+				Dom
 					.s(this.s.dt.table().container())
 					.find('div.dt-scroll-footInner table')
 					.get(0)
@@ -514,23 +511,23 @@ export default class FixedColumns {
 	private _setKeyTableListener() {
 		this.s.dt.on('key-focus.dt.dtfc', (e, dt, cell) => {
 			let currScroll;
-			let cellPos = dom.s(cell.node()).offset();
+			let cellPos = Dom.s(cell.node()).offset();
 			let scroller = this.dom.scroller.get(0);
-			let scroll = dom
+			let scroll = Dom
 				.s(this.s.dt.table().node())
 				.closest('div.dt-scroll-body');
 
 			// If there are fixed columns to the left
 			if (this.c.start > 0) {
 				// Get the rightmost left fixed column header, it's position and it's width
-				let rightMost = dom.s(
+				let rightMost = Dom.s(
 					this.s.dt.column(this.c.start - 1).header()
 				);
 				let rightMostPos = rightMost.offset();
 				let rightMostWidth = rightMost.width('outer');
 
 				// If the current highlighted cell is left of the rightmost cell on the screen
-				if (dom.s(cell.node()).classHas(this.classes.fixedLeft)) {
+				if (Dom.s(cell.node()).classHas(this.classes.fixedLeft)) {
 					// Fixed columns have the scrollbar at the start, always
 					scroll.scrollLeft(0);
 				}
@@ -548,16 +545,16 @@ export default class FixedColumns {
 			if (this.c.end > 0) {
 				// Get the number of columns and the width of the cell as doing right side calc
 				let numCols = this.s.dt.columns().data().toArray().length;
-				let cellWidth = dom.s(cell.node()).width('outer');
+				let cellWidth = Dom.s(cell.node()).width('outer');
 
 				// Get the leftmost right fixed column header and it's position
-				let leftMost = dom.s(
+				let leftMost = Dom.s(
 					this.s.dt.column(numCols - this.c.end).header()
 				);
 				let leftMostPos = leftMost.offset();
 
 				// If the current highlighted cell is right of the leftmost cell on the screen
-				if (dom.s(cell.node()).classHas(this.classes.fixedRight)) {
+				if (Dom.s(cell.node()).classHas(this.classes.fixedRight)) {
 					scroll.scrollLeft(
 						scroller.scrollWidth - scroller.clientWidth
 					);

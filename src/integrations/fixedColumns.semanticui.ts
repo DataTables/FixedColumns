@@ -1,3 +1,3 @@
-/*! Semantic ui integration for DataTables' FixedColumns
- * © SpryMedia Ltd - datatables.net/license
+/*! FixedColumns Fomantic styling for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
  */

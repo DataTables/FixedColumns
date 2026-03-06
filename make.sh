@@ -27,43 +27,8 @@ DT_BUILT="${DT_SRC}/built/DataTables"
 rsync -r css $OUT_DIR
 css_frameworks fixedColumns $OUT_DIR/css
 
-
-# Get the version from the file
-VERSION=$(grep "static version" src/FixedColumns.ts | perl -nle'print $& if m{\d+\.\d+\.\d+(\-\w*)?}')
-
-# JS - compile and then copy into place
-$DT_SRC/node_modules/typescript/bin/tsc -p ./tsconfig.json
-
-## Remove the import - our wrapper does it for UMD as well as ESM
-sed -i "s#import DataTable from 'datatables.net';##" dist/FixedColumns.js
-sed -i "s#import DataTable from 'datatables.net';##" dist/dataTables.fixedColumns.js
-sed -i "s#import DataTable from 'datatables.net';##" dist/interface.js
-
-HEADER="/*! FixedColumns $VERSION
- * Copyright (c) SpryMedia Ltd - datatables.net/license
- */
-"
-$DT_SRC/node_modules/rollup/dist/bin/rollup \
-    --banner "$HEADER" \
-    --config rollup.config.mjs
-
-rsync -r dist/dataTables.fixedColumns.js $OUT_DIR/js/
-rsync -r dist/integrations/fixedColumns.*.js $OUT_DIR/js/
-
-js_frameworks fixedColumns $OUT_DIR/js "datatables.net-FW datatables.net-fixedcolumns"
-js_wrap $OUT_DIR/js/dataTables.fixedColumns.js "datatables.net"
-
-# Move types across, single file was built by rollup
-if [ -d $OUT_DIR/types ]; then
-	rm -r $OUT_DIR/types		
-fi
-mkdir $OUT_DIR/types
-
-cp dist/types.d.ts $OUT_DIR/types
-cp types/fixedColumns*.d.ts $OUT_DIR/types
-
-rm -r dist
-
+# TS / JS build
+ts_extension FixedColumns fixedColumns
 
 # Copy and build examples
 rsync -r examples $OUT_DIR
@@ -72,4 +37,3 @@ examples_process $OUT_DIR/examples
 # Readme and license
 cp Readme.md $OUT_DIR
 cp License.txt $OUT_DIR
-

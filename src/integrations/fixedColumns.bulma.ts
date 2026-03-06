@@ -1,3 +1,3 @@
-/*! Bulma integration for DataTables' FixedColumns
- * © SpryMedia Ltd - datatables.net/license
+/*! FixedColumns Bulma styling for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
  */

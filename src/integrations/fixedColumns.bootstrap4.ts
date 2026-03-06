@@ -1,3 +1,3 @@
-/*! Bootstrap 4 integration for DataTables' FixedColumns
- * © SpryMedia Ltd - datatables.net/license
+/*! FixedColumns Bootstrap 4 styling for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
  */

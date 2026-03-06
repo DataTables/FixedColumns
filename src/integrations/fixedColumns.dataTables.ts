@@ -1,4 +1,3 @@
-
-/*! DataTables integration for DataTables' FixedColumns
- * © SpryMedia Ltd - datatables.net/license
+/*! FixedColumns default styling for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
  */
