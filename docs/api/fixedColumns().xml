@@ -6,7 +6,7 @@
 
 	<type type="function">
 		<signature>fixedColumns()</signature>
-		<returns type="DataTables.Api">
+		<returns type="DataTable.Api">
 			DataTables API instance with the FixedColumns methods available.
 		</returns>
 		<description>
