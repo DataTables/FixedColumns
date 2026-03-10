@@ -65,7 +65,7 @@ apiRegister('fixedColumns().right()', function (newVal) {
 (DataTable.ext.buttons as any).fixedColumns = {
 	action(e, dt, node, config) {
 		if (Dom.s(node).attr('active')) {
-			Dom.s(node).removeAttr('active').classRemove('active');
+			Dom.s(node).('active').classRemove('active');
 			dt.fixedColumns().start(0);
 			dt.fixedColumns().end(0);
 		}
