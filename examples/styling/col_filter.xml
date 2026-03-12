@@ -15,33 +15,32 @@
 </css>
 <js lib="datatables fixedcolumns">
 <![CDATA[
-$(document).ready(function () {
-	// Setup - add a text input to each footer cell
-	$('#example tfoot th').each(function (i) {
-		var title = $('#example thead th')
-			.eq($(this).index())
-			.text();
-		$(this).html(
-			'<input type="text" placeholder="' + title + '" data-index="' + i + '" />'
-		);
-	});
+new DataTable('#example', {
+	scrollY: '300px',
+	scrollX: true,
+	scrollCollapse: true,
+	paging: false,
+	fixedColumns: true,
+	initComplete: function () {
+		this.api()
+			.columns()
+			.every(function () {
+				let column = this;
+				let title = column.footer().textContent;
 
-	// DataTable
-	var table = $('#example').DataTable({
-		scrollY: '300px',
-		scrollX: true,
-		scrollCollapse: true,
-		paging: false,
-		fixedColumns: true
-	});
+				// Create input element
+				let input = document.createElement('input');
+				input.placeholder = title;
+				column.footer().replaceChildren(input);
 
-	// Filter event handler
-	$(table.table().container()).on('keyup', 'tfoot input', function () {
-		table
-			.column($(this).data('index'))
-			.search(this.value)
-			.draw();
-	});
+				// Event listener for user input
+				input.addEventListener('keyup', () => {
+					if (column.search() !== this.value) {
+						column.search(input.value).draw();
+					}
+				});
+			});
+	}
 });
 ]]>
 </js>
