@@ -9,7 +9,7 @@
 		margin: 0 auto;
 	}
 </css>
-<js lib="datatables fixedcolumns buttons buttons-colvis">
+<js lib="datatables fixedcolumns buttons">
 <![CDATA[
 new DataTable('#example', {
 	fixedColumns: {
