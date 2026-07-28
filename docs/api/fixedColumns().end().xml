@@ -19,7 +19,7 @@
 		<parameter type="integer" name="val">
 			The new number of columns to fix to the end.
 		</parameter>
-		<returns type="DataTables Api">
+		<returns type="DataTable.Api">
 			DataTables Api for chaining.
 		</returns>
 		<description>
