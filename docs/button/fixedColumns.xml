@@ -12,7 +12,7 @@
         This option allows for FixedColumns to be configured as it would in a normal initialisation. All of the `fixedColumns.*` options can be configured within this object.
     </option>
     <option name="text" type="string" default="FixedColumns">
-        This options allows the text within the button to be configured. This can also be configured with the `-init fixedColumns.i18n.button` option of the DataTables `-init language` option.
+        This options allows the text within the button to be configured. This can also be configured with the `fixedColumns.button` option of the DataTables `-init language` option.
     </option>
 
 	<example title="Basic FixedColumns button initialisation"><![CDATA[
