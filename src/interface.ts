@@ -4,7 +4,7 @@ import FixedColumns from './FixedColumns';
 export default DataTables;
 
 declare module 'datatables.net' {
-    interface Config {
+    interface Options {
         /*
          * FixedColumns extension options
          */
