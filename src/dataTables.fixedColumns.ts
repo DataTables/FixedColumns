@@ -108,7 +108,7 @@ function _init(settings, options = null) {
 
 // Attach a listener to the document which listens for DataTables initialisation
 // events so we can automatically initialise
-Dom.s(document).on('plugin-init.dt', function (e, settings: Context) {
+Dom.on('plugin-init.dt', function (e, settings: Context) {
 	if (e.namespace !== 'dt') {
 		return;
 	}

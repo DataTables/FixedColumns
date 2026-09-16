@@ -41,6 +41,11 @@ export interface IDOM {
 	scroller: Dom;
 }
 
+// Sanity check
+if (!DataTable || !DataTable.versionCheck('3.1')) {
+	throw 'Warning: FixedColumns requires DataTables 3.1 or newer';
+}
+
 export default class FixedColumns {
 	private static version = '6.0.0';
 
@@ -75,15 +80,6 @@ export default class FixedColumns {
 	public s: IS;
 
 	public constructor(settings: any, opts: IDefaults) {
-		// Check that the required version of DataTables is included
-		if (
-			!DataTable ||
-			!DataTable.versionCheck ||
-			!DataTable.versionCheck('2')
-		) {
-			throw new Error('FixedColumns requires DataTables 2 or newer');
-		}
-
 		let table = new DataTable.Api(settings);
 
 		this.classes = util.object.assignDeep({}, FixedColumns.classes);
