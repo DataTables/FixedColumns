@@ -16,6 +16,21 @@ table.dataTable {
             background-color: var(--bs-table-bg);
         }
     }
+
+	&.table-bordered {
+        > :not(caption) > * > * {
+            border-bottom-width: var(--bs-border-width);
+        }
+
+        > thead > * > * {
+            border-top-width: var(--bs-border-width) !important;
+        }
+
+		th:last-child,
+		td:last-child {
+			border-right-color: var(--bs-table-border-color);
+		}
+    }
 }
 
 div.dtfc-top-blocker,
@@ -25,6 +40,10 @@ div.dtfc-bottom-blocker {
 
 div.dt-scroll-body {
     border-left-color: var(--bs-table-color) !important;
+
+    thead tr th {
+        border-top-color: var(--bs-table-border-color);
+    }
 }
 
 div.dt-scroll-headInner,
@@ -32,7 +51,7 @@ div.dt-scroll-footInner {
     table.table-bordered {
         tr {
             th:first-child {
-                border-left-color: var(--bs-border-color) !important;
+                border-left-color: var(--bs-table-border-color) !important;
             }
         }
     }
