@@ -47,7 +47,7 @@ if (!DataTable || !DataTable.versionCheck('3.1')) {
 }
 
 export default class FixedColumns {
-	private static version = '6.1.1';
+	private static version = '6.1.2';
 
 	private static classes: IClasses = {
 		bottomBlocker: 'dtfc-bottom-blocker',
